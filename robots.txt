@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# 网站地图
+Sitemap: https://www.078465.xyz/sitemap.xml
