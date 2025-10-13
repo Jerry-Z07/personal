@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <title id="page-title">你来啦？欢迎！</title>
+    <!-- Font Awesome图标字体 -->
+    <link rel="stylesheet" href="https://cdn.jsdmirror.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="lang.js"></script>
+</head>
+<body>
+    <div class="background-container">
+        <img id="background-image" alt="背景图片">
+    </div>
+    
+    <!-- 时钟全屏按钮 -->
+    <button id="clock-toggle" class="clock-toggle" title="全屏时钟">
+        <i class="fas fa-clock"></i>
+    </button>
+    
+    <!-- 数字时钟显示区域 -->
+    <div id="digital-clock" class="digital-clock hidden">
+        <!-- 时钟遮罩层 -->
+        <div id="clock-overlay" class="clock-overlay"></div>
+        
+        <!-- 时钟内容 -->
+        <div class="clock-content">
+            <div class="clock-display">
+                <span id="clock-time" class="clock-time"></span>
+                <span id="clock-seconds" class="clock-seconds"></span>
+            </div>
+            <div id="clock-date" class="clock-date"></div>
+        </div>
+        
+        <!-- 时钟设置按钮 -->
+        <button id="clock-settings" class="clock-settings" title="设置">
+            <i class="fas fa-cog"></i>
+        </button>
+        
+        <!-- URL模式提示 -->
+        <div id="url-mode-tip" class="url-mode-tip hidden">
+            <i class="fas fa-info-circle"></i>
+            <span>URL参数模式 - 按ESC键退出</span>
+        </div>
+        
+        <!-- 透明度调节面板 -->
+        <div id="opacity-panel" class="opacity-panel hidden">
+            <div class="opacity-header">
+                <span>遮罩设置</span>
+                <button id="close-opacity" class="close-opacity">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="opacity-controls">
+                <div class="overlay-toggle-container">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="overlay-toggle" class="overlay-toggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-text">显示遮罩</span>
+                </div>
+                <div class="opacity-slider-container">
+                    <input type="range" id="opacity-slider" class="opacity-slider" min="0" max="100" value="50">
+                    <span id="opacity-value" class="opacity-value">50%</span>
+                </div>
+                <div class="background-toggle-container">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="background-toggle" class="background-toggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-text">自动切换背景</span>
+                </div>
+                <div class="interval-slider-container">
+                    <label for="interval-slider">切换间隔</label>
+                    <input type="range" id="interval-slider" class="interval-slider" min="1" max="30" value="5">
+                    <span id="interval-value" class="interval-value">5分钟</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <main class="main-content">
+        <h1 id="typing-text"></h1>
+        <p id="subtitle" class="subtitle hidden">也是enKl03B</p>
+        
+        <!-- GitHub链接按钮 -->
+        <div class="button-container">
+            <a href="https://github.com/enKl03B" target="_blank" class="btn btn-github btn-medium">
+                <i class="fab fa-github"></i>
+                GitHub
+            </a>
+            <a href="https://blog.078465.xyz" target="_blank" class="btn btn-blog btn-medium">
+                <i class="fas fa-blog"></i>
+                博客
+            </a>
+            <a href="https://space.bilibili.com/401175768" target="_blank" class="btn btn-bilibili btn-medium">
+                <img src="img/bilibili.svg" alt="Bilibili" class="btn-icon-svg">
+                Bilibili
+            </a>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>Made by enKl03B with ❤️</p>
+                <p>Coding with Trae & Kimi-K2</p>
+            </div>
+            <div class="footer-status">
+                <a href="https://stats.uptimerobot.com/bYVW2cRJ5T" target="_blank" class="btn btn-status btn-small">
+                    <i class="fas fa-chart-line"></i>
+                    网站状态
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
