@@ -1,0 +1,158 @@
+/* ===== 按钮组件模块 ===== */
+
+/* 按钮基础样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    margin: 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 按钮悬停效果 */
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 按钮点击效果 */
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* 按钮尺寸变体 */
+.btn-small {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+.btn-medium {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+.btn-large {
+    padding: 16px 32px;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+/* 按钮容器 */
+.button-container {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* GitHub按钮特殊样式 */
+.btn-github {
+    background: rgba(36, 41, 47, 0.2);
+    border: 1px solid rgba(36, 41, 47, 0.3);
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-github:hover {
+    background: rgba(36, 41, 47, 0.3);
+    border: 1px solid rgba(36, 41, 47, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 图标字体样式 */
+.btn i {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+
+.btn-github:hover i {
+    transform: scale(1.1);
+}
+
+/* SVG图标样式 */
+.btn-icon-svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.btn-bilibili:hover .btn-icon-svg {
+    transform: scale(1.1);
+}
+
+/* 博客按钮特殊样式 */
+.btn-blog {
+    background: rgba(102, 204, 255, 0.2);
+    border: 1px solid rgba(102, 204, 255, 0.3);
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-blog:hover {
+    background: rgba(102, 204, 255, 0.3);
+    border: 1px solid rgba(102, 204, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(102, 204, 255, 0.2);
+}
+
+.btn-blog:hover i {
+    transform: scale(1.1);
+}
+
+/* Bilibili按钮特殊样式 */
+.btn-bilibili {
+    background: rgba(0, 161, 214, 0.2);
+    border: 1px solid rgba(0, 161, 214, 0.3);
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-bilibili:hover {
+    background: rgba(0, 161, 214, 0.3);
+    border: 1px solid rgba(0, 161, 214, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 161, 214, 0.2);
+}
+
+.btn-bilibili:hover i {
+    transform: scale(1.1);
+}
+
+/* 深色模式下的按钮样式调整 */
+@media (prefers-color-scheme: dark) {
+    .btn {
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}

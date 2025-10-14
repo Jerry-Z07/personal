@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" href="https://blog.078465.xyz/wp-content/uploads/2024/10/cropped-neko-icon-26-192x192.png">
     <!-- Font Awesome图标字体 -->
     <link rel="stylesheet" href="https://cdnjs.snrat.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/main.css">
     <script src="lang.js"></script>
 </head>
 <body>
@@ -68,18 +68,7 @@
                     <input type="range" id="opacity-slider" class="opacity-slider" min="0" max="100" value="50">
                     <span id="opacity-value" class="opacity-value">50%</span>
                 </div>
-                <div class="background-toggle-container">
-                    <label class="toggle-label">
-                        <input type="checkbox" id="background-toggle" class="background-toggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                    <span class="toggle-text">自动切换背景</span>
-                </div>
-                <div class="interval-slider-container">
-                    <label for="interval-slider">切换间隔</label>
-                    <input type="range" id="interval-slider" class="interval-slider" min="1" max="30" value="5">
-                    <span id="interval-value" class="interval-value">5分钟</span>
-                </div>
+
             </div>
         </div>
     </div>
@@ -121,6 +110,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

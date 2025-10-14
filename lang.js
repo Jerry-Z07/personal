@@ -21,8 +21,8 @@ const translations = {
             title: '全屏时钟',
             weekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
             settings: {
-                backgroundSwitch: '背景自动切换',
-                switchInterval: '切换间隔'
+                // backgroundSwitch: '背景自动切换', // 背景切换功能已移除
+                // switchInterval: '切换间隔' // 背景切换功能已移除
             }
         }
     },
@@ -45,8 +45,8 @@ const translations = {
             title: 'Full Screen Clock',
             weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             settings: {
-                backgroundSwitch: 'Auto Background Switch',
-                switchInterval: 'Switch Interval'
+                // backgroundSwitch: 'Auto Background Switch', // 背景切换功能已移除
+                // switchInterval: 'Switch Interval' // 背景切换功能已移除
             }
         }
     }
@@ -121,16 +121,16 @@ function applyTranslations(lang) {
         pageTitle.textContent = t.pageTitle;
     }
     
-    // 设置时钟设置文本
-    const backgroundSwitchLabel = document.querySelector('.background-toggle-container .toggle-text');
-    if (backgroundSwitchLabel) {
-        backgroundSwitchLabel.textContent = t.clock.settings.backgroundSwitch;
-    }
+    // 设置时钟设置文本（背景切换功能已移除）
+    // const backgroundSwitchLabel = document.querySelector('.background-toggle-container .toggle-text');
+    // if (backgroundSwitchLabel) {
+    //     backgroundSwitchLabel.textContent = t.clock.settings.backgroundSwitch;
+    // }
     
-    const switchIntervalLabel = document.querySelector('.interval-slider-container label');
-    if (switchIntervalLabel) {
-        switchIntervalLabel.textContent = t.clock.settings.switchInterval;
-    }
+    // const switchIntervalLabel = document.querySelector('.interval-slider-container label');
+    // if (switchIntervalLabel) {
+    //     switchIntervalLabel.textContent = t.clock.settings.switchInterval;
+    // }
     
     // 返回控制台消息
     return t.consoleMessage;

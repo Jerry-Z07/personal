@@ -1,0 +1,29 @@
+/* ===== 主样式文件 ===== */
+/* 导入所有CSS模块，保留原有功能 */
+
+/* 基础样式模块 */
+@import url('base.css');
+
+/* 背景和主内容区域模块 */
+@import url('background.css');
+
+/* 打字机效果模块 */
+@import url('typing.css');
+
+/* 时钟功能模块 */
+@import url('clock.css');
+
+/* 透明度设置面板模块 */
+@import url('panel.css');
+
+/* 按钮组件模块 */
+@import url('buttons.css');
+
+/* 页脚模块 */
+@import url('footer.css');
+
+/* 特殊提示模块 */
+@import url('tips.css');
+
+/* 响应式设计模块 */
+@import url('responsive.css');
