@@ -5,28 +5,6 @@
 // 背景图片API地址
 const BACKGROUND_API_URL = 'https://t.alcy.cc/ycy';
 
-/**
- * 处理/archives/路径重定向
- * 当访问 https://域名/archives/*** 时自动重定向到 https://blog.078465.xyz/archives/***
- */
-function handleArchivesRedirect() {
-    // 获取当前页面的完整URL
-    const currentUrl = new URL(window.location.href);
-    
-    // 检查路径是否以/archives/开头
-    if (currentUrl.pathname.startsWith('/archives/')) {
-        // 构建新的目标URL
-        const targetUrl = new URL('https://blog.078465.xyz' + currentUrl.pathname + currentUrl.search);
-        
-        // 执行重定向
-        console.log('检测到/archives/路径，正在重定向到博客:', targetUrl.href);
-        window.location.replace(targetUrl.href);
-    }
-}
-
-// 在页面加载时立即执行重定向检查
-handleArchivesRedirect();
-
 // 背景图片切换定时器
 let backgroundSwitchInterval = null;
 const BACKGROUND_SWITCH_INTERVAL = 5 * 60 * 1000; // 5分钟（毫秒）
