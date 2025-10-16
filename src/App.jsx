@@ -100,6 +100,26 @@ export const HomePage = () => {
         />
       </EntranceAnimation>
 
+      {/* 副标题 - 在主标题打字动画完成后渐变出现 */}
+      <AnimatePresence>
+        {typingComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+            style={{ 
+              marginTop: '1rem',
+              fontSize: '1.2rem',
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontWeight: '350',
+              letterSpacing: '2px'
+            }}
+          >
+            也是enKl03B
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* 按钮组 */}
       <AnimatePresence>
         {typingComplete && (
