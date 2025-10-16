@@ -12,10 +12,6 @@ import { bindAllEvents } from './events.js';
  * 页面加载完成后的初始化函数
  */
 export function initialize() {
-    // 检查URL参数，如果mode=clock则自动进入时钟模式
-    const urlParams = new URLSearchParams(window.location.search);
-    const mode = urlParams.get('mode');
-    
     // 获取用户语言并应用翻译
     const userLang = getUserLanguage();
     const consoleMessage = applyTranslations(userLang);
@@ -34,22 +30,6 @@ export function initialize() {
     const clockToggle = document.getElementById('clock-toggle');
     if (clockToggle) {
         clockToggle.addEventListener('click', toggleClockMode);
-    }
-    
-    // 如果URL参数为clock，自动进入时钟模式
-    if (mode === 'clock') {
-        setTimeout(() => {
-            toggleClockMode();
-            // 显示URL模式提示
-            const urlTip = document.getElementById('url-mode-tip');
-            if (urlTip) {
-                urlTip.classList.remove('hidden');
-                // 5秒后自动隐藏提示
-                setTimeout(() => {
-                    urlTip.classList.add('hidden');
-                }, 5000);
-            }
-        }, 1000); // 延迟1秒进入时钟模式，让页面完全加载
     }
     
     // 绑定所有事件

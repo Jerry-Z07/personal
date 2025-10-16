@@ -58,12 +58,12 @@ function loadClockSettings() {
  * 显示初始提示
  */
 function showInitialTip() {
-    // 显示URL模式提示
-    const urlTip = document.getElementById('url-mode-tip');
-    if (urlTip) {
+    // 显示操作提示
+    const tipElement = document.getElementById('operation-tip');
+    if (tipElement) {
         // 3秒后自动隐藏提示
         setTimeout(() => {
-            urlTip.classList.add('hidden');
+            tipElement.classList.add('hidden');
         }, 3000);
     }
 }
@@ -81,9 +81,9 @@ function applyClockTranslations() {
             document.title = '网页时钟';
             
             // 设置提示文本
-            const urlTip = document.getElementById('url-mode-tip');
-            if (urlTip) {
-                const tipSpan = urlTip.querySelector('span');
+            const tipElement = document.getElementById('operation-tip');
+            if (tipElement) {
+                const tipSpan = tipElement.querySelector('span');
                 if (tipSpan) {
                     tipSpan.textContent = userLang === 'zh' ? '按ESC键退出，F11键全屏' : 'Press ESC to exit, F11 for fullscreen';
                 }

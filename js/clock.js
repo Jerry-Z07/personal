@@ -64,21 +64,20 @@ export function toggleClockMode() {
     const digitalClock = document.getElementById('digital-clock');
     const mainContent = document.querySelector('.main-content');
     const footer = document.querySelector('.footer');
-    const urlTip = document.getElementById('url-mode-tip');
     
     if (body.classList.contains('clock-mode')) {
         // 退出时钟模式
-        exitClockMode(body, digitalClock, mainContent, footer, urlTip);
+        exitClockMode(body, digitalClock, mainContent, footer);
     } else {
         // 进入时钟模式
-        enterClockMode(body, digitalClock, mainContent, footer, urlTip);
+        enterClockMode(body, digitalClock, mainContent, footer);
     }
 }
 
 /**
  * 进入时钟模式
  */
-function enterClockMode(body, digitalClock, mainContent, footer, urlTip) {
+function enterClockMode(body, digitalClock, mainContent, footer) {
     body.classList.add('clock-mode');
     
     // 隐藏主内容和页脚
@@ -102,7 +101,7 @@ function enterClockMode(body, digitalClock, mainContent, footer, urlTip) {
 /**
  * 退出时钟模式
  */
-function exitClockMode(body, digitalClock, mainContent, footer, urlTip) {
+function exitClockMode(body, digitalClock, mainContent, footer) {
     body.classList.remove('clock-mode');
     digitalClock.classList.remove('visible');
     digitalClock.classList.add('hidden');
@@ -115,11 +114,6 @@ function exitClockMode(body, digitalClock, mainContent, footer, urlTip) {
     if (window.clockInterval) {
         clearInterval(window.clockInterval);
         window.clockInterval = null;
-    }
-    
-    // 隐藏URL模式提示
-    if (urlTip) {
-        urlTip.classList.add('hidden');
     }
     
     // 恢复原始标题
