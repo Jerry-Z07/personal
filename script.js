@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', initialize);
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
         const backgroundImage = document.getElementById('background-image');
-        if (!backgroundImage.src || backgroundImage.src === '') {
+        if (backgroundImage && (!backgroundImage.src || backgroundImage.src === '')) {
             loadBackgroundImage();
         }
         

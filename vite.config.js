@@ -1,10 +1,15 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import legacy from '@vitejs/plugin-legacy'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   // 插件配置
   plugins: [
+    react({
+      // React插件配置
+      jsxRuntime: 'automatic'
+    }),
     legacy({
       // 设置目标浏览器
       targets: ['defaults', 'not IE 11'],

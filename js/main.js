@@ -13,14 +13,23 @@ import { translations } from './translations.js';
  * 页面加载完成后的初始化函数
  */
 export function initialize() {
+    // 检查是否存在React应用，如果存在则跳过传统初始化
+    const reactRoot = document.getElementById('react-root');
+    if (reactRoot && reactRoot.hasChildNodes()) {
+        console.log('检测到React应用，跳过传统初始化');
+        return;
+    }
+    
     // 获取用户语言并应用翻译
     const userLang = getUserLanguage();
     const consoleMessage = applyTranslations(userLang);
     
     // 开始打字机效果
     const typingElement = document.getElementById('typing-text');
-    const textToType = window.typingText || '你好，我是JlyVC';
-    typeWriter(textToType, typingElement, 150);
+    if (typingElement) {
+        const textToType = window.typingText || '你好，我是JlyVC';
+        typeWriter(textToType, typingElement, 150);
+    }
     
     // 页面加载完成后输出对应语言的消息
     setTimeout(() => {
@@ -45,11 +54,7 @@ export function initialize() {
     bindAllEvents();
     
     // 优化图片加载
-// 初始化应用
     optimizeImageLoading();
-    
-    // 绑定所有事件
-    bindAllEvents();
     
     // 背景图片加载
     loadBackgroundImage();
@@ -84,23 +89,23 @@ function applyTranslations(lang) {
         // 设置按钮文本
         const githubBtn = document.querySelector('.btn-github');
         if (githubBtn) {
-            githubBtn.innerHTML = githubBtn.innerHTML.replace(githubBtn.textContent.trim(), t.buttons.github);
+            githubBtn.textContent = t.buttons.github;
         }
         
         const blogBtn = document.querySelector('.btn-blog');
         if (blogBtn) {
-            blogBtn.innerHTML = blogBtn.innerHTML.replace(blogBtn.textContent.trim(), t.buttons.blog);
+            blogBtn.textContent = t.buttons.blog;
         }
         
         const bilibiliBtn = document.querySelector('.btn-bilibili');
         if (bilibiliBtn) {
-            bilibiliBtn.innerHTML = bilibiliBtn.innerHTML.replace(bilibiliBtn.textContent.trim(), t.buttons.bilibili);
+            bilibiliBtn.textContent = t.buttons.bilibili;
         }
         
         // 设置页脚文本
         const footerInfo = document.querySelector('.footer-info');
         if (footerInfo) {
-            footerInfo.innerHTML = footerInfo.innerHTML.replace('Made by enKl03B with ❤️', t.footer.madeBy);
+            footerInfo.textContent = t.footer.madeBy;
         }
         
         const statusBtn = document.querySelector('.btn-status');

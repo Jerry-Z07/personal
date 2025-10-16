@@ -6,6 +6,11 @@
  * 打字机效果函数
  */
 export function typeWriter(text, element, speed = 100) {
+    if (!element) {
+        console.warn('打字机效果：目标元素不存在，跳过动画');
+        return;
+    }
+    
     let i = 0;
     element.textContent = '';
     element.classList.add('typing');
@@ -23,10 +28,12 @@ export function typeWriter(text, element, speed = 100) {
             // 打字完成后显示副标题
             setTimeout(() => {
                 const subtitle = document.getElementById('subtitle');
-                subtitle.classList.remove('hidden');
-                setTimeout(() => {
-                    subtitle.classList.add('visible');
-                }, 50);
+                if (subtitle) {
+                    subtitle.classList.remove('hidden');
+                    setTimeout(() => {
+                        subtitle.classList.add('visible');
+                    }, 50);
+                }
             }, 500);
         }
     }

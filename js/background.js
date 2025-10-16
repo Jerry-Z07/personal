@@ -13,6 +13,11 @@ function setFallbackBackground() {
     const backgroundContainer = document.querySelector('.background-container');
     const backgroundImage = document.getElementById('background-image');
     
+    if (!backgroundContainer || !backgroundImage) {
+        console.warn('背景容器或图片元素不存在，跳过备用背景设置');
+        return;
+    }
+    
     // 隐藏图片元素
     backgroundImage.style.display = 'none';
     
@@ -29,6 +34,11 @@ function setFallbackBackground() {
  */
 export async function loadBackgroundImage() {
     const backgroundImage = document.getElementById('background-image');
+    
+    if (!backgroundImage) {
+        console.warn('背景图片元素不存在，跳过背景加载');
+        return;
+    }
     
     try {
         // 显示加载状态
@@ -74,8 +84,8 @@ export async function loadBackgroundImage() {
 export function handleVisibilityChange() {
     // 页面可见性变化时的处理逻辑
     if (document.hidden) {
-        console.log('页面已隐藏');
+    //    console.log('页面已隐藏');
     } else {
-        console.log('页面已显示');
+    //    console.log('页面已显示');
     }
 }
