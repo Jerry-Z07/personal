@@ -1,7 +1,8 @@
 /**
  * 语言配置文件
+ * ES模块版本 - 导出翻译数据
  */
-const translations = {
+export const translations = {
     zh: {
         title: '你好，我是JlyVC',
         subtitle: '也是enKl03B',
@@ -59,7 +60,7 @@ const translations = {
 /**
  * 获取用户语言偏好
  */
-function getUserLanguage() {
+export function getUserLanguage() {
     // 检查浏览器语言设置
     const browserLang = navigator.language || navigator.userLanguage;
     
@@ -73,9 +74,9 @@ function getUserLanguage() {
 }
 
 /**
- * 应用翻译
+ * 应用翻译（用于主页）
  */
-function applyTranslations(lang) {
+export function applyTranslations(lang) {
     const t = translations[lang];
     
     // 设置打字机文本

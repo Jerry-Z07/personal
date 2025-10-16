@@ -7,6 +7,7 @@ import { loadBackgroundImage } from './background.js';
 import { typeWriter } from './typing.js';
 import { getUserLanguage } from './utils.js';
 import { bindAllEvents } from './events.js';
+import { translations } from '../lang.js';
 
 /**
  * 页面加载完成后的初始化函数
@@ -57,12 +58,10 @@ function loadSettings() {
 }
 
 /**
- * 应用翻译（临时函数，需要从lang.js获取）
+ * 应用翻译
  */
 function applyTranslations(lang) {
-    // 这个函数的实现依赖于lang.js中的全局变量
-    // 在模块化重构后，我们需要确保lang.js在main.js之前加载
-    if (typeof translations !== 'undefined' && translations[lang]) {
+    if (translations[lang]) {
         const t = translations[lang];
         
         // 设置打字机文本
@@ -111,17 +110,6 @@ function applyTranslations(lang) {
         if (pageTitle) {
             pageTitle.textContent = t.pageTitle;
         }
-        
-        // 设置时钟设置文本（背景切换功能已移除）
-        // const backgroundSwitchLabel = document.querySelector('.background-toggle-container .toggle-text');
-        // if (backgroundSwitchLabel) {
-        //     backgroundSwitchLabel.textContent = t.clock.settings.backgroundSwitch;
-        // }
-        
-        // const switchIntervalLabel = document.querySelector('.interval-slider-container label');
-        // if (switchIntervalLabel) {
-        //     switchIntervalLabel.textContent = t.clock.settings.switchInterval;
-        // }
         
         // 返回控制台消息
         return t.consoleMessage;

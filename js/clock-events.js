@@ -53,14 +53,6 @@ export function bindClockEvents() {
  * 绑定键盘事件（时钟页面专用）
  */
 export function bindClockKeyboardEvents() {
-    // 监听ESC键返回主页
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            // 返回主页
-            window.location.href = 'index.html';
-        }
-    });
-    
     // 监听F11键全屏
     document.addEventListener('keydown', function(event) {
         if (event.key === 'F11') {

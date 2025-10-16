@@ -14,6 +14,7 @@ import { loadClockOverlayOpacity } from './storage.js';
 import { updateClockOverlayOpacity, updateOverlayVisibility } from './overlay.js';
 import { updateClock } from './clock.js';
 import { bindAllClockEvents } from './clock-events.js';
+import { translations } from '../lang.js';
 
 /**
  * 时钟页面初始化函数
@@ -72,33 +73,31 @@ function showInitialTip() {
  * 应用时钟页面翻译
  */
 function applyClockTranslations() {
-    if (typeof translations !== 'undefined') {
-        const userLang = navigator.language.startsWith('zh') ? 'zh' : 'en';
-        const t = translations[userLang];
+    const userLang = navigator.language.startsWith('zh') ? 'zh' : 'en';
+    const t = translations[userLang];
+    
+    if (t && t.clock) {
+        // 设置页面标题
+        document.title = '网页时钟';
         
-        if (t && t.clock) {
-            // 设置页面标题
-            document.title = '网页时钟';
-            
-            // 设置提示文本
-            const tipElement = document.getElementById('operation-tip');
-            if (tipElement) {
-                const tipSpan = tipElement.querySelector('span');
-                if (tipSpan) {
-                    tipSpan.textContent = userLang === 'zh' ? '按ESC键退出，F11键全屏' : 'Press ESC to exit, F11 for fullscreen';
-                }
+        // 设置提示文本
+        const tipElement = document.getElementById('operation-tip');
+        if (tipElement) {
+            const tipSpan = tipElement.querySelector('span');
+            if (tipSpan) {
+                tipSpan.textContent = userLang === 'zh' ? '按F11键全屏' : 'Press F11 for fullscreen';
             }
-            
-            // 设置遮罩面板文本
-            const opacityHeader = document.querySelector('.opacity-header span');
-            if (opacityHeader) {
-                opacityHeader.textContent = t.clock.settings ? t.clock.settings.maskSettings || '遮罩设置' : '遮罩设置';
-            }
-            
-            const overlayText = document.querySelector('.overlay-toggle-container .toggle-text');
-            if (overlayText) {
-                overlayText.textContent = t.clock.settings ? t.clock.settings.showMask || '显示遮罩' : '显示遮罩';
-            }
+        }
+        
+        // 设置遮罩面板文本
+        const opacityHeader = document.querySelector('.opacity-header span');
+        if (opacityHeader) {
+            opacityHeader.textContent = t.clock.settings ? t.clock.settings.maskSettings || '遮罩设置' : '遮罩设置';
+        }
+        
+        const overlayText = document.querySelector('.overlay-toggle-container .toggle-text');
+        if (overlayText) {
+            overlayText.textContent = t.clock.settings ? t.clock.settings.showMask || '显示遮罩' : '显示遮罩';
         }
     }
 }
