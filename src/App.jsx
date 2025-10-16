@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedText } from './components/AnimatedText.jsx';
 import { AnimatedButton } from './components/AnimatedButton.jsx';
 import { EntranceAnimation } from './components/PageTransition.jsx';
+import { Github, Bilibili } from '@lobehub/icons';
 
 /**
  * 主页React组件 - 集成Framer Motion动画
@@ -68,7 +69,7 @@ export const HomePage = () => {
       variant: 'github',
       href: 'https://github.com/enKl03B',
       target: '_blank',
-      icon: <i className="fab fa-github"></i>,
+      icon: <Github size={20} />,
       text: translations.buttons?.github || 'GitHub'
     },
     {
@@ -82,7 +83,7 @@ export const HomePage = () => {
       variant: 'bilibili',
       href: 'https://space.bilibili.com/401175768',
       target: '_blank',
-      icon: <img src="img/bilibili.svg" alt="Bilibili" style={{width: '20px', height: '20px'}} />,
+      icon: <Bilibili size={20} />,
       text: translations.buttons?.bilibili || 'Bilibili'
     }
   ];
@@ -220,7 +221,7 @@ export const HomePage = () => {
 /**
  * 页脚组件 - 集成Framer Motion动画
  */
-export const Footer = () => {
+export const Footer = ({ translations = {} }) => {
   return (
     <motion.footer 
       className="footer"
@@ -247,6 +248,39 @@ export const Footer = () => {
             transition={{ delay: 3.2 }}
           >
             Coding with Trae & Kimi-K2
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 3.4 }}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              gap: '6px',
+              marginTop: '4px'
+            }}
+          >
+            {translations.footer?.thanksTo || '感谢'}
+            <motion.a
+              href="https://edgeone.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ display: 'inline-flex', alignItems: 'center' }}
+            >
+              <img 
+                src="https://edgeone.ai/_next/static/media/headLogo.daeb48ad.png?auto=format" 
+                alt="EdgeOne"
+                style={{ 
+                  height: '16px', 
+                  width: 'auto',
+                  verticalAlign: 'middle'
+                }}
+              />
+            </motion.a>
+            {translations.footer?.providedBy || '提供的网站加速及托管'}
           </motion.p>
         </motion.div>
         
@@ -275,7 +309,22 @@ export const Footer = () => {
  * 主应用组件 - 包含背景和主要内容
  */
 export const App = () => {
+  const [translations, setTranslations] = useState({});
+
   useEffect(() => {
+    // 加载翻译数据
+    const loadTranslations = async () => {
+      try {
+        const module = await import('../js/translations.js');
+        const trans = module.translations || {};
+        const lang = navigator.language || 'zh-CN';
+        setTranslations(trans[lang] || trans['zh'] || {});
+      } catch (error) {
+        console.log('加载翻译失败，使用默认中文');
+        setTranslations({});
+      }
+    };
+
     // 加载背景图片（复用原有的背景加载逻辑）
     const loadBackground = async () => {
       try {
@@ -294,6 +343,7 @@ export const App = () => {
       }
     };
     
+    loadTranslations();
     loadBackground();
   }, []);
 
@@ -302,7 +352,7 @@ export const App = () => {
       {/* 背景图片 */}
       <motion.div 
         className="background-container"
-        initial={{ opacity: 0, scale: 1.1 }}
+        initial={{ opacity: 0, scale: 1 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5, ease: 'easeOut' }}
       >
@@ -322,7 +372,7 @@ export const App = () => {
       <HomePage />
       
       {/* 页脚 */}
-      <Footer />
+      <Footer translations={translations} />
     </div>
   );
 };

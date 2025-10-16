@@ -16,7 +16,9 @@ export const translations = {
         footer: {
             madeBy: 'Made by enKl03B with ❤️',
             status: '网站状态',
-            codingWith: 'Coding with Trae & Kimi-K2'
+            codingWith: 'Coding with Trae & Kimi-K2',
+            thanksTo: '感谢',
+            providedBy: '提供的网站加速及托管'
         },
         consoleMessage: '愿你永远心怀热爱，眼中总有星辰大海。',
         clock: {
@@ -40,7 +42,9 @@ export const translations = {
         footer: {
             madeBy: 'Made by enKl03B with ❤️',
             status: 'Site Status',
-            codingWith: 'Coding with Trae & Kimi-K2'
+            codingWith: 'Coding with Trae & Kimi-K2',
+            thanksTo: 'Thanks to',
+            providedBy: 'for providing website acceleration and hosting'
         },
         consoleMessage: 'May you always hold passion in your heart and see stars and the vast sea in your gaze forever.',
         clock: {
