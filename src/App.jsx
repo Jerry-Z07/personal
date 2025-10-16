@@ -49,9 +49,8 @@ export const HomePage = () => {
 
   const getWelcomeMessage = (lang) => {
     const messages = {
-      'zh-CN': '欢迎来到我的个人主页！',
-      'en-US': 'Welcome to my personal homepage!',
-      'ja': '私の個人ホームページへようこそ！'
+      'zh-CN': '愿你永远心怀热爱，眼里总有星辰大海。',
+      'en-US': 'May passion abide in your heart forever, and may your eyes never fail to hold the stars and the boundless sea.',
     };
     return messages[lang] || messages['zh-CN'];
   };
