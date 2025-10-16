@@ -21,6 +21,8 @@ const translations = {
             title: '全屏时钟',
             weekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
             settings: {
+                maskSettings: '遮罩设置',
+                showMask: '显示遮罩'
                 // backgroundSwitch: '背景自动切换', // 背景切换功能已移除
                 // switchInterval: '切换间隔' // 背景切换功能已移除
             }
@@ -45,6 +47,8 @@ const translations = {
             title: 'Full Screen Clock',
             weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             settings: {
+                maskSettings: 'Mask Settings',
+                showMask: 'Show Mask'
                 // backgroundSwitch: 'Auto Background Switch', // 背景切换功能已移除
                 // switchInterval: 'Switch Interval' // 背景切换功能已移除
             }

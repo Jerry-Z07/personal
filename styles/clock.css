@@ -30,6 +30,40 @@
     transform: scale(0.95);
 }
 
+/* 独立时钟页面链接按钮 */
+.clock-link {
+    position: fixed;
+    top: 20px;
+    left: 120px; /* 在原有时钟按钮右侧 */
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    color: white;
+}
+
+.clock-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.clock-link:active {
+    transform: scale(0.95);
+}
+
+.clock-link i {
+    font-size: 20px;
+}
+
 /* 数字时钟样式 */
 .digital-clock {
     position: fixed;
@@ -147,6 +181,15 @@
     
     .clock-toggle:hover {
         background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .clock-link {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .clock-link:hover {
+        background: rgba(0, 0, 0, 0.4);
     }
     
     .clock-settings {

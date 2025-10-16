@@ -2,17 +2,8 @@
  * 主入口模块 - 负责初始化和模块协调
  */
 
-import { 
-    clockOverlayOpacity,
-    clockOverlayEnabled
-} from './config.js';
-
 import { optimizeImageLoading } from './utils.js';
-
 import { loadBackgroundImage } from './background.js';
-import { loadClockOverlayOpacity } from './storage.js';
-import { updateClockOverlayOpacity, updateOverlayVisibility } from './overlay.js';
-import { toggleClockMode, updateClock } from './clock.js';
 import { typeWriter } from './typing.js';
 import { getUserLanguage } from './utils.js';
 import { bindAllEvents } from './events.js';
@@ -65,22 +56,14 @@ export function initialize() {
     bindAllEvents();
     
     // 优化图片加载
+// 初始化应用
     optimizeImageLoading();
     
-    // 加载背景图片
+    // 绑定所有事件
+    bindAllEvents();
+    
+    // 背景图片加载
     loadBackgroundImage();
-    
-    // 加载设置（无论是否在时钟模式都需要加载）
-    loadSettings();
-    
-    // 检查是否已经在时钟模式（比如页面刷新时）
-    if (document.body.classList.contains('clock-mode')) {
-        // 如果已经在时钟模式，加载一次背景图片
-        loadBackgroundImage();
-    } else {
-        // 普通模式下也加载一次背景图片
-        loadBackgroundImage();
-    }
 }
 
 /**
