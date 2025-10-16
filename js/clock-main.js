@@ -14,7 +14,7 @@ import { loadClockOverlayOpacity } from './storage.js';
 import { updateClockOverlayOpacity, updateOverlayVisibility } from './overlay.js';
 import { updateClock } from './clock.js';
 import { bindAllClockEvents } from './clock-events.js';
-import { translations } from '../lang.js';
+import { translations } from './translations.js';
 
 /**
  * 时钟页面初始化函数

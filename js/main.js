@@ -7,7 +7,7 @@ import { loadBackgroundImage } from './background.js';
 import { typeWriter } from './typing.js';
 import { getUserLanguage } from './utils.js';
 import { bindAllEvents } from './events.js';
-import { translations } from '../lang.js';
+import { translations } from './translations.js';
 
 /**
  * 页面加载完成后的初始化函数
@@ -31,6 +31,14 @@ export function initialize() {
     const clockToggle = document.getElementById('clock-toggle');
     if (clockToggle) {
         clockToggle.addEventListener('click', toggleClockMode);
+    }
+    
+    // 绑定时钟页面按钮事件
+    const clockButton = document.getElementById('clock-button');
+    if (clockButton) {
+        clockButton.addEventListener('click', function() {
+            window.location.href = 'clock.html';
+        });
     }
     
     // 绑定所有事件
