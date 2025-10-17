@@ -241,46 +241,6 @@ export const Footer = ({ translations = {} }) => {
           >
             Made by enKl03B with ❤️
           </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 3.2 }}
-          >
-            Coding with Trae & Kimi-K2
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 3.4 }}
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              gap: '6px',
-              marginTop: '4px'
-            }}
-          >
-            {translations.footer?.thanksTo || '感谢'}
-            <motion.a
-              href="https://edgeone.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              style={{ display: 'inline-flex', alignItems: 'center' }}
-            >
-              <img 
-                src="https://edgeone.ai/_next/static/media/headLogo.daeb48ad.png?auto=format" 
-                alt="EdgeOne"
-                style={{ 
-                  height: '16px', 
-                  width: 'auto',
-                  verticalAlign: 'middle'
-                }}
-              />
-            </motion.a>
-            {translations.footer?.providedBy || '提供的网站加速及托管'}
-          </motion.p>
         </motion.div>
         
         <motion.div 
