@@ -142,7 +142,7 @@ src/
   - Bilibili: 半透明B站蓝
 
 ### 动画原则
-- **流畅性**: 使用Framer Motion的弹簧动画
+- **流畅性**:
 - **性能**: 优先使用transform和opacity进行动画
 - **可访问性**: 支持prefers-reduced-motion设置
 
@@ -158,20 +158,6 @@ npm run build
 # 预览构建结果
 npm run preview
 
-# 类型检查
-npm run type-check
-
-# 代码格式化
-npm run format
-
-# 代码检查
-npm run lint
-
-# 生成网站地图
-npm run sitemap
-
-# 清理构建目录
-npm run clean
 ```
 
 ## 🔧 开发建议
