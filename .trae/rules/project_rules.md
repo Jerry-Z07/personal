@@ -9,11 +9,9 @@
 - **Vite** - 快速的构建工具和开发服务器
 
 ### UI组件库
-- **Material-UI (MUI) v5** - React组件库，提供丰富的预设计组件
-  - @mui/material - 核心组件库
-  - @emotion/react - 样式引擎
-  - @emotion/styled - CSS-in-JS样式解决方案
-  - @mui/icons-material - 图标库
+- **Fluent UI React** - Microsoft开发的React组件库，提供现代化的UI组件
+  - @fluentui/react - 核心组件库
+  - @fluentui/react-components - 新版组件库（Fluent UI v9）
 
 ### 动画库
 - **Framer Motion** - React的动画和手势库，用于创建流畅的动画效果
@@ -30,10 +28,10 @@
 - 样式文件与组件文件同名（如：MyComponent.css）
 
 ### 组件开发规范
-1. 优先使用MUI组件构建界面
+1. 优先使用Fluent UI组件构建界面
 2. 使用Framer Motion添加动画效果
 3. 保持组件的单一职责原则
-4. 使用CSS-in-JS或CSS模块进行样式管理
+4. 使用Fluent UI的主题系统进行样式管理
 
 ### 性能优化
 1. 使用React.memo优化组件重渲染
