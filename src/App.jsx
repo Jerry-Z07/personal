@@ -3,64 +3,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedText } from './components/AnimatedText.jsx';
 import { AnimatedButton } from './components/AnimatedButton.jsx';
 import { EntranceAnimation } from './components/PageTransition.jsx';
+import { ClockButton } from './components/ClockButton.jsx';
+import { BackgroundContainer } from './components/BackgroundContainer.jsx';
+import { ButtonGroup } from './components/ButtonGroup.jsx';
+import { TranslationProvider, useTranslation } from './contexts/TranslationContext.jsx';
 import { Github, Bilibili } from '@lobehub/icons';
 
 /**
- * 主页React组件 - 集成Framer Motion动画
- * 替代原有的纯JavaScript实现
+ * 主页内容组件 - 使用翻译上下文
  */
-export const HomePage = () => {
+const HomePageContent = () => {
   const [typingComplete, setTypingComplete] = useState(false);
-  const [userLang, setUserLang] = useState('zh-CN');
-  const [translations, setTranslations] = useState({});
-
-  useEffect(() => {
-    // 获取用户语言设置
-    const lang = navigator.language || 'zh-CN';
-    setUserLang(lang);
-    
-    // 加载翻译数据
-    loadTranslations(lang);
-    
-    // 输出欢迎消息
-    setTimeout(() => {
-      console.log(getWelcomeMessage(lang));
-    }, 2000);
-  }, []);
-
-  const loadTranslations = async (lang) => {
-    try {
-      // 使用相对路径导入翻译文件
-      const module = await import('../js/translations.js');
-      const trans = module.translations || {};
-      setTranslations(trans[lang] || trans['zh'] || {});
-    } catch (error) {
-      console.log('加载翻译失败，使用默认中文');
-      setTranslations({
-        title: '你好，我是JlyVC',
-        buttons: {
-          github: 'GitHub',
-          blog: '博客',
-          bilibili: 'Bilibili'
-        }
-      });
-    }
-  };
-
-  const getWelcomeMessage = (lang) => {
-    const messages = {
-      'zh-CN': '愿你永远心怀热爱，眼里总有星辰大海。',
-      'en-US': 'May passion abide in your heart forever, and may your eyes never fail to hold the stars and the boundless sea.',
-    };
-    return messages[lang] || messages['zh-CN'];
-  };
+  const { translations } = useTranslation();
 
   const handleTypingComplete = () => {
     setTypingComplete(true);
-  };
-
-  const handleClockButtonClick = () => {
-    window.location.href = 'clock.html';
   };
 
   const buttons = [
@@ -123,104 +80,36 @@ export const HomePage = () => {
       {/* 按钮组 */}
       <AnimatePresence>
         {typingComplete && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            style={{ marginTop: '2rem' }}
-          >
-              <motion.div 
-                style={{ 
-                  display: 'flex', 
-                  flexDirection: 'row', 
-                  gap: '1rem',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexWrap: 'wrap'
-                }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
-              >
-                {buttons.map((button, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ 
-                      delay: 0.5 + (index * 0.1),
-                      duration: 0.5,
-                      ease: 'easeOut'
-                    }}
-                  >
-                    <AnimatedButton
-                      variant={button.variant}
-                      size="medium"
-                      href={button.href}
-                      target={button.target}
-                      icon={button.icon}
-                    >
-                      {button.text}
-                    </AnimatedButton>
-                  </motion.div>
-                ))}
-              </motion.div>
-          </motion.div>
+          <ButtonGroup
+            buttons={buttons}
+            delay={0.5}
+            stagger={0.1}
+          />
         )}
       </AnimatePresence>
 
       {/* 时钟按钮 */}
-      <motion.button
-        className="clock-toggle-react"
-        onClick={handleClockButtonClick}
-        whileHover={{ 
-          scale: 1.1,
-          backgroundColor: 'rgba(255, 255, 255, 0.2)'
-        }}
-        whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ 
-          opacity: 1, 
-          scale: 1,
-          rotate: [0, 360]
-        }}
-        transition={{ 
-          delay: 2,
-          duration: 0.8,
-          rotate: {
-            duration: 2,
-            ease: "easeInOut"
-          }
-        }}
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          width: '50px',
-          height: '50px',
-          borderRadius: '50%',
-          background: 'rgba(255, 255, 255, 0.1)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          color: 'white',
-          fontSize: '1.2rem',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backdropFilter: 'blur(10px)'
-        }}
-        title="全屏时钟"
-      >
-        <i className="fas fa-clock"></i>
-      </motion.button>
+      <ClockButton position="top-right" />
     </div>
+  );
+};
+
+/**
+ * 主页React组件 - 集成Framer Motion动画
+ * 替代原有的纯JavaScript实现
+ */
+export const HomePage = () => {
+  return (
+    <TranslationProvider>
+      <HomePageContent />
+    </TranslationProvider>
   );
 };
 
 /**
  * 页脚组件 - 集成Framer Motion动画
  */
-export const Footer = ({ translations = {} }) => {
+export const Footer = () => {
   return (
     <motion.footer 
       className="footer"
@@ -268,70 +157,16 @@ export const Footer = ({ translations = {} }) => {
  * 主应用组件 - 包含背景和主要内容
  */
 export const App = () => {
-  const [translations, setTranslations] = useState({});
-
-  useEffect(() => {
-    // 加载翻译数据
-    const loadTranslations = async () => {
-      try {
-        const module = await import('../js/translations.js');
-        const trans = module.translations || {};
-        const lang = navigator.language || 'zh-CN';
-        setTranslations(trans[lang] || trans['zh'] || {});
-      } catch (error) {
-        console.log('加载翻译失败，使用默认中文');
-        setTranslations({});
-      }
-    };
-
-    // 加载背景图片（复用原有的背景加载逻辑）
-    const loadBackground = async () => {
-      try {
-        // 动态导入背景加载模块
-        const { loadBackgroundImage } = await import('../js/background.js');
-        loadBackgroundImage();
-      } catch (error) {
-        console.warn('背景图片加载失败，使用CSS渐变背景');
-        const bgContainer = document.querySelector('.background-container');
-        if (bgContainer) {
-          bgContainer.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-          bgContainer.style.backgroundSize = 'cover';
-          bgContainer.style.backgroundPosition = 'center';
-          bgContainer.style.backgroundAttachment = 'fixed';
-        }
-      }
-    };
-    
-    loadTranslations();
-    loadBackground();
-  }, []);
-
   return (
     <div className="app-container">
-      {/* 背景图片 */}
-      <motion.div 
-        className="background-container"
-        initial={{ opacity: 0, scale: 1 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, ease: 'easeOut' }}
-      >
-        <img 
-          id="background-image" 
-          alt="背景图片"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center'
-          }}
-        />
-      </motion.div>
-
-      {/* 主要内容 */}
-      <HomePage />
-      
-      {/* 页脚 */}
-      <Footer translations={translations} />
+      {/* 背景容器 */}
+      <BackgroundContainer>
+        {/* 主要内容 */}
+        <HomePage />
+        
+        {/* 页脚 */}
+        <Footer />
+      </BackgroundContainer>
     </div>
   );
 };
