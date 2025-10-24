@@ -74,17 +74,6 @@ export function applyTranslations(lang) {
         pageTitle.textContent = t.pageTitle;
     }
     
-    // 设置时钟设置文本（背景切换功能已移除）
-    // const backgroundSwitchLabel = document.querySelector('.background-toggle-container .toggle-text');
-    // if (backgroundSwitchLabel) {
-    //     backgroundSwitchLabel.textContent = t.clock.settings.backgroundSwitch;
-    // }
-    
-    // const switchIntervalLabel = document.querySelector('.interval-slider-container label');
-    // if (switchIntervalLabel) {
-    //     switchIntervalLabel.textContent = t.clock.settings.switchInterval;
-    // }
-    
     // 返回控制台消息
     return t.consoleMessage;
 }

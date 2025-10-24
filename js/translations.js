@@ -20,15 +20,7 @@ export const translations = {
             thanksTo: '感谢',
             providedBy: '提供的网站加速及托管'
         },
-        consoleMessage: '愿你永远心怀热爱，眼中总有星辰大海。',
-        clock: {
-            title: '全屏时钟',
-            weekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-            settings: {
-                maskSettings: '遮罩设置',
-                showMask: '显示遮罩'
-            }
-        }
+        consoleMessage: '愿你永远心怀热爱，眼中总有星辰大海。'
     },
     en: {
         title: 'Hello, I am JlyVC',
@@ -46,14 +38,6 @@ export const translations = {
             thanksTo: 'Thanks to',
             providedBy: 'for providing website acceleration and hosting'
         },
-        consoleMessage: 'May you always hold passion in your heart and see stars and the vast sea in your gaze forever.',
-        clock: {
-            title: 'Full Screen Clock',
-            weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            settings: {
-                maskSettings: 'Mask Settings',
-                showMask: 'Show Mask'
-            }
-        }
+        consoleMessage: 'May you always hold passion in your heart and see stars and the vast sea in your gaze forever.'
     }
 };

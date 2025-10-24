@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedText } from './components/AnimatedText.jsx';
 import { AnimatedButton } from './components/AnimatedButton.jsx';
 import { EntranceAnimation } from './components/PageTransition.jsx';
-import { ClockButton } from './components/ClockButton.jsx';
 import { BackgroundContainer } from './components/BackgroundContainer.jsx';
 import { ButtonGroup } from './components/ButtonGroup.jsx';
 import { TranslationProvider, useTranslation } from './contexts/TranslationContext.jsx';
@@ -87,9 +86,6 @@ const HomePageContent = () => {
           />
         )}
       </AnimatePresence>
-
-      {/* 时钟按钮 */}
-      <ClockButton position="top-right" />
     </div>
   );
 };

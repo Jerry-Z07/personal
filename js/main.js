@@ -36,20 +36,6 @@ export function initialize() {
         console.log(consoleMessage);
     }, 2000);
     
-    // 绑定时钟切换按钮事件
-    const clockToggle = document.getElementById('clock-toggle');
-    if (clockToggle) {
-        clockToggle.addEventListener('click', toggleClockMode);
-    }
-    
-    // 绑定时钟页面按钮事件
-    const clockButton = document.getElementById('clock-button');
-    if (clockButton) {
-        clockButton.addEventListener('click', function() {
-            window.location.href = 'clock.html';
-        });
-    }
-    
     // 绑定所有事件
     bindAllEvents();
     
@@ -58,16 +44,6 @@ export function initialize() {
     
     // 背景图片加载
     loadBackgroundImage();
-}
-
-/**
- * 加载所有设置
- */
-function loadSettings() {
-    // 加载遮罩设置
-    const overlaySettings = loadClockOverlayOpacity();
-    updateClockOverlayOpacity(overlaySettings.opacity);
-    updateOverlayVisibility(overlaySettings.enabled);
 }
 
 /**

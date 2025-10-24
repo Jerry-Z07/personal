@@ -22,33 +22,3 @@ body {
         color-scheme: dark;
     }
 }
-
-/* 全屏时钟模式 */
-body.clock-mode {
-    overflow: hidden;
-}
-
-body.clock-mode .main-content {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-body.clock-mode .clock-toggle {
-    top: 20px;
-    right: 20px;
-    transform: scale(1.2);
-}
-
-body.clock-mode .button-container {
-    display: none;
-}
-
-body.clock-mode .subtitle {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-body.clock-mode #typing-text {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}

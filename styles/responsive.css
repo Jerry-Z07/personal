@@ -42,48 +42,6 @@
         justify-content: center;
     }
     
-    /* 时钟移动端适配 */
-    .clock-toggle {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-        top: 15px;
-        right: 15px;
-    }
-    
-    .clock-time {
-        font-size: 5rem;
-    }
-    
-    .clock-seconds {
-        font-size: 2rem;
-    }
-    
-    .clock-date {
-        font-size: 1.2rem;
-    }
-    
-    /* 时钟设置移动端适配 */
-    .clock-settings {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
-        bottom: 20px;
-        right: 20px;
-    }
-    
-    .opacity-panel {
-        width: 200px;
-        bottom: 80px;
-        right: 20px;
-        padding: 15px;
-    }
-    
-    .opacity-header {
-        font-size: 0.85rem;
-        margin-bottom: 12px;
-    }
-    
     /* 页脚移动端适配 */
     .footer-content {
         flex-direction: column;
