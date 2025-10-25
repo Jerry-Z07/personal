@@ -59,19 +59,39 @@ function App() {
   useEffect(() => {
     let touchStartY = 0;
     let touchEndY = 0;
+    let touchStartTime = 0;
+    let touchEndTime = 0;
+    let touchStartX = 0;
+    let isVerticalSwipe = false;
     
     const handleTouchStart = (e) => {
       touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
+      isVerticalSwipe = false;
     };
     
     const handleTouchMove = (e) => {
       touchEndY = e.touches[0].clientY;
+      const currentX = e.touches[0].clientX;
+      const deltaY = Math.abs(touchStartY - touchEndY);
+      const deltaX = Math.abs(touchStartX - currentX);
+      
+      // 确定滑动方向，只有垂直滑动才被认为是有效滑动
+      if (deltaY > deltaX && deltaY > 20) {
+        isVerticalSwipe = true;
+      }
     };
     
     const handleTouchEnd = () => {
+      touchEndTime = Date.now();
       const touchDistance = touchStartY - touchEndY;
-      // 如果是向下滑动且距离超过50px
-      if (touchDistance > 50) {
+      const touchDuration = touchEndTime - touchStartTime;
+      const touchSpeed = Math.abs(touchDistance) / touchDuration;
+      
+      // 增加滑动阈值从50px到100px，并添加速度检测
+      // 只有向下滑动超过100px，且速度大于0.3px/ms，且是垂直滑动才触发
+      if (touchDistance > 100 && touchSpeed > 0.3 && isVerticalSwipe) {
         // 检查当前是否在页面顶部附近
         const scrollY = window.scrollY;
         if (scrollY <= 100) {
