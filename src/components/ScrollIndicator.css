@@ -95,3 +95,17 @@
 .scroll-arrows:active {
   transform: scale(0.95);
 }
+
+/* 触摸设备样式 */
+.scroll-arrows {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 增大触摸区域 */
+@media (pointer: coarse) {
+  .scroll-arrows {
+    padding: 10px;
+    margin: -10px;
+  }
+}

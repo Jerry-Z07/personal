@@ -27,6 +27,7 @@ const ScrollIndicator = () => {
           ease: "easeInOut"
         }}
         onClick={handleScrollClick}
+        onTouchEnd={handleScrollClick}
         style={{ cursor: 'pointer' }}
       >
         <i className="ri-arrow-down-s-line"></i>
@@ -42,7 +43,7 @@ const ScrollIndicator = () => {
           times: [0, 0.2, 0.8, 1]
         }}
       >
-        向下滑动
+        向下滑动或点击
       </motion.div>
     </motion.div>
   );

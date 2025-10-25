@@ -55,6 +55,48 @@ function App() {
     };
   }, []);
 
+  // 添加触摸事件支持
+  useEffect(() => {
+    let touchStartY = 0;
+    let touchEndY = 0;
+    
+    const handleTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    
+    const handleTouchMove = (e) => {
+      touchEndY = e.touches[0].clientY;
+    };
+    
+    const handleTouchEnd = () => {
+      const touchDistance = touchStartY - touchEndY;
+      // 如果是向下滑动且距离超过50px
+      if (touchDistance > 50) {
+        // 检查当前是否在页面顶部附近
+        const scrollY = window.scrollY;
+        if (scrollY <= 100) {
+          // 触发滚动到下一屏
+          window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth'
+          });
+        }
+      }
+    };
+    
+    // 添加触摸事件监听器
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd);
+    
+    // 清理事件监听器
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, []);
+
   // 页面加载完成后输出console.log
   useEffect(() => {
     if (!isLoading) {
