@@ -15,7 +15,8 @@ const ScrollIndicator = () => {
       className="scroll-indicator"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 2.0, duration: 0.8 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <motion.div 
         className="scroll-arrows"

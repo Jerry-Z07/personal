@@ -35,7 +35,7 @@ const SecondaryHeader = () => {
             onClick={handleIntroClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-user-3-fill"></i>
             <span>简介</span>
@@ -46,7 +46,7 @@ const SecondaryHeader = () => {
             onClick={handleGithubClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-github-fill"></i>
             <span>GitHub</span>
@@ -57,7 +57,7 @@ const SecondaryHeader = () => {
             onClick={handleBilibiliClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-bilibili-fill"></i>
             <span>Bilibili</span>

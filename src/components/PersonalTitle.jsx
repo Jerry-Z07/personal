@@ -8,10 +8,10 @@ const PersonalTitle = () => {
       className="personal-title-container"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ 
-        duration: 0.8, 
-        ease: "easeOut",
-        delay: 1.2 // 延迟显示，在Header动画完成后
+        duration: 0.5, 
+        ease: "easeInOut"
       }}
     >
       <motion.h1 

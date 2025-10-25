@@ -12,6 +12,7 @@ import SecondaryHeader from './components/SecondaryHeader'
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showSecondaryHeader, setShowSecondaryHeader] = useState(false);
+  const [showViewportContent, setShowViewportContent] = useState(true);
 
   // 监听背景图片加载完成事件
   useEffect(() => {
@@ -32,11 +33,13 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      // 当滚动超过100px时显示二级页眉
+      // 当滚动超过100px时显示二级页眉，隐藏视口内容
       if (scrollY > 100) {
         setShowSecondaryHeader(true);
+        setShowViewportContent(false);
       } else {
         setShowSecondaryHeader(false);
+        setShowViewportContent(true);
       }
     };
 
@@ -62,10 +65,14 @@ function App() {
       <AnimatePresence>
         {showSecondaryHeader && <SecondaryHeader />}
       </AnimatePresence>
-      <div className="content-wrapper">
-        <PersonalTitle />
-      </div>
-      <ScrollIndicator />
+      <AnimatePresence>
+        {showViewportContent && (
+          <>
+            <PersonalTitle />
+            <ScrollIndicator />
+          </>
+        )}
+      </AnimatePresence>
     </>
   )
 }

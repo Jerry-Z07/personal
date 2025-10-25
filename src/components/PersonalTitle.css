@@ -3,6 +3,8 @@
   justify-content: center;
   align-items: center;
   margin: -8rem 0 2rem 0; /* 减少上边距，使文字向上移动 */
+  position: relative;
+  z-index: 10;
 }
 
 .personal-title {
