@@ -16,7 +16,7 @@ const NicknameContent = () => {
           <span className="nickname-label">Jerry：</span>
           <span className="nickname-value">
             来源于动画《猫和老鼠》
-            <img src="/src/assets/OIP.webp" alt="猫和老鼠" className="tom-jerry-image" />
+            <img src="/images/OIP.webp" alt="猫和老鼠" className="tom-jerry-image" />
           </span>
         </div>
         <div className="nickname-item">
