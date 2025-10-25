@@ -8,11 +8,14 @@ import LoadingMask from './components/LoadingMask'
 import PersonalTitle from './components/PersonalTitle'
 import ScrollIndicator from './components/ScrollIndicator'
 import SecondaryHeader from './components/SecondaryHeader'
+import SidebarNav from './components/SidebarNav'
+import ContentArea from './components/ContentArea'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showSecondaryHeader, setShowSecondaryHeader] = useState(false);
   const [showViewportContent, setShowViewportContent] = useState(true);
+  const [activeTab, setActiveTab] = useState('intro');
 
   // 监听背景图片加载完成事件
   useEffect(() => {
@@ -63,13 +66,21 @@ function App() {
       <BackgroundBlur />
       <Header />
       <AnimatePresence>
-        {showSecondaryHeader && <SecondaryHeader />}
+        {showSecondaryHeader && <SecondaryHeader activeTab={activeTab} />}
       </AnimatePresence>
       <AnimatePresence>
         {showViewportContent && (
           <>
             <PersonalTitle />
             <ScrollIndicator />
+          </>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showSecondaryHeader && (
+          <>
+            <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} />
+            <ContentArea activeTab={activeTab} />
           </>
         )}
       </AnimatePresence>

@@ -1,0 +1,134 @@
+.nickname-content {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.nickname-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.nickname-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nickname-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.nickname-label {
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.nickname-value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tom-jerry-image {
+  height: 30px;
+  width: auto;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+/* 深色模式样式 */
+@media (prefers-color-scheme: dark) {
+  .nickname-title {
+    color: #ffffff;
+  }
+  
+  .nickname-item {
+    color: #e0e0e0;
+  }
+  
+  .nickname-label {
+    color: #f0f0f0;
+  }
+  
+  .nickname-value {
+    color: #d0d0d0;
+  }
+}
+
+/* 浅色模式样式 */
+@media (prefers-color-scheme: light) {
+  .nickname-title {
+    color: #333333;
+  }
+  
+  .nickname-item {
+    color: #333333;
+  }
+  
+  .nickname-label {
+    color: #333333;
+  }
+  
+  .nickname-value {
+    color: #555555;
+  }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .nickname-content {
+    padding: 1.5rem;
+  }
+  
+  .nickname-title {
+    font-size: 1.8rem;
+  }
+  
+  .nickname-item {
+    font-size: 1rem;
+  }
+  
+  .nickname-label {
+    min-width: 70px;
+  }
+  
+  .tom-jerry-image {
+    height: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nickname-content {
+    padding: 1rem;
+  }
+  
+  .nickname-title {
+    font-size: 1.5rem;
+  }
+  
+  .nickname-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .nickname-label {
+    min-width: auto;
+  }
+  
+  .nickname-value {
+    align-self: flex-start;
+    margin-top: 0.25rem;
+  }
+  
+  .tom-jerry-image {
+    height: 20px;
+  }
+}

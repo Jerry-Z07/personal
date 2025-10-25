@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './SecondaryHeader.css';
 
-const SecondaryHeader = () => {
+const SecondaryHeader = ({ activeTab }) => {
   const handleGithubClick = () => {
     window.open('https://github.com', '_blank');
   };
@@ -31,7 +31,7 @@ const SecondaryHeader = () => {
           transition={{ delay: 0.2, duration: 0.4 }}
         >
           <motion.button 
-            className="social-link intro-link"
+            className={`social-link intro-link ${activeTab === 'intro' ? 'active' : ''}`}
             onClick={handleIntroClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}

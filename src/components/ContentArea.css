@@ -1,0 +1,84 @@
+.content-area {
+  position: relative;
+  margin-left: 200px;
+  padding: 2rem 2rem 2rem;
+  min-height: calc(100vh - 120px); /* 调整最小高度，减去顶部外边距 */
+  display: flex;
+  flex-direction: column;
+  margin-top: 120px; /* 添加顶部外边距，确保内容在页眉下方 */
+  padding-top: 2rem; /* 确保内容与顶部有足够间距 */
+  overflow-y: auto; /* 确保内容区域可以滚动 */
+}
+
+.content-placeholder {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.content-placeholder h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.content-placeholder p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* 深色模式样式 */
+@media (prefers-color-scheme: dark) {
+  .content-placeholder h2 {
+    color: #ffffff;
+  }
+  
+  .content-placeholder p {
+    color: #e0e0e0;
+  }
+}
+
+/* 浅色模式样式 */
+@media (prefers-color-scheme: light) {
+  .content-placeholder h2 {
+    color: #333333;
+  }
+  
+  .content-placeholder p {
+    color: #555555;
+  }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .content-area {
+    margin-left: 180px;
+    margin-top: 110px; /* 调整顶部外边距 */
+    padding: 2rem 1.5rem 2rem;
+    min-height: calc(100vh - 110px); /* 调整最小高度 */
+  }
+  
+  .content-placeholder h2 {
+    font-size: 1.8rem;
+  }
+  
+  .content-placeholder p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-area {
+    margin-left: 60px;
+    margin-top: 100px; /* 调整顶部外边距 */
+    padding: 2rem 1rem 2rem;
+    min-height: calc(100vh - 100px); /* 调整最小高度 */
+  }
+  
+  .content-placeholder h2 {
+    font-size: 1.5rem;
+  }
+  
+  .content-placeholder p {
+    font-size: 0.95rem;
+  }
+}
