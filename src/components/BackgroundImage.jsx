@@ -11,7 +11,7 @@ const BackgroundImage = () => {
   const detectDeviceType = () => {
     const userAgent = navigator.userAgent.toLowerCase();
     const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
-    return isMobile ? 'mp' : 'pc';
+    return isMobile ? 'pe' : 'pc';
   };
 
   // 获取随机背景图片
@@ -21,16 +21,13 @@ const BackgroundImage = () => {
     
     try {
       const deviceType = detectDeviceType();
-      const apiUrl = `https://imgapi.lie.moe/random?sort=${deviceType}`;
+      // 根据设备类型使用不同的API
+      const apiUrl = deviceType === 'pc' 
+        ? 'https://api.miaomc.cn/image/get'
+        : 'https://t.alcy.cc/mp';
       
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error('Failed to fetch image');
-      }
-      
-      // 获取重定向后的图片URL
-      const finalUrl = response.url;
-      setImageUrl(finalUrl);
+      // 直接使用API URL作为图片源，避免重复请求
+      setImageUrl(apiUrl);
     } catch (err) {
       setError(err.message);
       console.error('Error fetching background image:', err);
