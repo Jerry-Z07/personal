@@ -29,15 +29,34 @@ const LoadingMask = ({ isVisible, onHide }) => {
       {shouldShow && (
         <motion.div
           className="loading-mask"
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          exit={{ 
+            opacity: 0,
+            scale: 3,
+            transition: {
+              duration: 0.8,
+              ease: "easeInOut"
+            }
+          }}
+          style={{
+            transformOrigin: 'center center'
+          }}
         >
-          <div className="loading-content">
+          <motion.div 
+            className="loading-content"
+            exit={{
+              opacity: 0,
+              scale: 0.8,
+              transition: {
+                duration: 0.6,
+                ease: "easeInOut"
+              }
+            }}
+          >
             <div className="loading-spinner"></div>
             <p className="loading-text">加载中</p>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

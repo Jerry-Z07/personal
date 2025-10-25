@@ -19,7 +19,7 @@ const Header = () => {
             transition={{ delay: 0.3, duration: 0.6 }}
             style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}
           >
-            Jerry.Z
+            Jerry.<span className="brand-letter-z">Z</span>
           </motion.h1>
         </div>
         

@@ -35,6 +35,10 @@
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
+.brand-letter-z {
+  transition: color 0.3s ease;
+}
+
 .header-nav {
   display: flex;
   align-items: center;
@@ -77,6 +81,10 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
   
+  .brand-letter-z {
+    color: #ff69b4; /* 粉色 */
+  }
+  
   .nav-link {
     color: rgba(255, 255, 255, 0.8);
   }
@@ -106,6 +114,10 @@
   .brand-text {
     color: #222222;
     text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+  }
+  
+  .brand-letter-z {
+    color: #0066cc; /* 蓝色 */
   }
   
   .nav-link {

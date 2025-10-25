@@ -13,6 +13,9 @@
   - @fluentui/react - 核心组件库
   - @fluentui/react-components - 新版组件库（Fluent UI v9）
 
+### 图标库
+- **Remix Icon** - 简洁、现代的图标库
+
 ### 动画库
 - **Framer Motion** - React的动画和手势库，用于创建流畅的动画效果
 
