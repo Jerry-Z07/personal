@@ -31,7 +31,7 @@ const SecondaryHeader = ({ activeTab }) => {
           transition={{ delay: 0.2, duration: 0.4 }}
         >
           <motion.button 
-            className={`social-link intro-link ${activeTab === 'intro' ? 'active' : ''}`}
+            className={`social-link intro-link ${activeTab === 'intro' || activeTab === 'nickname' ? 'active' : ''}`}
             onClick={handleIntroClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
