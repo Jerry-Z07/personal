@@ -2,17 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './SecondaryHeader.css';
 
-const SecondaryHeader = ({ activeTab }) => {
+const SecondaryHeader = ({ activeTab, onTabChange }) => {
   const handleGithubClick = () => {
     window.open('https://github.com', '_blank');
   };
 
   const handleBilibiliClick = () => {
-    window.open('https://www.bilibili.com', '_blank');
+    onTabChange('bilibili');
   };
 
   const handleIntroClick = () => {
-    // 简介标签点击事件，暂时为空
+    onTabChange('intro');
   };
 
   return (
@@ -42,6 +42,17 @@ const SecondaryHeader = ({ activeTab }) => {
           </motion.button>
           
           <motion.button 
+            className={`social-link bilibili-link ${activeTab === 'bilibili' ? 'active' : ''}`}
+            onClick={handleBilibiliClick}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
+          >
+            <i className="ri-bilibili-fill"></i>
+            <span>Bilibili</span>
+          </motion.button>
+          
+          <motion.button 
             className="social-link github-link"
             onClick={handleGithubClick}
             whileHover={{ scale: 1.05, y: -2 }}
@@ -50,17 +61,6 @@ const SecondaryHeader = ({ activeTab }) => {
           >
             <i className="ri-github-fill"></i>
             <span>GitHub</span>
-          </motion.button>
-          
-          <motion.button 
-            className="social-link bilibili-link"
-            onClick={handleBilibiliClick}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.1, ease: "easeOut" }}
-          >
-            <i className="ri-bilibili-fill"></i>
-            <span>Bilibili</span>
           </motion.button>
         </motion.div>
       </div>

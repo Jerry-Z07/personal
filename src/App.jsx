@@ -66,7 +66,7 @@ function App() {
       <BackgroundBlur />
       <Header />
       <AnimatePresence>
-        {showSecondaryHeader && <SecondaryHeader activeTab={activeTab} />}
+        {showSecondaryHeader && <SecondaryHeader activeTab={activeTab} onTabChange={setActiveTab} />}
       </AnimatePresence>
       <AnimatePresence>
         {showViewportContent && (
@@ -79,8 +79,10 @@ function App() {
       <AnimatePresence>
         {showSecondaryHeader && (
           <>
-            <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} />
-            <ContentArea activeTab={activeTab} />
+            {activeTab === 'intro' || activeTab === 'nickname' ? (
+              <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} />
+            ) : null}
+            <ContentArea activeTab={activeTab} showSidebar={activeTab === 'intro' || activeTab === 'nickname'} />
           </>
         )}
       </AnimatePresence>
