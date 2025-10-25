@@ -55,6 +55,13 @@ function App() {
     };
   }, []);
 
+  // 页面加载完成后输出console.log
+  useEffect(() => {
+    if (!isLoading) {
+      console.log('愿你永远心怀热爱，眼中总有星辰大海');
+    }
+  }, [isLoading]);
+
   const handleLoadingMaskHide = () => {
     setIsLoading(false);
   };
