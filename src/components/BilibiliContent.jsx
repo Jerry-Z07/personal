@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { API_BASE_URL } from '../api.js';
 import './BilibiliContent.css';
 
 const BilibiliContent = () => {
@@ -15,14 +16,14 @@ const BilibiliContent = () => {
         setLoading(true);
         
         // 获取用户信息
-        const userResponse = await fetch('/api/api/v1/social/bilibili/userinfo?uid=401175768');
+        const userResponse = await fetch(`${API_BASE_URL}/v1/social/bilibili/userinfo?uid=401175768`);
         if (!userResponse.ok) {
           throw new Error('获取用户信息失败');
         }
         const userData = await userResponse.json();
         
         // 获取视频列表
-        const videosResponse = await fetch('/api/api/v1/social/bilibili/archives?mid=401175768');
+        const videosResponse = await fetch(`${API_BASE_URL}/v1/social/bilibili/archives?mid=401175768`);
         if (!videosResponse.ok) {
           throw new Error('获取视频列表失败');
         }
