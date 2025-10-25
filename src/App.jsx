@@ -75,6 +75,9 @@ function App() {
         // 检查当前是否在页面顶部附近
         const scrollY = window.scrollY;
         if (scrollY <= 100) {
+          // 直接更新状态，确保二级界面显示
+          setShowSecondaryHeader(true);
+          setShowViewportContent(false);
           // 触发滚动到下一屏
           window.scrollTo({
             top: window.innerHeight,
@@ -108,6 +111,11 @@ function App() {
     setIsLoading(false);
   };
 
+  const handleScrollIndicatorClick = () => {
+    setShowSecondaryHeader(true);
+    setShowViewportContent(false);
+  };
+
   return (
     <>
       <LoadingMask isVisible={isLoading} onHide={handleLoadingMaskHide} />
@@ -121,7 +129,7 @@ function App() {
         {showViewportContent && (
           <>
             <PersonalTitle />
-            <ScrollIndicator />
+            <ScrollIndicator onScroll={handleScrollIndicatorClick} />
           </>
         )}
       </AnimatePresence>

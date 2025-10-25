@@ -2,8 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './ScrollIndicator.css';
 
-const ScrollIndicator = () => {
+const ScrollIndicator = ({ onScroll }) => {
   const handleScrollClick = () => {
+    // 调用父组件传递的回调函数
+    if (onScroll) {
+      onScroll();
+    }
+    // 执行滚动
     window.scrollTo({
       top: window.innerHeight,
       behavior: 'smooth'
