@@ -52,16 +52,19 @@ const SecondaryHeader = ({ activeTab, onTabChange }) => {
             <span>Bilibili</span>
           </motion.button>
           
-          <motion.button 
+          <motion.a 
             className="social-link github-link"
-            onClick={handleGithubClick}
+            href="https://github.com/Jerry-Z07"
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-github-fill"></i>
             <span>GitHub</span>
-          </motion.button>
+            <i className="ri-external-link-line external-icon"></i>
+          </motion.a>
         </motion.div>
       </div>
     </motion.div>
