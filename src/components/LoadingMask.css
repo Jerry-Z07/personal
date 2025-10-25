@@ -1,0 +1,72 @@
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* 兼容Safari */
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+.loading-text {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-family: "LXGW WenKai", sans-serif;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 深色模式样式 */
+@media (prefers-color-scheme: dark) {
+  .loading-mask {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .loading-text {
+    color: #ffffff;
+  }
+}
+
+/* 浅色模式样式 */
+@media (prefers-color-scheme: light) {
+  .loading-mask {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .loading-text {
+    color: #333333;
+  }
+  
+  .loading-spinner {
+    border-color: rgba(0, 0, 0, 0.3);
+    border-top-color: #333333;
+  }
+}
