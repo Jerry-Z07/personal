@@ -18,11 +18,35 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .social-links {
   display: flex;
   gap: 1rem;
+}
+
+.back-button {
+  position: absolute;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .social-link {

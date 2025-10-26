@@ -1,8 +1,10 @@
 .sidebar-nav {
   position: fixed;
   left: 0;
-  top: 120px; /* 调整为低于第二页眉 (55px + 55px + 10px) */
-  height: calc(100vh - 120px); /* 调整高度，减去顶部偏移 */
+  top: 50vh;
+  margin-top: -25vh; /* 高度的一半，用于居中 */
+  height: 50vh; /* 高度为视口的一半 */
+  max-height: 600px; /* 限制最大高度 */
   width: 200px;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -101,8 +103,9 @@
 @media (max-width: 768px) {
   .sidebar-nav {
     width: 180px;
-    top: 110px; /* 调整为低于第二页眉 (50px + 50px + 10px) */
-    height: calc(100vh - 110px);
+    top: 50vh;
+    margin-top: -25vh;
+    height: 50vh;
     padding: 1rem 0.75rem 2rem;
   }
   
@@ -119,8 +122,9 @@
 @media (max-width: 480px) {
   .sidebar-nav {
     width: 60px;
-    top: 100px; /* 调整为低于第二页眉 (45px + 45px + 10px) */
-    height: calc(100vh - 100px);
+    top: 50vh;
+    margin-top: -25vh;
+    height: 50vh;
     padding: 1rem 0.5rem 2rem;
   }
   
