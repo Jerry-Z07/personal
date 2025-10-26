@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import IntroContent from './IntroContent';
 import NicknameContent from './NicknameContent';
