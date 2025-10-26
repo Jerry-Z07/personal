@@ -71,7 +71,7 @@ function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [activeTab]);
 
   // 添加触摸事件支持（仅桌面端有效）
   useEffect(() => {
