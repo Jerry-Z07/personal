@@ -21,7 +21,16 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showSecondaryHeader, setShowSecondaryHeader] = useState(false);
   const [showViewportContent, setShowViewportContent] = useState(true);
-  const [activeTab, setActiveTab] = useState(null);
+  // 从 sessionStorage 读取保存的标签状态
+  const [activeTab, setActiveTab] = useState(() => {
+    const savedTab = sessionStorage.getItem('activeTab');
+    return savedTab || null;
+  });
+  // 存储上次访问的标签，用于从主页返回时恢复
+  const [lastActiveTab, setLastActiveTab] = useState(() => {
+    const savedTab = sessionStorage.getItem('activeTab');
+    return savedTab || 'intro';
+  });
 
   // 监听背景图片加载完成事件
   useEffect(() => {
@@ -38,6 +47,27 @@ function App() {
     };
   }, []);
 
+  // 保存 activeTab 到 sessionStorage
+  useEffect(() => {
+    if (activeTab) {
+      sessionStorage.setItem('activeTab', activeTab);
+      // 更新上次访问的标签
+      setLastActiveTab(activeTab);
+    } else {
+      sessionStorage.removeItem('activeTab');
+    }
+  }, [activeTab]);
+
+  // 初始化时根据保存的状态恢复页面
+  useEffect(() => {
+    const savedTab = sessionStorage.getItem('activeTab');
+    if (savedTab) {
+      // 如果有保存的标签，说明之前在二级页面
+      setShowSecondaryHeader(true);
+      setShowViewportContent(false);
+    }
+  }, []);
+
   // 监听滚动事件（仅桌面端有效）
   useEffect(() => {
     // 移动端不需要滚动检测，直接显示二级页眉
@@ -52,9 +82,9 @@ function App() {
       if (scrollY > 100) {
         setShowSecondaryHeader(true);
         setShowViewportContent(false);
-        // 桌面端滚动时，如果没有选中标签，默认选中intro
+        // 桌面端滚动时，如果没有选中标签，恢复上次访问的标签
         if (!activeTab) {
-          setActiveTab('intro');
+          setActiveTab(lastActiveTab);
         }
       } else {
         setShowSecondaryHeader(false);
@@ -71,7 +101,7 @@ function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [activeTab]);
+  }, [activeTab, lastActiveTab]);
 
   // 添加触摸事件支持（仅桌面端有效）
   useEffect(() => {
@@ -121,7 +151,7 @@ function App() {
           // 直接更新状态，确保二级界面显示
           setShowSecondaryHeader(true);
           setShowViewportContent(false);
-          setActiveTab('intro');
+          setActiveTab(lastActiveTab);
           // 触发滚动到下一屏
           window.scrollTo({
             top: window.innerHeight,
@@ -158,8 +188,8 @@ function App() {
   const handleScrollIndicatorClick = () => {
     setShowSecondaryHeader(true);
     setShowViewportContent(false);
-    // 点击滚动指示器时，默认选中 intro 标签
-    setActiveTab('intro');
+    // 点击滚动指示器时，恢复上次访问的标签
+    setActiveTab(lastActiveTab);
   };
 
   // 处理返回主页
