@@ -11,6 +11,7 @@ import SecondaryHeader from './components/SecondaryHeader'
 import SidebarNav from './components/SidebarNav'
 import ContentArea from './components/ContentArea'
 import Footer from './components/Footer'
+import BackToTopButton from './components/BackToTopButton'
 
 function App() {
   // 检测是否为移动端
@@ -78,20 +79,16 @@ function App() {
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      // 当滚动超过100px时显示二级页眉，隐藏视口内容
-      if (scrollY > 100) {
+      // 只有在主页时（showViewportContent为true）才监听滚动切换到二级页面
+      if (showViewportContent && scrollY > 100) {
         setShowSecondaryHeader(true);
         setShowViewportContent(false);
         // 桌面端滚动时，如果没有选中标签，恢复上次访问的标签
         if (!activeTab) {
           setActiveTab(lastActiveTab);
         }
-      } else {
-        setShowSecondaryHeader(false);
-        setShowViewportContent(true);
-        // 回到顶部时重置标签
-        setActiveTab(null);
       }
+      // 删除了向上滚动自动返回主页的逻辑
     };
 
     // 添加滚动事件监听器
@@ -101,7 +98,7 @@ function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [activeTab, lastActiveTab]);
+  }, [activeTab, lastActiveTab, showViewportContent]);
 
   // 添加触摸事件支持（仅桌面端有效）
   useEffect(() => {
@@ -172,7 +169,7 @@ function App() {
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, []);
+  }, [lastActiveTab]);
 
   // 页面加载完成后输出console.log
   useEffect(() => {
@@ -195,7 +192,13 @@ function App() {
   // 处理返回主页
   const handleBackToHome = () => {
     setShowViewportContent(true);
+    setShowSecondaryHeader(false);
     setActiveTab(null);
+    // 滚动回顶部
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   // 处理标签切换
@@ -238,6 +241,12 @@ function App() {
         {((!isMobile() && showSecondaryHeader && !showViewportContent) || 
           (isMobile() && (showViewportContent || (!showViewportContent && activeTab)))) && (
           <Footer />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {/* 仅在PC端且在二级页面时显示回到主页按钮 */}
+        {!isMobile() && showSecondaryHeader && !showViewportContent && (
+          <BackToTopButton onClick={handleBackToHome} />
         )}
       </AnimatePresence>
     </>
