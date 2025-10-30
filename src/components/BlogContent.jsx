@@ -16,8 +16,24 @@ const BlogContent = () => {
           ? '/blog-feed/' 
           : 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://blog.078465.xyz/feed/');
         
-        const response = await fetch(feedUrl);
+        console.log('正在请求博客数据:', feedUrl);
+        const response = await fetch(feedUrl, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/xml, text/xml, */*'
+          },
+          mode: 'cors',
+          cache: 'no-cache'
+        });
+        
+        console.log('响应状态:', response.status, response.statusText);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const text = await response.text();
+        console.log('获取到的数据长度:', text.length);
         
         // 解析 XML
         const parser = new DOMParser();
