@@ -11,10 +11,10 @@ const BlogContent = () => {
     const fetchBlogData = async () => {
       try {
         setLoading(true);
-        // 开发环境使用代理，生产环境使用 CORS 代理服务
+        // 开发环境使用代理，生产环境直接访问
         const feedUrl = import.meta.env.MODE === 'development' 
           ? '/blog-feed/' 
-          : 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://blog.078465.xyz/feed/');
+          : 'https://blog.078465.xyz/feed/';
         
         const response = await fetch(feedUrl);
         const text = await response.text();
