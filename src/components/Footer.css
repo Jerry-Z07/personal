@@ -26,6 +26,10 @@
   font-size: 0.9rem;
   font-weight: 500;
   color: #666;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .footer-right {
@@ -48,6 +52,10 @@
   text-decoration: none;
   background: rgba(16, 185, 129, 0.1);
   border: 1px solid rgba(16, 185, 129, 0.2);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .status-button:hover {
