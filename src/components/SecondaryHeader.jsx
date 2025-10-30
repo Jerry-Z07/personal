@@ -14,6 +14,10 @@ const SecondaryHeader = ({ activeTab, onTabChange, isMobile, onBack }) => {
     onTabChange('intro');
   };
 
+  const handleBlogClick = () => {
+    onTabChange('blog');
+  };
+
   const handleBackClick = () => {
     if (onBack) {
       onBack();
@@ -69,6 +73,17 @@ const SecondaryHeader = ({ activeTab, onTabChange, isMobile, onBack }) => {
           >
             <i className="ri-bilibili-fill"></i>
             <span>Bilibili</span>
+          </motion.button>
+          
+          <motion.button 
+            className={`social-link blog-link ${activeTab === 'blog' ? 'active' : ''}`}
+            onClick={handleBlogClick}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
+          >
+            <i className="ri-article-fill"></i>
+            <span>博客</span>
           </motion.button>
           
           <motion.a 

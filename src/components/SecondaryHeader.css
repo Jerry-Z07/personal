@@ -145,6 +145,27 @@
   transform: translateY(-2px);
 }
 
+/* 博客链接样式 */
+.blog-link {
+  background-color: rgba(102, 204, 255, 0.2);
+  color: #66ccff;
+  border: 1px solid rgba(102, 204, 255, 0.3);
+}
+
+.blog-link:hover {
+  background-color: rgba(102, 204, 255, 0.3);
+  border-color: rgba(102, 204, 255, 0.5);
+}
+
+/* 选中状态样式 */
+.blog-link.active {
+  background-color: rgba(102, 204, 255, 0.8);
+  color: white;
+  border-color: rgba(102, 204, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(102, 204, 255, 0.4);
+  transform: translateY(-2px);
+}
+
 .github-link:hover {
   background: rgba(51, 51, 51, 0.8);
   border-color: rgba(51, 51, 51, 0.8);
@@ -185,6 +206,11 @@
   
   .bilibili-link:hover {
     background-color: rgba(251, 114, 153, 0.9);
+    color: white;
+  }
+  
+  .blog-link:hover {
+    background-color: rgba(102, 204, 255, 0.9);
     color: white;
   }
 }

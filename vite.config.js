@@ -10,6 +10,11 @@ export default defineConfig({
         target: 'https://uapis.cn',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      '/blog-feed': {
+        target: 'https://blog.078465.xyz',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/blog-feed/, '/feed')
       }
     }
   }
