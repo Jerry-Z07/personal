@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import { preloadAllData } from './dataPreloader.js'
 import './App.css'
 import BackgroundImage from './components/BackgroundImage'
 import BackgroundBlur from './components/BackgroundBlur'
@@ -46,6 +47,17 @@ function App() {
     return () => {
       window.removeEventListener('backgroundImageLoaded', handleImageLoad);
     };
+  }, []);
+
+  // 在应用启动时预加载所有标签数据
+  useEffect(() => {
+    // 延迟预加载，确保首屏渲染不被阻塞
+    const timer = setTimeout(() => {
+      console.log('开始后台预加载数据...');
+      preloadAllData();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // 保存 activeTab 到 sessionStorage
