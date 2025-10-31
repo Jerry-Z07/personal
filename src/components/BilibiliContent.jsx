@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { API_BASE_URL } from '../api.js';
-import { cacheManager, CACHE_KEYS } from '../cacheManager.js';
 import './BilibiliContent.css';
 
 const BilibiliContent = () => {
@@ -10,40 +9,29 @@ const BilibiliContent = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 获取Bilibili用户信息和视频列表（使用缓存）
+  // 获取Bilibili用户信息和视频列表
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         
-        // 从缓存获取或请求用户信息
-        const userData = await cacheManager.getOrFetch(
-          CACHE_KEYS.BILIBILI_USER,
-          async () => {
-            const response = await fetch(`${API_BASE_URL}/v1/social/bilibili/userinfo?uid=401175768`);
-            if (!response.ok) {
-              throw new Error('获取用户信息失败');
-            }
-            return response.json();
-          }
-        );
+        // 获取用户信息
+        const userResponse = await fetch(`${API_BASE_URL}/v1/social/bilibili/userinfo?uid=401175768`);
+        if (!userResponse.ok) {
+          throw new Error('获取用户信息失败');
+        }
+        const userData = await userResponse.json();
         
-        // 从缓存获取或请求视频列表
-        const videosData = await cacheManager.getOrFetch(
-          CACHE_KEYS.BILIBILI_VIDEOS,
-          async () => {
-            const response = await fetch(`${API_BASE_URL}/v1/social/bilibili/archives?mid=401175768`);
-            if (!response.ok) {
-              throw new Error('获取视频列表失败');
-            }
-            const data = await response.json();
-            return data.videos.slice(0, 8);
-          }
-        );
+        // 获取视频列表
+        const videosResponse = await fetch(`${API_BASE_URL}/v1/social/bilibili/archives?mid=401175768`);
+        if (!videosResponse.ok) {
+          throw new Error('获取视频列表失败');
+        }
+        const videosData = await videosResponse.json();
         
-        // 设置用户信息和视频列表
+        // 设置用户信息和视频列表（只取前8个视频）
         setUserInfo(userData);
-        setVideos(videosData);
+        setVideos(videosData.videos.slice(0, 8));
         setError(null);
       } catch (err) {
         setError(err.message);
