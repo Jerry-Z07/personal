@@ -33,14 +33,46 @@ function App() {
     return savedTab || 'intro';
   });
 
-  // 监听背景图片加载完成事件
+  // 同时监听字体和背景图片加载完成
   useEffect(() => {
-    const handleImageLoad = () => {
-      setIsLoading(false);
+    let fontLoaded = false;
+    let imageLoaded = false;
+
+    // 检查是否所有资源都加载完成
+    const checkAllLoaded = () => {
+      if (fontLoaded && imageLoaded) {
+        setIsLoading(false);
+      }
     };
 
-    // 添加自定义事件监听器
+    // 监听字体加载
+    const loadFonts = async () => {
+      try {
+        // 等待 LXGW WenKai 字体加载完成
+        await document.fonts.load('1em "LXGW WenKai"');
+        console.log('✓ 字体加载完成');
+        fontLoaded = true;
+        checkAllLoaded();
+      } catch (error) {
+        console.warn('字体加载失败，继续显示页面:', error);
+        // 即使字体加载失败也继续
+        fontLoaded = true;
+        checkAllLoaded();
+      }
+    };
+
+    // 监听背景图片加载
+    const handleImageLoad = () => {
+      console.log('✓ 背景图片加载完成');
+      imageLoaded = true;
+      checkAllLoaded();
+    };
+
+    // 添加背景图片加载事件监听器
     window.addEventListener('backgroundImageLoaded', handleImageLoad);
+    
+    // 开始加载字体
+    loadFonts();
     
     // 清理事件监听器
     return () => {
