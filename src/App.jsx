@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import { preloadAllData } from './dataPreloader.js'
-import { resourceLoader, waitForFont } from './resourceLoader.js'
 import './App.css'
 import BackgroundImage from './components/BackgroundImage'
 import BackgroundBlur from './components/BackgroundBlur'
@@ -35,28 +33,19 @@ function App() {
     return savedTab || 'intro';
   });
 
-  // 等待关键资源加载完成（字体、背景）
+  // 监听背景图片加载完成事件
   useEffect(() => {
-    // 等待字体加载
-    waitForFont('LXGW WenKai').then(() => {
-      resourceLoader.markLoaded('font');
-    });
-
-    // 监听所有资源加载完成
-    resourceLoader.onAllLoaded(() => {
+    const handleImageLoad = () => {
       setIsLoading(false);
-    });
-  }, []);
+    };
 
-  // 在应用启动时预加载所有标签数据（不影响加载遵罩）
-  useEffect(() => {
-    // 延迟预加载，确保首屏渲染不被阻塞
-    const timer = setTimeout(() => {
-      console.log('开始后台预加载数据...');
-      preloadAllData();
-    }, 500);
-
-    return () => clearTimeout(timer);
+    // 添加自定义事件监听器
+    window.addEventListener('backgroundImageLoaded', handleImageLoad);
+    
+    // 清理事件监听器
+    return () => {
+      window.removeEventListener('backgroundImageLoaded', handleImageLoad);
+    };
   }, []);
 
   // 保存 activeTab 到 sessionStorage

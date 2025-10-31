@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { resourceLoader } from '../resourceLoader.js';
 import './BackgroundImage.css';
 
 const BackgroundImage = () => {
@@ -45,16 +44,16 @@ const BackgroundImage = () => {
   // 图片加载完成处理
   const handleImageLoad = () => {
     setIsLoading(false);
-    // 标记背景图片已加载完成
-    resourceLoader.markLoaded('background');
+    // 触发自定义事件，通知App组件背景图片已加载完成
+    window.dispatchEvent(new CustomEvent('backgroundImageLoaded'));
   };
 
   // 图片加载错误处理
   const handleImageError = () => {
     setError('Failed to load image');
     setIsLoading(false);
-    // 即使加载失败也标记为完成，确保用户能看到页面内容
-    resourceLoader.markLoaded('background');
+    // 即使加载失败也触发事件，确保用户能看到页面内容
+    window.dispatchEvent(new CustomEvent('backgroundImageLoaded'));
   };
 
   return (
