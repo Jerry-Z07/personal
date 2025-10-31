@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import { preloadAllData } from './dataPreloader.js'
+import { resourceLoader, waitForFont } from './resourceLoader.js'
 import './App.css'
 import BackgroundImage from './components/BackgroundImage'
 import BackgroundBlur from './components/BackgroundBlur'
@@ -33,51 +35,28 @@ function App() {
     return savedTab || 'intro';
   });
 
-  // 同时监听字体和背景图片加载完成
+  // 等待关键资源加载完成（字体、背景）
   useEffect(() => {
-    let fontLoaded = false;
-    let imageLoaded = false;
+    // 等待字体加载
+    waitForFont('LXGW WenKai').then(() => {
+      resourceLoader.markLoaded('font');
+    });
 
-    // 检查是否所有资源都加载完成
-    const checkAllLoaded = () => {
-      if (fontLoaded && imageLoaded) {
-        setIsLoading(false);
-      }
-    };
+    // 监听所有资源加载完成
+    resourceLoader.onAllLoaded(() => {
+      setIsLoading(false);
+    });
+  }, []);
 
-    // 监听字体加载
-    const loadFonts = async () => {
-      try {
-        // 等待 LXGW WenKai 字体加载完成
-        await document.fonts.load('1em "LXGW WenKai"');
-        console.log('✓ 字体加载完成');
-        fontLoaded = true;
-        checkAllLoaded();
-      } catch (error) {
-        console.warn('字体加载失败，继续显示页面:', error);
-        // 即使字体加载失败也继续
-        fontLoaded = true;
-        checkAllLoaded();
-      }
-    };
+  // 在应用启动时预加载所有标签数据（不影响加载遵罩）
+  useEffect(() => {
+    // 延迟预加载，确保首屏渲染不被阻塞
+    const timer = setTimeout(() => {
+      console.log('开始后台预加载数据...');
+      preloadAllData();
+    }, 500);
 
-    // 监听背景图片加载
-    const handleImageLoad = () => {
-      console.log('✓ 背景图片加载完成');
-      imageLoaded = true;
-      checkAllLoaded();
-    };
-
-    // 添加背景图片加载事件监听器
-    window.addEventListener('backgroundImageLoaded', handleImageLoad);
-    
-    // 开始加载字体
-    loadFonts();
-    
-    // 清理事件监听器
-    return () => {
-      window.removeEventListener('backgroundImageLoaded', handleImageLoad);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   // 保存 activeTab 到 sessionStorage
