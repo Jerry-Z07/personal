@@ -14,7 +14,7 @@ const BlogContent = () => {
         // 开发环境使用代理，生产环境使用 CORS 代理服务
         const feedUrl = import.meta.env.MODE === 'development' 
           ? '/blog-feed/' 
-          : 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://blog.078465.xyz/feed/');
+          : 'https://cors1.078465.xyz/raw?url=' + encodeURIComponent('https://blog.078465.xyz/feed/');
         
         console.log('正在请求博客数据:', feedUrl);
         const response = await fetch(feedUrl, {
