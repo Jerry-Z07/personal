@@ -1,6 +1,6 @@
 /* 全局字体设置 */
 body {
-  font-family: "LXGW WenKai", sans-serif;
+  font-family: var(--font-family-main);
 }
 
 #root {

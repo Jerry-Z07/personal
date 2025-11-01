@@ -31,7 +31,7 @@
 .loading-text {
   color: #ffffff;
   font-size: 1.2rem;
-  font-family: "LXGW WenKai", sans-serif;
+  font-family: var(--font-family-main);
   margin: 0;
   letter-spacing: 2px;
 }

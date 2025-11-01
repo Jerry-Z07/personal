@@ -84,7 +84,7 @@
 }
 
 .social-link span {
-  font-family: "LXGW WenKai", sans-serif;
+  font-family: var(--font-family-main);
 }
 
 /* 简介链接样式 */
