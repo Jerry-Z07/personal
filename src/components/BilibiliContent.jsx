@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { API_BASE_URL } from '../api.js';
 import './BilibiliContent.css';
 
 const BilibiliContent = () => {
@@ -15,15 +14,43 @@ const BilibiliContent = () => {
       try {
         setLoading(true);
         
+        // 构建API请求
+        const getUserUrl = () => {
+          if (import.meta.env.MODE === 'development') {
+            // 开发环境使用Vite代理
+            return '/api/v1/social/bilibili/userinfo?uid=401175768';
+          } else {
+            // 生产环境使用CORS代理服务
+            const targetUrl = 'https://uapis.cn/api/v1/social/bilibili/userinfo?uid=401175768';
+            return 'https://cors1.078465.xyz/v1/proxy/?quest=' + encodeURIComponent(targetUrl);
+          }
+        };
+        
+        const getVideosUrl = () => {
+          if (import.meta.env.MODE === 'development') {
+            // 开发环境使用Vite代理
+            return '/api/v1/social/bilibili/archives?mid=401175768';
+          } else {
+            // 生产环境使用CORS代理服务
+            const targetUrl = 'https://uapis.cn/api/v1/social/bilibili/archives?mid=401175768';
+            return 'https://cors1.078465.xyz/v1/proxy/?quest=' + encodeURIComponent(targetUrl);
+          }
+        };
+        
+        const userUrl = getUserUrl();
+        const videosUrl = getVideosUrl();
+        
         // 获取用户信息
-        const userResponse = await fetch(`${API_BASE_URL}/v1/social/bilibili/userinfo?uid=401175768`);
+        const userResponse = await fetch(userUrl);
+        
         if (!userResponse.ok) {
           throw new Error('获取用户信息失败');
         }
         const userData = await userResponse.json();
         
         // 获取视频列表
-        const videosResponse = await fetch(`${API_BASE_URL}/v1/social/bilibili/archives?mid=401175768`);
+        const videosResponse = await fetch(videosUrl);
+        
         if (!videosResponse.ok) {
           throw new Error('获取视频列表失败');
         }
@@ -33,6 +60,7 @@ const BilibiliContent = () => {
         setUserInfo(userData);
         setVideos(videosData.videos.slice(0, 8));
         setError(null);
+        console.log('Bilibili数据获取成功');
       } catch (err) {
         setError(err.message);
         console.error('获取Bilibili数据失败:', err);

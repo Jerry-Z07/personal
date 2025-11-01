@@ -9,7 +9,7 @@ export default defineConfig({
       '/api': {
         target: 'https://uapis.cn',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path
       },
       '/blog-feed': {
         target: 'https://blog.078465.xyz',

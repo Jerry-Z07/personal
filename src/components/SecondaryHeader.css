@@ -99,6 +99,16 @@
   border-color: rgba(52, 152, 219, 0.5);
 }
 
+/* 呼吸动画 */
+@keyframes breathing {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4), 0 0 20px rgba(52, 152, 219, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.6), 0 0 35px rgba(52, 152, 219, 0.6);
+  }
+}
+
 /* 选中状态样式 */
 .intro-link.active {
   background-color: rgba(52, 152, 219, 0.8);
@@ -106,6 +116,7 @@
   border-color: rgba(52, 152, 219, 0.9);
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
   transform: translateY(-2px);
+  animation: breathing 3s ease-in-out infinite;
 }
 
 /* GitHub链接样式 */
@@ -136,6 +147,16 @@
   border-color: rgba(251, 114, 153, 0.5);
 }
 
+/* 呼吸动画 */
+@keyframes breathing-bilibili {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(251, 114, 153, 0.4), 0 0 20px rgba(251, 114, 153, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(251, 114, 153, 0.6), 0 0 35px rgba(251, 114, 153, 0.6);
+  }
+}
+
 /* 选中状态样式 */
 .bilibili-link.active {
   background-color: rgba(251, 114, 153, 0.8);
@@ -143,6 +164,7 @@
   border-color: rgba(251, 114, 153, 0.9);
   box-shadow: 0 4px 12px rgba(251, 114, 153, 0.4);
   transform: translateY(-2px);
+  animation: breathing-bilibili 3s ease-in-out infinite;
 }
 
 /* 博客链接样式 */
@@ -157,6 +179,16 @@
   border-color: rgba(102, 204, 255, 0.5);
 }
 
+/* 呼吸动画 */
+@keyframes breathing-blog {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(102, 204, 255, 0.4), 0 0 20px rgba(102, 204, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(102, 204, 255, 0.6), 0 0 35px rgba(102, 204, 255, 0.6);
+  }
+}
+
 /* 选中状态样式 */
 .blog-link.active {
   background-color: rgba(102, 204, 255, 0.8);
@@ -164,6 +196,7 @@
   border-color: rgba(102, 204, 255, 0.9);
   box-shadow: 0 4px 12px rgba(102, 204, 255, 0.4);
   transform: translateY(-2px);
+  animation: breathing-blog 3s ease-in-out infinite;
 }
 
 .github-link:hover {

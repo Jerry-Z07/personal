@@ -50,7 +50,6 @@ function App() {
       try {
         // 等待 LXGW WenKai 字体加载完成
         await document.fonts.load('1em "LXGW WenKai"');
-        console.log('✓ 字体加载完成');
         fontLoaded = true;
         checkAllLoaded();
       } catch (error) {
@@ -63,7 +62,6 @@ function App() {
 
     // 监听背景图片加载
     const handleImageLoad = () => {
-      console.log('✓ 背景图片加载完成');
       imageLoaded = true;
       checkAllLoaded();
     };

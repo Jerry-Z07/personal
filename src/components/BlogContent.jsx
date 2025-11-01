@@ -14,9 +14,8 @@ const BlogContent = () => {
         // 开发环境使用代理，生产环境使用 CORS 代理服务
         const feedUrl = import.meta.env.MODE === 'development' 
           ? '/blog-feed/' 
-          : 'https://cors1.078465.xyz/raw?url=' + encodeURIComponent('https://blog.078465.xyz/feed/');
+          : 'https://cors1.078465.xyz/v1/proxy/?quest=' + encodeURIComponent('https://blog.078465.xyz/feed/');
         
-        console.log('正在请求博客数据:', feedUrl);
         const response = await fetch(feedUrl, {
           method: 'GET',
           headers: {
@@ -26,14 +25,12 @@ const BlogContent = () => {
           cache: 'no-cache'
         });
         
-        console.log('响应状态:', response.status, response.statusText);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const text = await response.text();
-        console.log('获取到的数据长度:', text.length);
         
         // 解析 XML
         const parser = new DOMParser();
