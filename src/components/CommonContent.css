@@ -1,0 +1,108 @@
+/* =====================================================
+ * ContentBlock - 通用内容块样式
+ * 用于 IntroContent、NicknameContent 等文字内容展示页面
+ * 提供统一的排版、色彩、响应式设计
+ * ===================================================== */
+
+/* 内容容器：整体布局与内边距 */
+.content-block {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 标题：页面主标题样式 */
+.content-block-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* 正文：段落文字容器 */
+.content-block-body {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+/* 段落：文字段落样式 */
+.content-block-body p {
+  margin-bottom: 1rem;
+}
+
+/* 删除线文字：用于备注或补充说明 */
+.content-block-strikethrough {
+  text-decoration: line-through;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+/* 内嵌图片：文字中的图片样式 */
+.content-block-inline-image {
+  height: 30px;
+  width: auto;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+/* 深色模式：根据系统主题设置自动应用 */
+@media (prefers-color-scheme: dark) {
+  .content-block-title {
+    color: #ffffff;
+  }
+  
+  .content-block-body {
+    color: #e0e0e0;
+  }
+}
+
+/* 浅色模式：根据系统主题设置自动应用 */
+@media (prefers-color-scheme: light) {
+  .content-block-title {
+    color: #333333;
+  }
+  
+  .content-block-body {
+    color: #333333;
+  }
+}
+
+/* 响应式设计：布局与字体适配 */
+
+/* 平板端（最大宽度 768px）：较小的屏幕 */
+@media (max-width: 768px) {
+  .content-block {
+    padding: 1.5rem;
+  }
+  
+  .content-block-title {
+    font-size: 1.8rem;
+  }
+  
+  .content-block-body {
+    font-size: 1rem;
+  }
+  
+  .content-block-inline-image {
+    height: 25px;
+  }
+}
+
+/* 手機端（最大宽度 480px）：最小的屏幕 */
+@media (max-width: 480px) {
+  .content-block {
+    padding: 1rem;
+  }
+  
+  .content-block-title {
+    font-size: 1.5rem;
+  }
+  
+  .content-block-body {
+    font-size: 0.95rem;
+  }
+  
+  .content-block-inline-image {
+    height: 20px;
+  }
+}

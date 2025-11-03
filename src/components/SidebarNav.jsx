@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import './SidebarNav.css';
 
-const SidebarNav = ({ activeTab, onTabChange }) => {
+const SidebarNav = ({ subTab, onSubTabChange }) => {
   const menuItems = [
     { id: 'intro', label: '个人简介', icon: 'ri-user-3-line' },
     { id: 'nickname', label: '昵称的由来', icon: 'ri-question-line' }
@@ -18,8 +18,8 @@ const SidebarNav = ({ activeTab, onTabChange }) => {
         {menuItems.map((item) => (
           <motion.button
             key={item.id}
-            className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-            onClick={() => onTabChange(item.id)}
+            className={`nav-item ${subTab === item.id ? 'active' : ''}`}
+            onClick={() => onSubTabChange(item.id)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.1, ease: "easeOut" }}

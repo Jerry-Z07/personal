@@ -5,13 +5,22 @@ import BilibiliContent from './BilibiliContent';
 import BlogContent from './BlogContent';
 import './ContentArea.css';
 
-const ContentArea = ({ activeTab, showSidebar }) => {
+const ContentArea = ({ mainTab, subTab, showSidebar }) => {
   const renderContent = () => {
-    switch (activeTab) {
-      case 'intro':
-        return <IntroContent />;
-      case 'nickname':
-        return <NicknameContent />;
+    // 如果是 intro 主标签，根据 subTab 来显示内容
+    if (mainTab === 'intro') {
+      switch (subTab) {
+        case 'intro':
+          return <IntroContent />;
+        case 'nickname':
+          return <NicknameContent />;
+        default:
+          return <IntroContent />;
+      }
+    }
+    
+    // 其他主标签直接根据 mainTab 显示
+    switch (mainTab) {
       case 'bilibili':
         return <BilibiliContent />;
       case 'blog':

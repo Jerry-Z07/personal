@@ -23,14 +23,22 @@ function App() {
   const [showSecondaryHeader, setShowSecondaryHeader] = useState(false);
   const [showViewportContent, setShowViewportContent] = useState(true);
   // 从 sessionStorage 读取保存的标签状态
-  const [activeTab, setActiveTab] = useState(() => {
-    const savedTab = sessionStorage.getItem('activeTab');
-    return savedTab || null;
+  const [mainTab, setMainTab] = useState(() => {
+    const savedMainTab = sessionStorage.getItem('mainTab');
+    return savedMainTab || null;
   });
-  // 存储上次访问的标签，用于从主页返回时恢复
-  const [lastActiveTab, setLastActiveTab] = useState(() => {
-    const savedTab = sessionStorage.getItem('activeTab');
-    return savedTab || 'intro';
+  const [subTab, setSubTab] = useState(() => {
+    const savedSubTab = sessionStorage.getItem('subTab');
+    return savedSubTab || 'intro'; // 默认子标签
+  });
+  // 存储上次访问的主标签，用于从主页返回时恢复
+  const [lastMainTab, setLastMainTab] = useState(() => {
+    const savedMainTab = sessionStorage.getItem('mainTab');
+    return savedMainTab || 'intro';
+  });
+  const [lastSubTab, setLastSubTab] = useState(() => {
+    const savedSubTab = sessionStorage.getItem('subTab');
+    return savedSubTab || 'intro';
   });
 
   // 同时监听字体和背景图片加载完成
@@ -78,22 +86,30 @@ function App() {
     };
   }, []);
 
-  // 保存 activeTab 到 sessionStorage
+  // 保存标签状态到 sessionStorage
   useEffect(() => {
-    if (activeTab) {
-      sessionStorage.setItem('activeTab', activeTab);
-      // 更新上次访问的标签
-      setLastActiveTab(activeTab);
+    if (mainTab) {
+      sessionStorage.setItem('mainTab', mainTab);
+      setLastMainTab(mainTab);
     } else {
-      sessionStorage.removeItem('activeTab');
+      sessionStorage.removeItem('mainTab');
     }
-  }, [activeTab]);
+  }, [mainTab]);
+
+  useEffect(() => {
+    if (subTab) {
+      sessionStorage.setItem('subTab', subTab);
+      setLastSubTab(subTab);
+    } else {
+      sessionStorage.removeItem('subTab');
+    }
+  }, [subTab]);
 
   // 初始化时根据保存的状态恢复页面
   useEffect(() => {
-    const savedTab = sessionStorage.getItem('activeTab');
-    if (savedTab) {
-      // 如果有保存的标签，说明之前在二级页面
+    const savedMainTab = sessionStorage.getItem('mainTab');
+    if (savedMainTab) {
+      // 如果有保存的主标签，说明之前在二级页面
       setShowSecondaryHeader(true);
       setShowViewportContent(false);
     }
@@ -114,8 +130,9 @@ function App() {
         setShowSecondaryHeader(true);
         setShowViewportContent(false);
         // 桌面端滚动时，如果没有选中标签，恢复上次访问的标签
-        if (!activeTab) {
-          setActiveTab(lastActiveTab);
+        if (!mainTab) {
+          setMainTab(lastMainTab);
+          setSubTab(lastSubTab);
         }
       }
       // 删除了向上滚动自动返回主页的逻辑
@@ -128,7 +145,7 @@ function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [activeTab, lastActiveTab, showViewportContent]);
+  }, [mainTab, lastMainTab, lastSubTab, showViewportContent]);
 
   // 添加触摸事件支持（仅桌面端有效）
   useEffect(() => {
@@ -178,7 +195,8 @@ function App() {
           // 直接更新状态，确保二级界面显示
           setShowSecondaryHeader(true);
           setShowViewportContent(false);
-          setActiveTab(lastActiveTab);
+          setMainTab(lastMainTab);
+          setSubTab(lastSubTab);
           // 触发滚动到下一屏
           window.scrollTo({
             top: window.innerHeight,
@@ -199,7 +217,7 @@ function App() {
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [lastActiveTab]);
+  }, [lastMainTab, lastSubTab]);
 
   // 页面加载完成后输出console.log
   useEffect(() => {
@@ -216,14 +234,15 @@ function App() {
     setShowSecondaryHeader(true);
     setShowViewportContent(false);
     // 点击滚动指示器时，恢复上次访问的标签
-    setActiveTab(lastActiveTab);
+    setMainTab(lastMainTab);
+    setSubTab(lastSubTab);
   };
 
   // 处理返回主页
   const handleBackToHome = () => {
     setShowViewportContent(true);
     setShowSecondaryHeader(false);
-    setActiveTab(null);
+    setMainTab(null);
     // 滚动回顶部
     window.scrollTo({
       top: 0,
@@ -231,11 +250,23 @@ function App() {
     });
   };
 
-  // 处理标签切换
-  const handleTabChange = (tabName) => {
-    setActiveTab(tabName);
+  // 处理主标签切换
+  const handleMainTabChange = (tabName) => {
+    setMainTab(tabName);
+    // 切换主标签时，重置子标签为各主标签的默认子标签
+    // 简介标签的默认子标签为 intro
+    if (tabName === 'intro') {
+      setSubTab('intro');
+    } else {
+      setSubTab(null);
+    }
     // 点击标签时隐去主页内容
     setShowViewportContent(false);
+  };
+
+  // 处理子标签切换（侧边栏）
+  const handleSubTabChange = (subTabName) => {
+    setSubTab(subTabName);
   };
 
   return (
@@ -245,7 +276,7 @@ function App() {
       <BackgroundBlur />
       <Header />
       <AnimatePresence>
-        {showSecondaryHeader && <SecondaryHeader activeTab={activeTab} onTabChange={handleTabChange} isMobile={isMobile()} onBack={handleBackToHome} />}
+        {showSecondaryHeader && <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} />}
       </AnimatePresence>
       <AnimatePresence>
         {showViewportContent && (
@@ -258,10 +289,10 @@ function App() {
       <AnimatePresence>
         {showSecondaryHeader && !showViewportContent && (
           <>
-            {activeTab === 'intro' || activeTab === 'nickname' ? (
-              <SidebarNav activeTab={activeTab} onTabChange={setActiveTab} />
-            ) : null}
-            <ContentArea activeTab={activeTab} showSidebar={activeTab === 'intro' || activeTab === 'nickname'} />
+            {mainTab === 'intro' && (
+              <SidebarNav subTab={subTab} onSubTabChange={handleSubTabChange} />
+            )}
+            <ContentArea mainTab={mainTab} subTab={subTab} showSidebar={mainTab === 'intro'} />
           </>
         )}
       </AnimatePresence>
@@ -269,7 +300,7 @@ function App() {
         {/* PC端：在二级页面最底下 */}
         {/* 移动端：主页页面最底下，如果切换到二级页面就在二级页面最底下 */}
         {((!isMobile() && showSecondaryHeader && !showViewportContent) || 
-          (isMobile() && (showViewportContent || (!showViewportContent && activeTab)))) && (
+          (isMobile() && (showViewportContent || (!showViewportContent && mainTab)))) && (
           <Footer />
         )}
       </AnimatePresence>

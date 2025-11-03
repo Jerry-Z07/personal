@@ -1,21 +1,17 @@
 import { motion } from 'framer-motion';
 import './SecondaryHeader.css';
 
-const SecondaryHeader = ({ activeTab, onTabChange, isMobile, onBack }) => {
-  const handleGithubClick = () => {
-    window.open('https://github.com', '_blank');
-  };
-
+const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack }) => {
   const handleBilibiliClick = () => {
-    onTabChange('bilibili');
+    onMainTabChange('bilibili');
   };
 
   const handleIntroClick = () => {
-    onTabChange('intro');
+    onMainTabChange('intro');
   };
 
   const handleBlogClick = () => {
-    onTabChange('blog');
+    onMainTabChange('blog');
   };
 
   const handleBackClick = () => {
@@ -33,7 +29,7 @@ const SecondaryHeader = ({ activeTab, onTabChange, isMobile, onBack }) => {
       transition={isMobile ? { duration: 0.2 } : { duration: 0.3, ease: "easeInOut" }}
     >
       <div className="secondary-header-container">
-        {isMobile && activeTab && (
+        {isMobile && mainTab && (
           <motion.button
             className="back-button"
             onClick={handleBackClick}
@@ -54,7 +50,7 @@ const SecondaryHeader = ({ activeTab, onTabChange, isMobile, onBack }) => {
           transition={isMobile ? { delay: 0, duration: 0.2 } : { delay: 0.2, duration: 0.4 }}
         >
           <motion.button 
-            className={`social-link intro-link ${activeTab === 'intro' ? 'active' : ''}`}
+            className={`social-link intro-link ${mainTab === 'intro' ? 'active' : ''}`}
             onClick={handleIntroClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
@@ -65,7 +61,7 @@ const SecondaryHeader = ({ activeTab, onTabChange, isMobile, onBack }) => {
           </motion.button>
           
           <motion.button 
-            className={`social-link bilibili-link ${activeTab === 'bilibili' ? 'active' : ''}`}
+            className={`social-link bilibili-link ${mainTab === 'bilibili' ? 'active' : ''}`}
             onClick={handleBilibiliClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
@@ -76,7 +72,7 @@ const SecondaryHeader = ({ activeTab, onTabChange, isMobile, onBack }) => {
           </motion.button>
           
           <motion.button 
-            className={`social-link blog-link ${activeTab === 'blog' ? 'active' : ''}`}
+            className={`social-link blog-link ${mainTab === 'blog' ? 'active' : ''}`}
             onClick={handleBlogClick}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
