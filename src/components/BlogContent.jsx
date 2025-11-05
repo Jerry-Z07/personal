@@ -4,6 +4,9 @@ import './BlogContent.css';
 import cacheManager from '../cacheManager';
 import { fetchBlogData } from '../dataPreloader';
 
+// 缓存有效期：5分钟
+const CACHE_DURATION = 5 * 60 * 1000;
+
 const BlogContent = ({ onRefresh }) => {
   const [blogData, setBlogData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,7 @@ const BlogContent = ({ onRefresh }) => {
         setLoading(true);
         const data = await fetchBlogData();
         setBlogData(data);
-        cacheManager.set('blog', data);
+        cacheManager.set('blog', data, CACHE_DURATION);
         setError(null);
       } catch (err) {
         console.error('获取博客数据失败:', err);
@@ -47,7 +50,7 @@ const BlogContent = ({ onRefresh }) => {
           
           const data = await fetchBlogData();
           setBlogData(data);
-          cacheManager.set('blog', data);
+          cacheManager.set('blog', data, CACHE_DURATION);
           setError(null);
         } catch (err) {
           console.error('刷新博客数据失败:', err);

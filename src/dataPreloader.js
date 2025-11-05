@@ -2,6 +2,9 @@
 
 import cacheManager from './cacheManager';
 
+// 缓存有效期：5分钟
+const CACHE_DURATION = 5 * 60 * 1000;
+
 // Bilibili API URL 构建函数
 export const getBilibiliApiUrls = () => {
   const getUserUrl = () => {
@@ -99,7 +102,7 @@ export const preloadBilibiliData = async () => {
 
   try {
     const data = await fetchBilibiliData();
-    cacheManager.set('bilibili', data);
+    cacheManager.set('bilibili', data, CACHE_DURATION);
   } catch (err) {
     console.error('预加载Bilibili数据失败:', err);
   }
@@ -113,7 +116,7 @@ export const preloadBlogData = async () => {
 
   try {
     const data = await fetchBlogData();
-    cacheManager.set('blog', data);
+    cacheManager.set('blog', data, CACHE_DURATION);
   } catch (err) {
     console.error('预加载Blog数据失败:', err);
   }

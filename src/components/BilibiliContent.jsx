@@ -4,6 +4,9 @@ import './BilibiliContent.css';
 import cacheManager from '../cacheManager';
 import { fetchBilibiliData } from '../dataPreloader';
 
+// 缓存有效期：5分钟
+const CACHE_DURATION = 5 * 60 * 1000;
+
 const BilibiliContent = ({ onRefresh }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [videos, setVideos] = useState([]);
@@ -28,7 +31,7 @@ const BilibiliContent = ({ onRefresh }) => {
         const data = await fetchBilibiliData();
         setUserInfo(data.userInfo);
         setVideos(data.videos);
-        cacheManager.set('bilibili', data);
+        cacheManager.set('bilibili', data, CACHE_DURATION);
         setError(null);
         console.log('Bilibili数据获取成功');
       } catch (err) {
@@ -53,7 +56,7 @@ const BilibiliContent = ({ onRefresh }) => {
           const data = await fetchBilibiliData();
           setUserInfo(data.userInfo);
           setVideos(data.videos);
-          cacheManager.set('bilibili', data);
+          cacheManager.set('bilibili', data, CACHE_DURATION);
           setError(null);
         } catch (err) {
           setError(err.message);
