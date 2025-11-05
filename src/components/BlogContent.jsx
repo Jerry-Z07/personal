@@ -1,61 +1,30 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './BlogContent.css';
+import cacheManager from '../cacheManager';
+import { fetchBlogData } from '../dataPreloader';
 
-const BlogContent = () => {
+const BlogContent = ({ onRefresh }) => {
   const [blogData, setBlogData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchBlogData = async () => {
+    const loadData = async () => {
+      // 如果有缓存，直接使用缓存
+      if (cacheManager.has('blog')) {
+        const cachedData = cacheManager.get('blog');
+        setBlogData(cachedData);
+        setLoading(false);
+        return;
+      }
+
+      // 没有缓存则获取数据
       try {
         setLoading(true);
-        // 开发环境使用代理，生产环境使用 CORS 代理服务
-        const feedUrl = import.meta.env.MODE === 'development' 
-          ? '/blog-feed/' 
-          : 'https://cors1.078465.xyz/v1/proxy/?quest=' + encodeURIComponent('https://blog.078465.xyz/feed/');
-        
-        const response = await fetch(feedUrl, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/xml, text/xml, */*'
-          },
-          mode: 'cors',
-          cache: 'no-cache'
-        });
-        
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const text = await response.text();
-        
-        // 解析 XML
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(text, 'text/xml');
-        
-        // 提取 image 信息
-        const imageNode = xmlDoc.querySelector('image');
-        const blogTitle = imageNode?.querySelector('title')?.textContent || '博客';
-        const blogLink = imageNode?.querySelector('link')?.textContent || '';
-        
-        // 提取前 5 个 item
-        const items = Array.from(xmlDoc.querySelectorAll('item')).slice(0, 5).map(item => {
-          const title = item.querySelector('title')?.textContent || '';
-          const link = item.querySelector('link')?.textContent || '';
-          const description = item.querySelector('description')?.textContent || '';
-          
-          // 提取描述的前 100 个字符
-          const shortDescription = description.length > 100 
-            ? description.substring(0, 100) + '...' 
-            : description;
-          
-          return { title, link, description: shortDescription };
-        });
-        
-        setBlogData({ blogTitle, blogLink, items });
+        const data = await fetchBlogData();
+        setBlogData(data);
+        cacheManager.set('blog', data);
         setError(null);
       } catch (err) {
         console.error('获取博客数据失败:', err);
@@ -65,8 +34,30 @@ const BlogContent = () => {
       }
     };
 
-    fetchBlogData();
+    loadData();
   }, []);
+  
+  // 设置刷新回调
+  useEffect(() => {
+    if (onRefresh) {
+      onRefresh(async () => {
+        try {
+          setLoading(true);
+          cacheManager.clear('blog');
+          
+          const data = await fetchBlogData();
+          setBlogData(data);
+          cacheManager.set('blog', data);
+          setError(null);
+        } catch (err) {
+          console.error('刷新博客数据失败:', err);
+          setError('无法加载博客数据');
+        } finally {
+          setLoading(false);
+        }
+      });
+    }
+  }, [onRefresh]);
 
   if (loading) {
     return (

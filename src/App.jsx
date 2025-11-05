@@ -12,6 +12,7 @@ import SidebarNav from './components/SidebarNav'
 import ContentArea from './components/ContentArea'
 import Footer from './components/Footer'
 import BackToTopButton from './components/BackToTopButton'
+import { preloadAllData } from './dataPreloader'
 
 function App() {
   // 检测是否为移动端
@@ -40,6 +41,10 @@ function App() {
     const savedSubTab = sessionStorage.getItem('subTab');
     return savedSubTab || 'intro';
   });
+  
+  // 刷新回调函数引用
+  const refreshBilibiliRef = { current: null };
+  const refreshBlogRef = { current: null };
 
   // 同时监听字体和背景图片加载完成
   useEffect(() => {
@@ -219,10 +224,12 @@ function App() {
     };
   }, [lastMainTab, lastSubTab]);
 
-  // 页面加载完成后输出console.log
+  // 页面加载完成后输出console.log并预加载数据
   useEffect(() => {
     if (!isLoading) {
       console.log('愿你永远心怀热爱，眼中总有星辰大海');
+      // 在后台静默预加载 Bilibili 和 Blog 数据
+      preloadAllData();
     }
   }, [isLoading]);
 
@@ -268,6 +275,15 @@ function App() {
   const handleSubTabChange = (subTabName) => {
     setSubTab(subTabName);
   };
+  
+  // 处理刷新
+  const handleRefresh = () => {
+    if (mainTab === 'bilibili' && refreshBilibiliRef.current) {
+      refreshBilibiliRef.current();
+    } else if (mainTab === 'blog' && refreshBlogRef.current) {
+      refreshBlogRef.current();
+    }
+  };
 
   return (
     <>
@@ -276,7 +292,7 @@ function App() {
       <BackgroundBlur />
       <Header />
       <AnimatePresence>
-        {showSecondaryHeader && <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} />}
+        {showSecondaryHeader && <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} onRefresh={handleRefresh} />}
       </AnimatePresence>
       <AnimatePresence>
         {showViewportContent && (
@@ -292,7 +308,13 @@ function App() {
             {mainTab === 'intro' && (
               <SidebarNav subTab={subTab} onSubTabChange={handleSubTabChange} />
             )}
-            <ContentArea mainTab={mainTab} subTab={subTab} showSidebar={mainTab === 'intro'} />
+            <ContentArea 
+              mainTab={mainTab} 
+              subTab={subTab} 
+              showSidebar={mainTab === 'intro'} 
+              onRefreshBilibili={(callback) => { refreshBilibiliRef.current = callback; }}
+              onRefreshBlog={(callback) => { refreshBlogRef.current = callback; }}
+            />
           </>
         )}
       </AnimatePresence>

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import './SecondaryHeader.css';
 
-const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack }) => {
+const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh }) => {
   const handleBilibiliClick = () => {
     onMainTabChange('bilibili');
   };
@@ -17,6 +17,12 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack }) => {
   const handleBackClick = () => {
     if (onBack) {
       onBack();
+    }
+  };
+
+  const handleRefreshClick = () => {
+    if (onRefresh) {
+      onRefresh();
     }
   };
 
@@ -96,6 +102,22 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack }) => {
             <i className="ri-external-link-line external-icon"></i>
           </motion.a>
         </motion.div>
+        
+        {/* 刷新按钮，仅在 Bilibili 和 Blog 标签显示 */}
+        {(mainTab === 'bilibili' || mainTab === 'blog') && (
+          <motion.button
+            className={`refresh-button ${mainTab === 'bilibili' ? 'bilibili-refresh' : 'blog-refresh'}`}
+            onClick={handleRefreshClick}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 10 }}
+          >
+            <i className="ri-refresh-line"></i>
+          </motion.button>
+        )}
       </div>
     </motion.div>
   );

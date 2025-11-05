@@ -12,7 +12,7 @@ const IntroContent = () => {
       <h2 className="content-block-title">个人简介</h2>
       <div className="content-block-body">
         <p>我叫Jerry.Z，来自中国🇨🇳，目前是一名高中生。</p>
-        <p>技术力大概约等于零<span className="content-block-strikethrough">（所以AI真的太好用了你知道吗）</span>。</p>
+        <p>技术力约等于零<span className="content-block-strikethrough">（所以AI真的太好用了你知道吗）</span>。</p>
       </div>
     </motion.div>
   );

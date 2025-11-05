@@ -53,6 +53,72 @@
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+.refresh-button {
+  position: absolute;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Bilibili 刷新按钮样式 */
+.refresh-button.bilibili-refresh {
+  background-color: rgba(251, 114, 153, 0.2);
+  color: #fb7299;
+  border: 1px solid rgba(251, 114, 153, 0.3);
+}
+
+.refresh-button.bilibili-refresh:hover {
+  background-color: rgba(251, 114, 153, 0.3);
+  border-color: rgba(251, 114, 153, 0.5);
+  animation: breathing-bilibili-refresh 3s ease-in-out infinite;
+}
+
+@keyframes breathing-bilibili-refresh {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(251, 114, 153, 0.4), 0 0 20px rgba(251, 114, 153, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(251, 114, 153, 0.6), 0 0 35px rgba(251, 114, 153, 0.6);
+  }
+}
+
+/* Blog 刷新按钮样式 */
+.refresh-button.blog-refresh {
+  background-color: rgba(102, 204, 255, 0.2);
+  color: #66ccff;
+  border: 1px solid rgba(102, 204, 255, 0.3);
+}
+
+.refresh-button.blog-refresh:hover {
+  background-color: rgba(102, 204, 255, 0.3);
+  border-color: rgba(102, 204, 255, 0.5);
+  animation: breathing-blog-refresh 3s ease-in-out infinite;
+}
+
+@keyframes breathing-blog-refresh {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(102, 204, 255, 0.4), 0 0 20px rgba(102, 204, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(102, 204, 255, 0.6), 0 0 35px rgba(102, 204, 255, 0.6);
+  }
+}
+
 .social-link {
   display: flex;
   align-items: center;

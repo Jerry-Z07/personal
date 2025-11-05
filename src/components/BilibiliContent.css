@@ -14,9 +14,6 @@
   display: block;
 }
 
-.bilibili-profile {
-  margin-bottom: 0;
-}
 
 .profile-header {
   display: flex;
@@ -52,6 +49,9 @@
 .video-section {
   margin-top: 2rem;
   width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .video-section-title {

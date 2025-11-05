@@ -5,7 +5,7 @@ import BilibiliContent from './BilibiliContent';
 import BlogContent from './BlogContent';
 import './ContentArea.css';
 
-const ContentArea = ({ mainTab, subTab, showSidebar }) => {
+const ContentArea = ({ mainTab, subTab, showSidebar, onRefreshBilibili, onRefreshBlog }) => {
   const renderContent = () => {
     // 如果是 intro 主标签，根据 subTab 来显示内容
     if (mainTab === 'intro') {
@@ -22,9 +22,9 @@ const ContentArea = ({ mainTab, subTab, showSidebar }) => {
     // 其他主标签直接根据 mainTab 显示
     switch (mainTab) {
       case 'bilibili':
-        return <BilibiliContent />;
+        return <BilibiliContent onRefresh={onRefreshBilibili} />;
       case 'blog':
-        return <BlogContent />;
+        return <BlogContent onRefresh={onRefreshBlog} />;
       default:
         return <IntroContent />;
     }
