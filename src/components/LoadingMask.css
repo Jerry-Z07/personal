@@ -42,29 +42,27 @@
   }
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .loading-mask {
-    background-color: #1a1a1a;
-  }
-  
-  .loading-text {
-    color: #ffffff;
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .loading-mask,
+html:not([data-theme]) .loading-mask {
+  background-color: #1a1a1a;
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .loading-mask {
-    background-color: #f5f5f5;
-  }
-  
-  .loading-text {
-    color: #333333;
-  }
-  
-  .loading-spinner {
-    border-color: rgba(0, 0, 0, 0.3);
-    border-top-color: #333333;
-  }
+html[data-theme="dark"] .loading-text,
+html:not([data-theme]) .loading-text {
+  color: #ffffff;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .loading-mask {
+  background-color: #f5f5f5;
+}
+
+html[data-theme="light"] .loading-text {
+  color: #333333;
+}
+
+html[data-theme="light"] .loading-spinner {
+  border-color: rgba(0, 0, 0, 0.3);
+  border-top-color: #333333;
 }

@@ -22,20 +22,17 @@
   -ms-user-select: none;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .personal-title {
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .personal-title,
+html:not([data-theme]) .personal-title {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .personal-title {
-    color: #333333;
-    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
-  }
+/* 浅色主题样式 */
+html[data-theme="light"] .personal-title {
+  color: #333333;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 /* 响应式调整 */

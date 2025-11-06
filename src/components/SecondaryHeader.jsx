@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './SecondaryHeader.css';
 
 const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh }) => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   const handleBilibiliClick = () => {
     onMainTabChange('bilibili');
   };
@@ -63,7 +67,7 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh
             transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-user-3-fill"></i>
-            <span>简介</span>
+            <span>{t('secondaryHeader.tabs.intro')}</span>
           </motion.button>
           
           <motion.button 
@@ -74,7 +78,7 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh
             transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-bilibili-fill"></i>
-            <span>Bilibili</span>
+            <span>{t('secondaryHeader.tabs.bilibili')}</span>
           </motion.button>
           
           <motion.button 
@@ -85,7 +89,7 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh
             transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-article-fill"></i>
-            <span>博客</span>
+            <span>{t('secondaryHeader.tabs.blog')}</span>
           </motion.button>
           
           <motion.a 
@@ -98,7 +102,7 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh
             transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-github-fill"></i>
-            <span>GitHub</span>
+            <span>{t('secondaryHeader.tabs.github')}</span>
             <i className="ri-external-link-line external-icon"></i>
           </motion.a>
         </motion.div>

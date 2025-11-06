@@ -36,34 +36,33 @@
   -ms-user-select: none;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .scroll-arrows {
-    color: rgba(255, 255, 255, 0.8);
-  }
-  
-  .scroll-arrows:hover {
-    color: rgba(255, 255, 255, 1);
-  }
-  
-  .scroll-text {
-    color: rgba(255, 255, 255, 0.7);
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .scroll-arrows,
+html:not([data-theme]) .scroll-arrows {
+  color: rgba(255, 255, 255, 0.8);
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .scroll-arrows {
-    color: rgba(0, 0, 0, 0.6);
-  }
-  
-  .scroll-arrows:hover {
-    color: rgba(0, 0, 0, 0.9);
-  }
-  
-  .scroll-text {
-    color: rgba(0, 0, 0, 0.5);
-  }
+html[data-theme="dark"] .scroll-arrows:hover,
+html:not([data-theme]) .scroll-arrows:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+html[data-theme="dark"] .scroll-text,
+html:not([data-theme]) .scroll-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .scroll-arrows {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme="light"] .scroll-arrows:hover {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+html[data-theme="light"] .scroll-text {
+  color: rgba(0, 0, 0, 0.5);
 }
 
 /* 响应式调整 */

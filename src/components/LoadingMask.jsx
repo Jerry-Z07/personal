@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './LoadingMask.css';
 
 const LoadingMask = ({ isVisible, onHide }) => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   const [shouldShow, setShouldShow] = useState(isVisible);
 
   // 5秒超时机制
@@ -55,7 +59,7 @@ const LoadingMask = ({ isVisible, onHide }) => {
             }}
           >
             <div className="loading-spinner"></div>
-            <p className="loading-text">加载中</p>
+            <p className="loading-text">{t('loading.text')}</p>
           </motion.div>
         </motion.div>
       )}

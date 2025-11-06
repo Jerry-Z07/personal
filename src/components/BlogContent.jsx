@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './BlogContent.css';
 import cacheManager from '../cacheManager';
 import { fetchBlogData } from '../dataPreloader';
@@ -8,6 +9,9 @@ import { fetchBlogData } from '../dataPreloader';
 const CACHE_DURATION = 5 * 60 * 1000;
 
 const BlogContent = ({ onRefresh }) => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   const [blogData, setBlogData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,8 +34,8 @@ const BlogContent = ({ onRefresh }) => {
         cacheManager.set('blog', data, CACHE_DURATION);
         setError(null);
       } catch (err) {
-        console.error('获取博客数据失败:', err);
-        setError('无法加载博客数据');
+        console.error(t('app.blog.error'), err);
+        setError(t('blog.error'));
       } finally {
         setLoading(false);
       }
@@ -53,8 +57,8 @@ const BlogContent = ({ onRefresh }) => {
           cacheManager.set('blog', data, CACHE_DURATION);
           setError(null);
         } catch (err) {
-          console.error('刷新博客数据失败:', err);
-          setError('无法加载博客数据');
+          console.error(t('app.blog.refreshError'), err);
+          setError(t('blog.error'));
         } finally {
           setLoading(false);
         }
@@ -70,7 +74,7 @@ const BlogContent = ({ onRefresh }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <div className="blog-loading">加载中...</div>
+        <div className="blog-loading">{t('blog.loading')}</div>
       </motion.div>
     );
   }
@@ -118,7 +122,7 @@ const BlogContent = ({ onRefresh }) => {
               <h3 className="blog-post-title">{item.title}</h3>
               <p className="blog-post-description">{item.description}</p>
               <div className="blog-post-read-more">
-                <span>阅读更多</span>
+                <span>{t('blog.post.readMore')}</span>
                 <i className="ri-arrow-right-line"></i>
               </div>
             </a>

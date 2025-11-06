@@ -26,42 +26,42 @@
   font-size: 0.9rem;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .intro-title {
-    color: #ffffff;
-  }
-  
-  .intro-item {
-    color: #e0e0e0;
-  }
-  
-  .intro-label {
-    color: #f0f0f0;
-  }
-  
-  .intro-value {
-    color: #d0d0d0;
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .intro-title,
+html:not([data-theme]) .intro-title {
+  color: #ffffff;
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .intro-title {
-    color: #333333;
-  }
-  
-  .intro-item {
-    color: #333333;
-  }
-  
-  .intro-label {
-    color: #333333;
-  }
-  
-  .intro-value {
-    color: #555555;
-  }
+html[data-theme="dark"] .intro-item,
+html:not([data-theme]) .intro-item {
+  color: #e0e0e0;
+}
+
+html[data-theme="dark"] .intro-label,
+html:not([data-theme]) .intro-label {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .intro-value,
+html:not([data-theme]) .intro-value {
+  color: #d0d0d0;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .intro-title {
+  color: #333333;
+}
+
+html[data-theme="light"] .intro-item {
+  color: #333333;
+}
+
+html[data-theme="light"] .intro-label {
+  color: #333333;
+}
+
+html[data-theme="light"] .intro-value {
+  color: #555555;
 }
 
 /* 响应式调整 */

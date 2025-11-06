@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import './App.css'
 import BackgroundImage from './components/BackgroundImage'
 import BackgroundBlur from './components/BackgroundBlur'
@@ -15,6 +16,9 @@ import BackToTopButton from './components/BackToTopButton'
 import { preloadAllData } from './dataPreloader'
 
 function App() {
+  // 使用i18n翻译函数
+  const { t, i18n } = useTranslation();
+
   // 检测是否为移动端
   const isMobile = () => {
     return window.innerWidth <= 768;
@@ -66,7 +70,7 @@ function App() {
         fontLoaded = true;
         checkAllLoaded();
       } catch (error) {
-        console.warn('字体加载失败，继续显示页面:', error);
+        console.warn(t('app.font.loadError'), error);
         // 即使字体加载失败也继续
         fontLoaded = true;
         checkAllLoaded();
@@ -227,11 +231,19 @@ function App() {
   // 页面加载完成后输出console.log并预加载数据
   useEffect(() => {
     if (!isLoading) {
-      console.log('愿你永远心怀热爱，眼中总有星辰大海');
+      console.log(t('app.console.welcome'));
       // 在后台静默预加载 Bilibili 和 Blog 数据
       preloadAllData();
     }
   }, [isLoading]);
+
+  // 动态更新页面标题和lang属性
+  useEffect(() => {
+    // 更新页面标题
+    document.title = t('meta.title');
+    // 更新html lang属性
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
 
   const handleLoadingMaskHide = () => {
     setIsLoading(false);

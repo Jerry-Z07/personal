@@ -1,13 +1,17 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './ProjectsContent.css';
 
 const ProjectsContent = () => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   // 项目数据
   const projects = [
     {
       id: 1,
-      title: 'Mixi',
-      description: 'Mix Intelligence. 一个多功能的QQ机器人，自2024.7.12运营至今',
+      titleKey: 'mixi',  // 使用key而不是硬编码文本
+      descriptionKey: 'mixi',
       tags: [],
       status: 'running',
       image: 'https://q.qlogo.cn/headimg_dl?dst_uin=3834216037&spec=640',
@@ -15,12 +19,12 @@ const ProjectsContent = () => {
     }
   ];
 
-  // 状态映射
+  // 状态映射 - 仅保留颜色，标签文本使用i18n
   const statusMap = {
-    active: { label: '进行中', color: '#29764C' },
-    completed: { label: '已完成', color: '#2196F3' },
-    planning: { label: '规划中', color: '#FF9800' },
-    running: { label: '运行中', color: '#4CAF50' },
+    active: { color: '#29764C' },
+    completed: { color: '#2196F3' },
+    planning: { color: '#FF9800' },
+    running: { color: '#4CAF50' },
   };
 
   // 卡片动画变体
@@ -44,7 +48,7 @@ const ProjectsContent = () => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <h2 className="content-block-title">个人项目</h2>
+      <h2 className="content-block-title">{t('projects.title')}</h2>
       
       <div className="projects-grid">
         {projects.map((project, index) => (
@@ -62,19 +66,19 @@ const ProjectsContent = () => {
           >
             {/* 项目图标 */}
             <div className="project-icon">
-              <img src={project.image} alt={project.title} />
+              <img src={project.image} alt={t(`projects.card.title.${project.titleKey}`)} />
             </div>
 
             {/* 项目头部：标题和状态横向布局 */}
             <div className="project-header">
-              <h3 className="project-title">{project.title}</h3>
+              <h3 className="project-title">{t(`projects.card.title.${project.titleKey}`)}</h3>
               <div className="project-status-badge" style={{ backgroundColor: statusMap[project.status].color }}>
-                {statusMap[project.status].label}
+                {t(`projects.status.${project.status}`)}
               </div>
             </div>
 
             {/* 项目描述 */}
-            <p className="project-description">{project.description}</p>
+            <p className="project-description">{t(`projects.card.description.${project.descriptionKey}`)}</p>
 
             {/* 技术标签 */}
             {project.tags.length > 0 && (
@@ -98,7 +102,7 @@ const ProjectsContent = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <i className="ri-eye-line"></i>
-                <span>查看详情</span>
+                <span>{t('projects.action.view')}</span>
               </motion.a>
             </div>
           </motion.div>

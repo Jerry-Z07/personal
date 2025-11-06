@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 import './Header.css';
 
 const Header = () => {
+  // 使用i18n翻译函数
+  const { t, i18n } = useTranslation();
+
   return (
     <motion.header 
       className="header"
@@ -20,6 +25,14 @@ const Header = () => {
           >
             Jerry.<span className="brand-letter-z">Z</span>
           </motion.h1>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="brand-language-switcher"
+          >
+            <LanguageSwitcher />
+          </motion.div>
         </div>
         
         <nav className="header-nav">
@@ -30,7 +43,7 @@ const Header = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            首页
+            {t('header.nav.home')}
           </motion.a>
         </nav>
       </div>

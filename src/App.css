@@ -21,20 +21,17 @@ body {
   padding-top: 2rem;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .content-wrapper {
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .content-wrapper,
+html:not([data-theme]) .content-wrapper {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .content-wrapper {
-    color: #333333;
-    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
-  }
+/* 浅色主题样式 */
+html[data-theme="light"] .content-wrapper {
+  color: #333333;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
 }
 
 /* 响应式调整 */

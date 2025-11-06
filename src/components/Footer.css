@@ -74,52 +74,52 @@
   opacity: 0.8;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .footer {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .footer-left {
-    color: #d1d1d1;
-  }
-  
-  .status-button {
-    color: #34d399;
-    background: rgba(52, 211, 153, 0.15);
-    border: 1px solid rgba(52, 211, 153, 0.25);
-  }
-  
-  .status-button:hover {
-    background: rgba(52, 211, 153, 0.25);
-    border-color: rgba(52, 211, 153, 0.35);
-    color: #34d399; /* 保持文字颜色不变 */
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .footer,
+html:not([data-theme]) .footer {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .footer {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .footer-left {
-    color: #666;
-  }
-  
-  .status-button {
-    color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-  }
-  
-  .status-button:hover {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: rgba(16, 185, 129, 0.3);
-    color: #10b981; /* 保持文字颜色不变 */
-  }
+html[data-theme="dark"] .footer-left,
+html:not([data-theme]) .footer-left {
+  color: #d1d1d1;
+}
+
+html[data-theme="dark"] .status-button,
+html:not([data-theme]) .status-button {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+}
+
+html[data-theme="dark"] .status-button:hover,
+html:not([data-theme]) .status-button:hover {
+  background: rgba(52, 211, 153, 0.25);
+  border-color: rgba(52, 211, 153, 0.35);
+  color: #34d399;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .footer {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .footer-left {
+  color: #666;
+}
+
+html[data-theme="light"] .status-button {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+html[data-theme="light"] .status-button:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
 }
 
 /* 响应式调整 */

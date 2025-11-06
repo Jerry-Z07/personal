@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './BilibiliContent.css';
 import cacheManager from '../cacheManager';
 import { fetchBilibiliData } from '../dataPreloader';
@@ -8,6 +9,9 @@ import { fetchBilibiliData } from '../dataPreloader';
 const CACHE_DURATION = 5 * 60 * 1000;
 
 const BilibiliContent = ({ onRefresh }) => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   const [userInfo, setUserInfo] = useState(null);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,10 +37,10 @@ const BilibiliContent = ({ onRefresh }) => {
         setVideos(data.videos);
         cacheManager.set('bilibili', data, CACHE_DURATION);
         setError(null);
-        console.log('Bilibili数据获取成功');
+        console.log(t('app.bilibili.success'));
       } catch (err) {
         setError(err.message);
-        console.error('获取Bilibili数据失败:', err);
+        console.error(t('app.bilibili.error'), err);
       } finally {
         setLoading(false);
       }
@@ -60,7 +64,7 @@ const BilibiliContent = ({ onRefresh }) => {
           setError(null);
         } catch (err) {
           setError(err.message);
-          console.error('刷新Bilibili数据失败:', err);
+          console.error(t('app.bilibili.refreshError'), err);
         } finally {
           setLoading(false);
         }
@@ -104,13 +108,13 @@ const BilibiliContent = ({ onRefresh }) => {
         <div className="bilibili-container">
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>正在加载用户信息...</p>
+            <p>{t('bilibili.loading')}</p>
           </div>
         </div>
       ) : error ? (
         <div className="bilibili-container">
           <div className="error-container">
-            <p>加载失败: {error}</p>
+            <p>{t('bilibili.error.prefix')}{error}</p>
           </div>
         </div>
       ) : (
@@ -123,11 +127,11 @@ const BilibiliContent = ({ onRefresh }) => {
                   <h2 className="username">{userInfo.name}</h2>
                   <div className="user-signature">{userInfo.sign}</div>
                   <div className="user-stats">
-                    <span className="followers-count">粉丝: {formatFollowerCount(userInfo.follower)}</span>
+                    <span className="followers-count">{t('bilibili.stats.follower')}{formatFollowerCount(userInfo.follower)}</span>
                     <span className="divider">|</span>
-                    <span className="following-count">关注: {userInfo.following}</span>
+                    <span className="following-count">{t('bilibili.stats.following')}{userInfo.following}</span>
                     <span className="divider">|</span>
-                    <span className="likes-count">视频: {userInfo.archive_count}</span>
+                    <span className="likes-count">{t('bilibili.stats.video')}{userInfo.archive_count}</span>
                   </div>
                 </div>
               </div>
@@ -136,7 +140,7 @@ const BilibiliContent = ({ onRefresh }) => {
           
           {/* 视频列表区域 */}
           <div className="video-section">
-            <h3 className="video-section-title">最新视频</h3>
+            <h3 className="video-section-title">{t('bilibili.videoSection.title')}</h3>
             <div className="video-grid">
               {videos.map((video) => (
                 <motion.div 

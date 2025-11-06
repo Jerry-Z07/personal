@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './SidebarNav.css';
 
 const SidebarNav = ({ subTab, onSubTabChange }) => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   const menuItems = [
-    { id: 'intro', label: '个人简介', icon: 'ri-user-3-line' },
-    { id: 'nickname', label: '昵称的由来', icon: 'ri-question-line' },
-    { id: 'projects', label: '个人项目', icon: 'ri-folder-3-line' }
+    { id: 'intro', icon: 'ri-user-3-line' },
+    { id: 'nickname', icon: 'ri-question-line' },
+    { id: 'projects', icon: 'ri-folder-3-line' }
   ];
 
   return (
@@ -26,7 +30,7 @@ const SidebarNav = ({ subTab, onSubTabChange }) => {
             transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className={`${item.icon} nav-icon`}></i>
-            <span className="nav-label">{item.label}</span>
+            <span className="nav-label">{t(`sidebar.menu.${item.id}`)}</span>
           </motion.button>
         ))}
       </nav>

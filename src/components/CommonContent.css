@@ -45,26 +45,24 @@
   vertical-align: middle;
 }
 
-/* 深色模式：根据系统主题设置自动应用 */
-@media (prefers-color-scheme: dark) {
-  .content-block-title {
-    color: #ffffff;
-  }
-  
-  .content-block-body {
-    color: #e0e0e0;
-  }
+/* 深色主题：根据系统主题设置自动应用 */
+html[data-theme="dark"] .content-block-title,
+html:not([data-theme]) .content-block-title {
+  color: #ffffff;
 }
 
-/* 浅色模式：根据系统主题设置自动应用 */
-@media (prefers-color-scheme: light) {
-  .content-block-title {
-    color: #333333;
-  }
-  
-  .content-block-body {
-    color: #333333;
-  }
+html[data-theme="dark"] .content-block-body,
+html:not([data-theme]) .content-block-body {
+  color: #e0e0e0;
+}
+
+/* 浅色主题：根据系统主题设置自动应用 */
+html[data-theme="light"] .content-block-title {
+  color: #333333;
+}
+
+html[data-theme="light"] .content-block-body {
+  color: #333333;
 }
 
 /* 响应式设计：布局与字体适配 */

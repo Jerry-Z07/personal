@@ -178,85 +178,91 @@
   margin-bottom: 0.5rem;
   font-style: italic;
 }
-@media (prefers-color-scheme: dark) {
-  .bilibili-content {
-    color: #e0e0e0;
-  }
-  
-  .bilibili-container {
-    background-color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .username {
-    color: #ffffff;
-  }
-  
-  .user-stats {
-    color: #b0b0b0;
-  }
-  
-  .divider {
-    color: #808080;
-  }
-  
-  .video-section-title {
-    color: #ffffff;
-  }
-  
-  .video-card {
-    background-color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  .video-title {
-    color: #e0e0e0;
-  }
-  
-  .video-stats {
-    color: #b0b0b0;
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .bilibili-content,
+html:not([data-theme]) .bilibili-content {
+  color: #e0e0e0;
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .bilibili-content {
-    color: #333333;
-  }
-  
-  .bilibili-container {
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .username {
-    color: #333333;
-  }
-  
-  .user-stats {
-    color: #666666;
-  }
-  
-  .divider {
-    color: #999999;
-  }
-  
-  .video-section-title {
-    color: #333333;
-  }
-  
-  .video-card {
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .video-title {
-    color: #333333;
-  }
-  
-  .video-stats {
-    color: #666666;
-  }
+html[data-theme="dark"] .bilibili-container,
+html:not([data-theme]) .bilibili-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .username,
+html:not([data-theme]) .username {
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .user-stats,
+html:not([data-theme]) .user-stats {
+  color: #b0b0b0;
+}
+
+html[data-theme="dark"] .divider,
+html:not([data-theme]) .divider {
+  color: #808080;
+}
+
+html[data-theme="dark"] .video-section-title,
+html:not([data-theme]) .video-section-title {
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .video-card,
+html:not([data-theme]) .video-card {
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .video-title,
+html:not([data-theme]) .video-title {
+  color: #e0e0e0;
+}
+
+html[data-theme="dark"] .video-stats,
+html:not([data-theme]) .video-stats {
+  color: #b0b0b0;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .bilibili-content {
+  color: #333333;
+}
+
+html[data-theme="light"] .bilibili-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .username {
+  color: #333333;
+}
+
+html[data-theme="light"] .user-stats {
+  color: #666666;
+}
+
+html[data-theme="light"] .divider {
+  color: #999999;
+}
+
+html[data-theme="light"] .video-section-title {
+  color: #333333;
+}
+
+html[data-theme="light"] .video-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .video-title {
+  color: #333333;
+}
+
+html[data-theme="light"] .video-stats {
+  color: #666666;
 }
 
 /* 响应式调整 */

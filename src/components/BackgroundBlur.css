@@ -11,16 +11,13 @@
   transition: all 0.3s ease;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .background-blur {
-    background-color: rgba(0, 0, 0, 0.2);
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .background-blur,
+html:not([data-theme]) .background-blur {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .background-blur {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
+/* 浅色主题样式 */
+html[data-theme="light"] .background-blur {
+  background-color: rgba(255, 255, 255, 0.3);
 }

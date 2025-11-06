@@ -154,67 +154,73 @@
   font-size: 1.1rem;
 }
 
-/* 深色模式：根据系统主题自动应用 */
-@media (prefers-color-scheme: dark) {
-  .project-card {
-    background: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-
-  .project-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  }
-
-  .project-icon {
-    background: #2a2a2a;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  }
-
-  .project-title {
-    color: #ffffff;
-  }
-
-  .project-description {
-    color: #d0d0d0;
-  }
-
-  .project-tag {
-    background: rgba(33, 150, 243, 0.2);
-    color: #64B5F6;
-  }
-
-  .project-tag:hover {
-    background: rgba(33, 150, 243, 0.3);
-  }
-
-  .project-actions {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .project-action-btn {
-    border-color: #64B5F6;
-    color: #64B5F6;
-  }
-
-  .project-action-btn:hover {
-    background: #64B5F6;
-    color: #000000;
-  }
+/* 深色主题：根据系统主题自动应用 */
+html[data-theme="dark"] .project-card,
+html:not([data-theme]) .project-card {
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* 浅色模式：根据系统主题自动应用 */
-@media (prefers-color-scheme: light) {
-  .project-card {
-    background: rgba(255, 255, 255, 0.9);
-  }
+html[data-theme="dark"] .project-card:hover,
+html:not([data-theme]) .project-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
 
-  .project-title {
-    color: #333333;
-  }
+html[data-theme="dark"] .project-icon,
+html:not([data-theme]) .project-icon {
+  background: #2a2a2a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
 
-  .project-description {
-    color: #555555;
-  }
+html[data-theme="dark"] .project-title,
+html:not([data-theme]) .project-title {
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .project-description,
+html:not([data-theme]) .project-description {
+  color: #d0d0d0;
+}
+
+html[data-theme="dark"] .project-tag,
+html:not([data-theme]) .project-tag {
+  background: rgba(33, 150, 243, 0.2);
+  color: #64B5F6;
+}
+
+html[data-theme="dark"] .project-tag:hover,
+html:not([data-theme]) .project-tag:hover {
+  background: rgba(33, 150, 243, 0.3);
+}
+
+html[data-theme="dark"] .project-actions,
+html:not([data-theme]) .project-actions {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .project-action-btn,
+html:not([data-theme]) .project-action-btn {
+  border-color: #64B5F6;
+  color: #64B5F6;
+}
+
+html[data-theme="dark"] .project-action-btn:hover,
+html:not([data-theme]) .project-action-btn:hover {
+  background: #64B5F6;
+  color: #000000;
+}
+
+/* 浅色主题：根据系统主题自动应用 */
+html[data-theme="light"] .project-card {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="light"] .project-title {
+  color: #333333;
+}
+
+html[data-theme="light"] .project-description {
+  color: #555555;
 }
 
 /* 响应式设计：布局与字体适配 */

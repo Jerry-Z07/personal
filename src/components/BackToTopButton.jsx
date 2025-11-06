@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './BackToTopButton.css';
 
 const BackToTopButton = ({ onClick }) => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   return (
     <motion.button
       className="back-to-top-button"
@@ -12,7 +16,7 @@ const BackToTopButton = ({ onClick }) => {
       transition={{ duration: 0.3, ease: "easeOut" }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      aria-label="回到主页"
+      aria-label={t('backToTop.ariaLabel')}
     >
       <i className="ri-arrow-up-line"></i>
     </motion.button>

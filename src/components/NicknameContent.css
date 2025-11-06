@@ -31,42 +31,42 @@
   vertical-align: middle;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .nickname-title {
-    color: #ffffff;
-  }
-  
-  .nickname-item {
-    color: #e0e0e0;
-  }
-  
-  .nickname-label {
-    color: #f0f0f0;
-  }
-  
-  .nickname-value {
-    color: #d0d0d0;
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .nickname-title,
+html:not([data-theme]) .nickname-title {
+  color: #ffffff;
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .nickname-title {
-    color: #333333;
-  }
-  
-  .nickname-item {
-    color: #333333;
-  }
-  
-  .nickname-label {
-    color: #333333;
-  }
-  
-  .nickname-value {
-    color: #555555;
-  }
+html[data-theme="dark"] .nickname-item,
+html:not([data-theme]) .nickname-item {
+  color: #e0e0e0;
+}
+
+html[data-theme="dark"] .nickname-label,
+html:not([data-theme]) .nickname-label {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .nickname-value,
+html:not([data-theme]) .nickname-value {
+  color: #d0d0d0;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .nickname-title {
+  color: #333333;
+}
+
+html[data-theme="light"] .nickname-item {
+  color: #333333;
+}
+
+html[data-theme="light"] .nickname-label {
+  color: #333333;
+}
+
+html[data-theme="light"] .nickname-value {
+  color: #555555;
 }
 
 /* 响应式调整 */

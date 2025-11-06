@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './PersonalTitle.css';
 
 const PersonalTitle = () => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   return (
     <motion.div 
       className="personal-title-container"
@@ -25,7 +29,7 @@ const PersonalTitle = () => {
           damping: 10 
         }}
       >
-        Jerry.Z的个人页
+        {t('personalTitle.main')}
       </motion.h1>
     </motion.div>
   );

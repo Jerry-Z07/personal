@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './Footer.css';
 
 const Footer = () => {
+  // 使用i18n翻译函数
+  const { t } = useTranslation();
+
   return (
     <motion.footer 
       className="footer"
@@ -12,7 +16,7 @@ const Footer = () => {
     >
       <div className="footer-container">
         <div className="footer-left">
-          <span>By Jerry.Z with ❤️</span>
+          <span>{t('footer.signature')}</span>
         </div>
         <div className="footer-right">
           <motion.a
@@ -25,7 +29,7 @@ const Footer = () => {
             transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <i className="ri-pulse-line"></i>
-            <span>服务状态</span>
+            <span>{t('footer.status.button')}</span>
             <i className="ri-external-link-line external-icon"></i>
           </motion.a>
         </div>

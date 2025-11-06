@@ -36,26 +36,24 @@
   line-height: 1.6;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .content-placeholder h2 {
-    color: #ffffff;
-  }
-  
-  .content-placeholder p {
-    color: #e0e0e0;
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .content-placeholder h2,
+html:not([data-theme]) .content-placeholder h2 {
+  color: #ffffff;
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .content-placeholder h2 {
-    color: #333333;
-  }
-  
-  .content-placeholder p {
-    color: #555555;
-  }
+html[data-theme="dark"] .content-placeholder p,
+html:not([data-theme]) .content-placeholder p {
+  color: #e0e0e0;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .content-placeholder h2 {
+  color: #333333;
+}
+
+html[data-theme="light"] .content-placeholder p {
+  color: #555555;
 }
 
 /* 响应式调整 */

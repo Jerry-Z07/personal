@@ -105,57 +105,59 @@
   font-size: 1rem;
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .blog-post-card {
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .blog-post-card:hover {
-    border-color: rgba(102, 204, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(102, 204, 255, 0.2);
-  }
-  
-  .blog-title {
-    color: #66ccff;
-  }
-  
-  .blog-post-title {
-    color: #66ccff;
-  }
-  
-  .blog-post-description {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  
-  .blog-post-read-more {
-    color: #66ccff;
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .blog-post-card,
+html:not([data-theme]) .blog-post-card {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .blog-title {
-    color: #3399cc;
-  }
-  
-  .blog-post-card {
-    background: rgba(255, 255, 255, 0.8);
-  }
-  
-  .blog-post-title {
-    color: #3399cc;
-  }
-  
-  .blog-post-description {
-    color: rgba(0, 0, 0, 0.7);
-  }
-  
-  .blog-post-read-more {
-    color: #3399cc;
-  }
+html[data-theme="dark"] .blog-post-card:hover,
+html:not([data-theme]) .blog-post-card:hover {
+  border-color: rgba(102, 204, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(102, 204, 255, 0.2);
+}
+
+html[data-theme="dark"] .blog-title,
+html:not([data-theme]) .blog-title {
+  color: #66ccff;
+}
+
+html[data-theme="dark"] .blog-post-title,
+html:not([data-theme]) .blog-post-title {
+  color: #66ccff;
+}
+
+html[data-theme="dark"] .blog-post-description,
+html:not([data-theme]) .blog-post-description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+html[data-theme="dark"] .blog-post-read-more,
+html:not([data-theme]) .blog-post-read-more {
+  color: #66ccff;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .blog-title {
+  color: #3399cc;
+}
+
+html[data-theme="light"] .blog-post-card {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+html[data-theme="light"] .blog-post-title {
+  color: #3399cc;
+}
+
+html[data-theme="light"] .blog-post-description {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="light"] .blog-post-read-more {
+  color: #3399cc;
 }
 
 /* 响应式调整 */

@@ -271,47 +271,130 @@
   box-shadow: 0 4px 12px rgba(51, 51, 51, 0.3);
 }
 
-/* 深色模式样式 */
-@media (prefers-color-scheme: dark) {
-  .secondary-header {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .social-link {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
+/* 深色主题样式 */
+html[data-theme="dark"] .secondary-header,
+html:not([data-theme]) .secondary-header {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 浅色模式样式 */
-@media (prefers-color-scheme: light) {
-  .secondary-header {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .social-link {
-    color: #333333;
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .github-link:hover {
-    background-color: rgba(51, 51, 51, 0.9);
-    color: white;
-  }
-  
-  .bilibili-link:hover {
-    background-color: rgba(251, 114, 153, 0.9);
-    color: white;
-  }
-  
-  .blog-link:hover {
-    background-color: rgba(102, 204, 255, 0.9);
-    color: white;
-  }
+html[data-theme="dark"] .social-link,
+html:not([data-theme]) .social-link {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .social-link:hover,
+html:not([data-theme]) .social-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 1);
+}
+
+/* 选中状态才显示颜色 */
+html[data-theme="dark"] .intro-link.active,
+html:not([data-theme]) .intro-link.active {
+  background-color: rgba(52, 152, 219, 0.8);
+  color: white;
+  border-color: rgba(52, 152, 219, 0.9);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+  transform: translateY(-2px);
+  animation: breathing 3s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .bilibili-link.active,
+html:not([data-theme]) .bilibili-link.active {
+  background-color: rgba(251, 114, 153, 0.8);
+  color: white;
+  border-color: rgba(251, 114, 153, 0.9);
+  box-shadow: 0 4px 12px rgba(251, 114, 153, 0.4);
+  transform: translateY(-2px);
+  animation: breathing-bilibili 3s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .blog-link.active,
+html:not([data-theme]) .blog-link.active {
+  background-color: rgba(102, 204, 255, 0.8);
+  color: white;
+  border-color: rgba(102, 204, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(102, 204, 255, 0.4);
+  transform: translateY(-2px);
+  animation: breathing-blog 3s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .github-link,
+html:not([data-theme]) .github-link {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .github-link:hover,
+html:not([data-theme]) .github-link:hover {
+  background: rgba(51, 51, 51, 0.8);
+  border-color: rgba(51, 51, 51, 0.8);
+  box-shadow: 0 4px 12px rgba(51, 51, 51, 0.3);
+  color: white;
+}
+
+/* 浅色主题样式 */
+html[data-theme="light"] .secondary-header {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .social-link {
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .social-link:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* 选中状态才显示颜色 */
+html[data-theme="light"] .intro-link.active {
+  background-color: rgba(52, 152, 219, 0.8);
+  color: white;
+  border-color: rgba(52, 152, 219, 0.9);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+  transform: translateY(-2px);
+  animation: breathing 3s ease-in-out infinite;
+}
+
+html[data-theme="light"] .bilibili-link.active {
+  background-color: rgba(251, 114, 153, 0.8);
+  color: white;
+  border-color: rgba(251, 114, 153, 0.9);
+  box-shadow: 0 4px 12px rgba(251, 114, 153, 0.4);
+  transform: translateY(-2px);
+  animation: breathing-bilibili 3s ease-in-out infinite;
+}
+
+html[data-theme="light"] .blog-link.active {
+  background-color: rgba(102, 204, 255, 0.8);
+  color: white;
+  border-color: rgba(102, 204, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(102, 204, 255, 0.4);
+  transform: translateY(-2px);
+  animation: breathing-blog 3s ease-in-out infinite;
+}
+
+html[data-theme="light"] .github-link {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .github-link:hover {
+  background-color: rgba(51, 51, 51, 0.9);
+  color: white;
+  border-color: rgba(51, 51, 51, 0.9);
+  box-shadow: 0 4px 12px rgba(51, 51, 51, 0.3);
 }
 
 /* 响应式调整 */

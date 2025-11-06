@@ -1,0 +1,120 @@
+{
+  "header": {
+    "brand": "Jerry.Z",
+    "nav": {
+      "home": "Home"
+    }
+  },
+  "secondaryHeader": {
+    "tabs": {
+      "intro": "Intro",
+      "bilibili": "Bilibili",
+      "blog": "Blog",
+      "github": "GitHub"
+    }
+  },
+  "footer": {
+    "signature": "By Jerry.Z with ❤️",
+    "status": {
+      "button": "Service Status"
+    }
+  },
+  "sidebar": {
+    "menu": {
+      "intro": "About Me",
+      "nickname": "Origin of Nickname",
+      "projects": "My Projects"
+    }
+  },
+  "intro": {
+    "title": "About Me",
+    "content": {
+      "p1": "I'm Jerry.Z, from China🇨🇳, currently a high school student.",
+      "p2": "My technical skills are almost zero",
+      "p2_strikethrough": "(So AI is really useful, you know)",
+      "p2_with_strikethrough": "My technical skills are almost zero<1>(So AI is really useful, you know)</1>"
+    }
+  },
+  "nickname": {
+    "title": "Origin of Nickname",
+    "content": {
+      "p1": "The name Jerry comes from the cartoon Tom and Jerry.",
+      "p1_alt": "Tom and Jerry",
+      "p2": "Z is the first letter of a character in my name."
+    }
+  },
+  "projects": {
+    "title": "My Projects",
+    "card": {
+      "title": {
+        "mixi": "Mixi"
+      },
+      "description": {
+        "mixi": "Mix Intelligence. A multi-functional QQ bot, running since July 12, 2024"
+      }
+    },
+    "status": {
+      "active": "In Progress",
+      "completed": "Completed",
+      "planning": "Planning",
+      "running": "Running"
+    },
+    "action": {
+      "view": "View Details"
+    }
+  },
+  "bilibili": {
+    "loading": "Loading user information...",
+    "error": {
+      "prefix": "Loading failed: "
+    },
+    "stats": {
+      "follower": "Followers: ",
+      "following": "Following: ",
+      "video": "Videos: "
+    },
+    "videoSection": {
+      "title": "Latest Videos"
+    }
+  },
+  "blog": {
+    "loading": "Loading...",
+    "error": "Unable to load blog data",
+    "post": {
+      "readMore": "Read More"
+    }
+  },
+  "personalTitle": {
+    "main": "Jerry.Z's Personal Page"
+  },
+  "loading": {
+    "text": "Loading"
+  },
+  "scrollIndicator": {
+    "hint": "Scroll down or click"
+  },
+  "backToTop": {
+    "ariaLabel": "Back to Home"
+  },
+  "app": {
+    "console": {
+      "welcome": "May you always hold passion in your heart and stars and seas in your eyes."
+    },
+    "font": {
+      "loadError": "Font loading failed, continue displaying page: "
+    },
+    "bilibili": {
+      "success": "Bilibili data fetched successfully",
+      "error": "Failed to fetch Bilibili data: ",
+      "refreshError": "Failed to refresh Bilibili data: "
+    },
+    "blog": {
+      "error": "Failed to fetch blog data: ",
+      "refreshError": "Failed to refresh blog data: "
+    }
+  },
+  "meta": {
+    "title": "Introduce Jerry.Z",
+    "lang": "en-US"
+  }
+}
