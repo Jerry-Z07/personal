@@ -1,0 +1,315 @@
+/* =====================================================
+ * ProjectsContent - 个人项目展示页面样式
+ * 采用卡片式布局展示项目信息
+ * 包含状态标签、技术栈标签、操作按钮等元素
+ * ===================================================== */
+
+/* 项目网格容器：响应式卡片布局 */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(650px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* 项目卡片：主容器样式 */
+.project-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 项目图标：左上角圆形图片区域 */
+.project-icon {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.project-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card:hover .project-icon {
+  transform: scale(1.05);
+}
+
+/* 项目头部容器：包含标题和状态标签的横向布局 */
+.project-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-left: 100px; /* 为左侧图标预留空间 */
+  min-height: 80px; /* 与图标高度一致 */
+}
+
+/* 项目状态徽章：显示项目当前状态 */
+.project-status-badge {
+  margin-left: auto;
+  padding: 0.35rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+/* 项目标题：卡片标题样式 */
+.project-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* 项目描述：简介文字 */
+.project-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 1.25rem;
+}
+
+/* 技术标签容器：展示项目使用的技术栈 */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  min-height: 0; /* 当没有标签时不占用空间 */
+}
+
+/* 单个技术标签：圆角标签样式 */
+.project-tag {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  background: rgba(33, 150, 243, 0.1);
+  color: #2196F3;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.project-tag:hover {
+  background: rgba(33, 150, 243, 0.2);
+  transform: translateY(-2px);
+}
+
+/* 操作按钮容器：卡片底部操作区 */
+.project-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 操作按钮：查看详情等按钮 */
+.project-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: 1.5px solid #2196F3;
+  border-radius: 8px;
+  color: #2196F3;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.project-action-btn:hover {
+  background: #2196F3;
+  color: #ffffff;
+}
+
+.project-action-btn i {
+  font-size: 1.1rem;
+}
+
+/* 深色模式：根据系统主题自动应用 */
+@media (prefers-color-scheme: dark) {
+  .project-card {
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .project-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  }
+
+  .project-icon {
+    background: #2a2a2a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .project-title {
+    color: #ffffff;
+  }
+
+  .project-description {
+    color: #d0d0d0;
+  }
+
+  .project-tag {
+    background: rgba(33, 150, 243, 0.2);
+    color: #64B5F6;
+  }
+
+  .project-tag:hover {
+    background: rgba(33, 150, 243, 0.3);
+  }
+
+  .project-actions {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .project-action-btn {
+    border-color: #64B5F6;
+    color: #64B5F6;
+  }
+
+  .project-action-btn:hover {
+    background: #64B5F6;
+    color: #000000;
+  }
+}
+
+/* 浅色模式：根据系统主题自动应用 */
+@media (prefers-color-scheme: light) {
+  .project-card {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .project-title {
+    color: #333333;
+  }
+
+  .project-description {
+    color: #555555;
+  }
+}
+
+/* 响应式设计：布局与字体适配 */
+
+/* 平板端（最大宽度 768px）：较小的屏幕 */
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .project-card {
+    padding: 1.5rem;
+    padding-top: 5.5rem;
+  }
+
+  .project-icon {
+    width: 70px;
+    height: 70px;
+    top: 1.25rem;
+    left: 1.25rem;
+  }
+
+  /* 平板端恢复垂直布局 */
+  .project-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 0;
+    min-height: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-status-badge {
+    margin-left: 0;
+    align-self: flex-end;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .project-description {
+    font-size: 0.98rem;
+  }
+}
+
+/* 手机端（最大宽度 480px）：最小的屏幕 */
+@media (max-width: 480px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .project-card {
+    padding: 1.25rem;
+    padding-top: 5rem;
+  }
+
+  .project-icon {
+    width: 60px;
+    height: 60px;
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .project-header {
+    min-height: auto;
+  }
+
+  .project-title {
+    font-size: 1.3rem;
+  }
+
+  .project-status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.65rem;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .project-description {
+    font-size: 0.95rem;
+  }
+
+  .project-tag {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.65rem;
+  }
+
+  .project-action-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+  }
+}

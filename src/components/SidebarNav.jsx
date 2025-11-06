@@ -4,7 +4,8 @@ import './SidebarNav.css';
 const SidebarNav = ({ subTab, onSubTabChange }) => {
   const menuItems = [
     { id: 'intro', label: '个人简介', icon: 'ri-user-3-line' },
-    { id: 'nickname', label: '昵称的由来', icon: 'ri-question-line' }
+    { id: 'nickname', label: '昵称的由来', icon: 'ri-question-line' },
+    { id: 'projects', label: '个人项目', icon: 'ri-folder-3-line' }
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import IntroContent from './IntroContent';
 import NicknameContent from './NicknameContent';
+import ProjectsContent from './ProjectsContent';
 import BilibiliContent from './BilibiliContent';
 import BlogContent from './BlogContent';
 import './ContentArea.css';
@@ -14,6 +15,8 @@ const ContentArea = ({ mainTab, subTab, showSidebar, onRefreshBilibili, onRefres
           return <IntroContent />;
         case 'nickname':
           return <NicknameContent />;
+        case 'projects':
+          return <ProjectsContent />;
         default:
           return <IntroContent />;
       }
