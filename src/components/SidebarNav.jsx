@@ -1,15 +1,34 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Nav } from '@fluentui/react';
 import './SidebarNav.css';
 
 const SidebarNav = ({ subTab, onSubTabChange }) => {
-  // 使用i18n翻译函数
   const { t } = useTranslation();
 
+  // 定义菜单项，映射到 Fluent UI 8 Nav 组件格式
   const menuItems = [
-    { id: 'intro', icon: 'ri-user-3-line' },
-    { id: 'nickname', icon: 'ri-question-line' },
-    { id: 'projects', icon: 'ri-folder-3-line' }
+    {
+      name: t('sidebar.menu.intro'),
+      key: 'intro',
+      icon: "useroptional",
+      onClick: () => onSubTabChange('intro'),
+      isSelected: subTab === 'intro'
+    },
+    {
+      name: t('sidebar.menu.nickname'),
+      key: 'nickname',
+      icon: "info2",
+      onClick: () => onSubTabChange('nickname'),
+      isSelected: subTab === 'nickname'
+    },
+    {
+      name: t('sidebar.menu.projects'),
+      key: 'projects',
+      icon: "fabricfolder",
+      onClick: () => onSubTabChange('projects'),
+      isSelected: subTab === 'projects'
+    }
   ];
 
   return (
@@ -19,21 +38,23 @@ const SidebarNav = ({ subTab, onSubTabChange }) => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <nav className="nav-menu">
-        {menuItems.map((item) => (
-          <motion.button
-            key={item.id}
-            className={`nav-item ${subTab === item.id ? 'active' : ''}`}
-            onClick={() => onSubTabChange(item.id)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.1, ease: "easeOut" }}
-          >
-            <i className={`${item.icon} nav-icon`}></i>
-            <span className="nav-label">{t(`sidebar.menu.${item.id}`)}</span>
-          </motion.button>
-        ))}
-      </nav>
+      <Nav
+        groups={[
+          {
+            links: menuItems
+          }
+        ]}
+        selectedKey={subTab}
+        onLinkClick={(ev, element) => {
+          ev?.preventDefault();
+          const linkKey = element?.key;
+          if (linkKey) {
+            onSubTabChange(linkKey);
+          }
+        }}
+        aria-label="侧边栏导航"
+        className="fluent-ui-nav"
+      />
     </motion.div>
   );
 };

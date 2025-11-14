@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import { initializeIcons } from '@fluentui/react/lib/Icons'
 import './App.css'
 import Background from './components/Background'
 import Header from './components/Header'
@@ -234,6 +235,11 @@ function App() {
       preloadAllData();
     }
   }, [isLoading]);
+
+  // 初始化Fluent UI 8图标
+  useEffect(() => {
+    initializeIcons();
+  }, []);
 
   // 动态更新页面标题和lang属性
   useEffect(() => {

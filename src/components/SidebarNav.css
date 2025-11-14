@@ -17,49 +17,46 @@
   border-bottom-right-radius: 16px; /* 添加右下角圆角 */
 }
 
-.nav-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+/* Fluent UI 8 Nav 组件样式适配 */
+.fluent-ui-nav {
+  height: 100%;
+  background-color: transparent !important;
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border-radius: 12px; /* 添加圆角 */
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-align: left;
-  width: 100%;
-  color: #333;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+.fluent-ui-nav .ms-Nav-group {
+  background-color: transparent !important;
 }
 
-.nav-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+.fluent-ui-nav .ms-Nav-groupContent {
+  background-color: transparent !important;
 }
 
-.nav-item.active {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+.fluent-ui-nav .ms-Nav-link {
+  border-radius: 12px !important;
+  margin: 0.25rem 0 !important;
+  padding: 0.75rem 1rem !important;
+  color: #333 !important;
+  background-color: transparent !important;
+  border: none !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
 }
 
-.nav-icon {
-  font-size: 1.2rem;
+.fluent-ui-nav .ms-Nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
-.nav-label {
-  flex: 1;
+.fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: #3b82f6 !important;
 }
+
+.fluent-ui-nav .ms-Nav-link .ms-Nav-linkText {
+  font-weight: 500 !important;
+}
+
+
 
 /* 深色主题样式 */
 html[data-theme="dark"] .sidebar-nav,
@@ -68,20 +65,21 @@ html:not([data-theme]) .sidebar-nav {
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-html[data-theme="dark"] .nav-item,
-html:not([data-theme]) .nav-item {
-  color: #e0e0e0;
+/* Fluent UI 8 深色主题适配 */
+html[data-theme="dark"] .fluent-ui-nav .ms-Nav-link,
+html:not([data-theme]) .fluent-ui-nav .ms-Nav-link {
+  color: #e0e0e0 !important;
 }
 
-html[data-theme="dark"] .nav-item:hover,
-html:not([data-theme]) .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+html[data-theme="dark"] .fluent-ui-nav .ms-Nav-link:hover,
+html:not([data-theme]) .fluent-ui-nav .ms-Nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
-html[data-theme="dark"] .nav-item.active,
-html:not([data-theme]) .nav-item.active {
-  background-color: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
+html[data-theme="dark"] .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected,
+html:not([data-theme]) .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
 }
 
 /* 浅色主题样式 */
@@ -90,17 +88,17 @@ html[data-theme="light"] .sidebar-nav {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-html[data-theme="light"] .nav-item {
-  color: #333;
+html[data-theme="light"] .fluent-ui-nav .ms-Nav-link {
+  color: #333 !important;
 }
 
-html[data-theme="light"] .nav-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+html[data-theme="light"] .fluent-ui-nav .ms-Nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
-html[data-theme="light"] .nav-item.active {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+html[data-theme="light"] .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: #3b82f6 !important;
 }
 
 /* 响应式调整 */
@@ -113,13 +111,9 @@ html[data-theme="light"] .nav-item.active {
     padding: 1rem 0.75rem 2rem;
   }
   
-  .nav-item {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.9rem;
-  }
-  
-  .nav-icon {
-    font-size: 1.1rem;
+  .fluent-ui-nav .ms-Nav-link {
+    padding: 0.6rem 0.75rem !important;
+    font-size: 0.9rem !important;
   }
 }
 
@@ -132,16 +126,12 @@ html[data-theme="light"] .nav-item.active {
     padding: 1rem 0.5rem 2rem;
   }
   
-  .nav-item {
-    justify-content: center;
-    padding: 0.75rem 0.5rem;
+  .fluent-ui-nav .ms-Nav-link {
+    justify-content: center !important;
+    padding: 0.75rem 0.5rem !important;
   }
   
-  .nav-label {
-    display: none;
-  }
-  
-  .nav-icon {
-    font-size: 1.2rem;
+  .fluent-ui-nav .ms-Nav-linkText {
+    display: none !important;
   }
 }
