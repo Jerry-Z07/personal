@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import './BackgroundImage.css';
+import './Background.css';
 
-const BackgroundImage = () => {
+const Background = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // 检测设备类型
   const detectDeviceType = () => {
@@ -17,7 +16,6 @@ const BackgroundImage = () => {
   // 获取随机背景图片
   const fetchRandomImage = async () => {
     setIsLoading(true);
-    setError(null);
     
     try {
       const deviceType = detectDeviceType();
@@ -29,7 +27,6 @@ const BackgroundImage = () => {
       // 直接使用API URL作为图片源，避免重复请求
       setImageUrl(apiUrl);
     } catch (err) {
-      setError(err.message);
       console.error('Error fetching background image:', err);
     } finally {
       setIsLoading(false);
@@ -50,45 +47,41 @@ const BackgroundImage = () => {
 
   // 图片加载错误处理
   const handleImageError = () => {
-    setError('Failed to load image');
     setIsLoading(false);
     // 即使加载失败也触发事件，确保用户能看到页面内容
     window.dispatchEvent(new CustomEvent('backgroundImageLoaded'));
   };
 
   return (
-    <div className="background-container">
-      {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
-        </div>
-      )}
-      
-      {error && (
-        <div className="error-overlay">
-          <p>{error}</p>
-          <button onClick={fetchRandomImage} className="retry-button">
-            重试
-          </button>
-        </div>
-      )}
-      
-      {imageUrl && !error && (
-        <motion.img
-          src={imageUrl}
-          alt="Background"
-          className="background-image"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-        />
-      )}
-      
-      <div className="gradient-overlay"></div>
-    </div>
+    <>
+      {/* 背景图片容器 */}
+      <div className="background-container">
+        {isLoading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+          </div>
+        )}
+        
+        {imageUrl && (
+          <motion.img
+            src={imageUrl}
+            alt="Background"
+            className="background-image"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+          />
+        )}
+        
+        <div className="gradient-overlay"></div>
+      </div>
+
+      {/* 背景模糊层 */}
+      <div className="background-blur"></div>
+    </>
   );
 };
 
-export default BackgroundImage;
+export default Background;

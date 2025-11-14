@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './App.css'
-import BackgroundImage from './components/BackgroundImage'
-import BackgroundBlur from './components/BackgroundBlur'
+import Background from './components/Background'
 import Header from './components/Header'
 import LoadingMask from './components/LoadingMask'
 import PersonalTitle from './components/PersonalTitle'
@@ -300,8 +299,7 @@ function App() {
   return (
     <>
       <LoadingMask isVisible={isLoading} onHide={handleLoadingMaskHide} />
-      <BackgroundImage />
-      <BackgroundBlur />
+      <Background />
       <Header />
       <AnimatePresence>
         {showSecondaryHeader && <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} onRefresh={handleRefresh} />}

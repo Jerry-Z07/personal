@@ -1,3 +1,9 @@
+/* =====================================================
+ * Background - 合并的背景组件样式
+ * 包含背景图片和模糊层的样式
+ * ===================================================== */
+
+/* 背景图片容器 */
 .background-container {
   position: fixed;
   top: 0;
@@ -15,6 +21,7 @@
   object-position: center;
 }
 
+/* 渐变叠加层 */
 .gradient-overlay {
   position: absolute;
   top: 0;
@@ -30,6 +37,7 @@
   z-index: 1;
 }
 
+/* 加载状态覆盖层 */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -58,35 +66,29 @@
   }
 }
 
-.error-overlay {
-  position: absolute;
+/* 背景模糊层 */
+.background-blur {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  z-index: 2;
+  z-index: -1; 
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* 兼容Safari */
+  transition: all 0.3s ease;
 }
 
-.retry-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+/* 深色主题样式 */
+html[data-theme="dark"] .background-blur,
+html:not([data-theme]) .background-blur {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-.retry-button:hover {
-  background-color: #357abd;
+/* 浅色主题样式 */
+html[data-theme="light"] .background-blur {
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 /* 响应式调整 */
