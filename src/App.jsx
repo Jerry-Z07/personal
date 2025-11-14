@@ -6,12 +6,11 @@ import Background from './components/Background'
 import Header from './components/Header'
 import LoadingMask from './components/LoadingMask'
 import PersonalTitle from './components/PersonalTitle'
-import ScrollIndicator from './components/ScrollIndicator'
+import Navigation from './components/Navigation'
 import SecondaryHeader from './components/SecondaryHeader'
 import SidebarNav from './components/SidebarNav'
 import ContentArea from './components/ContentArea'
 import Footer from './components/Footer'
-import BackToTopButton from './components/BackToTopButton'
 import { preloadAllData } from './dataPreloader'
 
 function App() {
@@ -308,7 +307,7 @@ function App() {
         {showViewportContent && (
           <>
             <PersonalTitle />
-            {!isMobile() && <ScrollIndicator onScroll={handleScrollIndicatorClick} />}
+            {!isMobile() && <Navigation type="scroll" onScroll={handleScrollIndicatorClick} />}
           </>
         )}
       </AnimatePresence>
@@ -339,7 +338,7 @@ function App() {
       <AnimatePresence>
         {/* 仅在PC端且在二级页面时显示回到主页按钮 */}
         {!isMobile() && showSecondaryHeader && !showViewportContent && (
-          <BackToTopButton onClick={handleBackToHome} />
+          <Navigation type="back" onClick={handleBackToHome} />
         )}
       </AnimatePresence>
     </>
