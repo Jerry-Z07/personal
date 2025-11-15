@@ -1,135 +1,71 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import './BlogContent.css';
-import cacheManager from '../cacheManager';
+import DataContent from './DataContent';
 import { fetchBlogData } from '../dataPreloader';
-
-// 缓存有效期：5分钟
-const CACHE_DURATION = 5 * 60 * 1000;
+import './BlogContent.css';
 
 const BlogContent = ({ onRefresh }) => {
   // 使用i18n翻译函数
   const { t } = useTranslation();
 
-  const [blogData, setBlogData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const loadData = async () => {
-      // 如果有缓存，直接使用缓存
-      if (cacheManager.has('blog')) {
-        const cachedData = cacheManager.get('blog');
-        setBlogData(cachedData);
-        setLoading(false);
-        return;
-      }
-
-      // 没有缓存则获取数据
-      try {
-        setLoading(true);
-        const data = await fetchBlogData();
-        setBlogData(data);
-        cacheManager.set('blog', data, CACHE_DURATION);
-        setError(null);
-      } catch (err) {
-        console.error(t('app.blog.error'), err);
-        setError(t('blog.error'));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, []);
-  
-  // 设置刷新回调
-  useEffect(() => {
-    if (onRefresh) {
-      onRefresh(async () => {
-        try {
-          setLoading(true);
-          cacheManager.clear('blog');
-          
-          const data = await fetchBlogData();
-          setBlogData(data);
-          cacheManager.set('blog', data, CACHE_DURATION);
-          setError(null);
-        } catch (err) {
-          console.error(t('app.blog.refreshError'), err);
-          setError(t('blog.error'));
-        } finally {
-          setLoading(false);
-        }
-      });
-    }
-  }, [onRefresh]);
-
-  if (loading) {
+  // 自定义渲染函数
+  const renderBlogData = (data) => {
     return (
-      <motion.div 
-        className="blog-content"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        <div className="blog-loading">{t('blog.loading')}</div>
-      </motion.div>
+      <>
+        <a 
+          href={data?.blogLink} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="blog-title-link"
+        >
+          <h2 className="blog-title">{data?.blogTitle}</h2>
+        </a>
+        
+        <div className="blog-posts">
+          {data?.items.map((item, index) => (
+            <motion.div 
+              key={index}
+              className="blog-post-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <a href={item.link} target="_blank" rel="noopener noreferrer" className="blog-post-link">
+                <h3 className="blog-post-title">{item.title}</h3>
+                <p className="blog-post-description">{item.description}</p>
+                <div className="blog-post-read-more">
+                  <span>{t('blog.post.readMore')}</span>
+                  <i className="ri-arrow-right-line"></i>
+                </div>
+              </a>
+            </motion.div>
+          ))}
+        </div>
+      </>
     );
-  }
+  };
 
-  if (error) {
-    return (
-      <motion.div 
-        className="blog-content"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        <div className="blog-error">{error}</div>
-      </motion.div>
-    );
-  }
+  // 自定义加载组件
+  const loadingComponent = (
+    <div className="blog-loading">{t('blog.loading')}</div>
+  );
+
+  // 自定义错误组件
+  const errorComponent = (
+    <div className="blog-error">{t('blog.error')}</div>
+  );
 
   return (
-    <motion.div 
+    <DataContent
+      cacheKey="blog"
+      fetchData={fetchBlogData}
+      renderData={renderBlogData}
+      loadingComponent={loadingComponent}
+      errorComponent={errorComponent}
       className="blog-content"
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
-      <a 
-        href={blogData?.blogLink} 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="blog-title-link"
-      >
-        <h2 className="blog-title">{blogData?.blogTitle}</h2>
-      </a>
-      
-      <div className="blog-posts">
-        {blogData?.items.map((item, index) => (
-          <motion.div 
-            key={index}
-            className="blog-post-card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            whileHover={{ scale: 1.02 }}
-          >
-            <a href={item.link} target="_blank" rel="noopener noreferrer" className="blog-post-link">
-              <h3 className="blog-post-title">{item.title}</h3>
-              <p className="blog-post-description">{item.description}</p>
-              <div className="blog-post-read-more">
-                <span>{t('blog.post.readMore')}</span>
-                <i className="ri-arrow-right-line"></i>
-              </div>
-            </a>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
+      onRefresh={onRefresh}
+    />
   );
 };
 

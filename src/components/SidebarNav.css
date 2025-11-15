@@ -17,46 +17,74 @@
   border-bottom-right-radius: 16px; /* 添加右下角圆角 */
 }
 
-/* Fluent UI 8 Nav 组件样式适配 */
-.fluent-ui-nav {
+/* Remix Icon 侧边栏菜单样式 */
+.sidebar-nav-content {
   height: 100%;
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
-.fluent-ui-nav .ms-Nav-group {
-  background-color: transparent !important;
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.25rem;
 }
 
-.fluent-ui-nav .ms-Nav-groupContent {
-  background-color: transparent !important;
+.sidebar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  color: #333;
+  background-color: transparent;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  outline: none;
+  position: relative;
+  overflow: hidden;
 }
 
-.fluent-ui-nav .ms-Nav-link {
-  border-radius: 12px !important;
-  margin: 0.25rem 0 !important;
-  padding: 0.75rem 1rem !important;
-  color: #333 !important;
-  background-color: transparent !important;
-  border: none !important;
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
-  transition: all 0.2s ease !important;
+.sidebar-menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
 }
 
-.fluent-ui-nav .ms-Nav-link:hover {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+.sidebar-menu-item.selected {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
 }
 
-.fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
-  background-color: rgba(59, 130, 246, 0.1) !important;
-  color: #3b82f6 !important;
+.sidebar-menu-item.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  border-radius: 2px;
 }
 
-.fluent-ui-nav .ms-Nav-link .ms-Nav-linkText {
-  font-weight: 500 !important;
+.sidebar-menu-item i {
+  font-size: 1.1rem;
+  min-width: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
+.menu-text {
+  font-weight: 500;
+  white-space: nowrap;
+}
 
 /* 深色主题样式 */
 html[data-theme="dark"] .sidebar-nav,
@@ -65,21 +93,22 @@ html:not([data-theme]) .sidebar-nav {
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Fluent UI 8 深色主题适配 */
-html[data-theme="dark"] .fluent-ui-nav .ms-Nav-link,
-html:not([data-theme]) .fluent-ui-nav .ms-Nav-link {
-  color: #e0e0e0 !important;
+/* 深色主题菜单项样式 */
+html[data-theme="dark"] .sidebar-menu-item,
+html:not([data-theme]) .sidebar-menu-item {
+  color: #e0e0e0;
 }
 
-html[data-theme="dark"] .fluent-ui-nav .ms-Nav-link:hover,
-html:not([data-theme]) .fluent-ui-nav .ms-Nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+html[data-theme="dark"] .sidebar-menu-item:hover,
+html:not([data-theme]) .sidebar-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-html[data-theme="dark"] .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected,
-html:not([data-theme]) .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
-  background-color: rgba(59, 130, 246, 0.2) !important;
-  color: #60a5fa !important;
+html[data-theme="dark"] .sidebar-menu-item.selected,
+html:not([data-theme]) .sidebar-menu-item.selected {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
 }
 
 /* 浅色主题样式 */
@@ -88,17 +117,18 @@ html[data-theme="light"] .sidebar-nav {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-html[data-theme="light"] .fluent-ui-nav .ms-Nav-link {
-  color: #333 !important;
+html[data-theme="light"] .sidebar-menu-item {
+  color: #333;
 }
 
-html[data-theme="light"] .fluent-ui-nav .ms-Nav-link:hover {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+html[data-theme="light"] .sidebar-menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-html[data-theme="light"] .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
-  background-color: rgba(59, 130, 246, 0.1) !important;
-  color: #3b82f6 !important;
+html[data-theme="light"] .sidebar-menu-item.selected {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
 }
 
 /* 响应式调整 */
@@ -111,9 +141,14 @@ html[data-theme="light"] .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
     padding: 1rem 0.75rem 2rem;
   }
   
-  .fluent-ui-nav .ms-Nav-link {
-    padding: 0.6rem 0.75rem !important;
-    font-size: 0.9rem !important;
+  .sidebar-menu-item {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .sidebar-menu-item i {
+    font-size: 1rem;
+    min-width: 1rem;
   }
 }
 
@@ -126,12 +161,12 @@ html[data-theme="light"] .fluent-ui-nav .ms-Nav-link.ms-Nav-link--selected {
     padding: 1rem 0.5rem 2rem;
   }
   
-  .fluent-ui-nav .ms-Nav-link {
-    justify-content: center !important;
-    padding: 0.75rem 0.5rem !important;
+  .sidebar-menu-item {
+    justify-content: center;
+    padding: 0.75rem 0.5rem;
   }
   
-  .fluent-ui-nav .ms-Nav-linkText {
-    display: none !important;
+  .menu-text {
+    display: none;
   }
 }
