@@ -25,9 +25,9 @@ const ContentArea = ({ mainTab, subTab, showSidebar, onRefreshBilibili, onRefres
     // 其他主标签直接根据 mainTab 显示
     switch (mainTab) {
       case 'bilibili':
-        return <BilibiliContent onRefresh={onRefreshBilibili} />;
+        return <BilibiliContent />;
       case 'blog':
-        return <BlogContent onRefresh={onRefreshBlog} />;
+        return <BlogContent />;
       default:
         return <IntroContent />;
     }

@@ -185,7 +185,7 @@ function App() {
       <Background />
       <Header />
       <AnimatePresence>
-        {showSecondaryHeader && <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} onRefresh={handleRefresh} />}
+        {showSecondaryHeader && <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} />}
       </AnimatePresence>
       <AnimatePresence>
         {showViewportContent && (

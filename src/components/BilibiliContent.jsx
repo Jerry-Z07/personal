@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useBilibiliData } from '../query/useQueries';
 import './BilibiliContent.css';
 
-const BilibiliContent = ({ onRefresh }) => {
+const BilibiliContent = () => {
   // 使用i18n翻译函数
   const { t } = useTranslation();
 
@@ -110,13 +110,7 @@ const BilibiliContent = ({ onRefresh }) => {
   // 使用React Query获取Bilibili数据
   const { data, isLoading, error, refetch } = useBilibiliData();
 
-  // 处理刷新事件
-  const handleRefresh = async () => {
-    await refetch();
-    if (onRefresh) {
-      onRefresh();
-    }
-  };
+
 
   // 根据状态渲染不同内容
   if (isLoading) {
@@ -128,7 +122,7 @@ const BilibiliContent = ({ onRefresh }) => {
   }
 
   return (
-    <div className="bilibili-content" onClick={handleRefresh}>
+    <div className="bilibili-content">
       {renderBilibiliData(data)}
     </div>
   );

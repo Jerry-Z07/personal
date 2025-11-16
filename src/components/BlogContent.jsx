@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useBlogData } from '../query/useQueries';
 import './BlogContent.css';
 
-const BlogContent = ({ onRefresh }) => {
+const BlogContent = () => {
   // 使用i18n翻译函数
   const { t } = useTranslation();
 
@@ -58,13 +58,7 @@ const BlogContent = ({ onRefresh }) => {
   // 使用React Query获取Blog数据
   const { data, isLoading, error, refetch } = useBlogData();
 
-  // 处理刷新事件
-  const handleRefresh = async () => {
-    await refetch();
-    if (onRefresh) {
-      onRefresh();
-    }
-  };
+
 
   // 根据状态渲染不同内容
   if (isLoading) {
@@ -76,7 +70,7 @@ const BlogContent = ({ onRefresh }) => {
   }
 
   return (
-    <div className="blog-content" onClick={handleRefresh}>
+    <div className="blog-content">
       {renderBlogData(data)}
     </div>
   );

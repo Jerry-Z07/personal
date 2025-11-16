@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import './SecondaryHeader.css';
 
-const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh }) => {
+const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack }) => {
   // 使用i18n翻译函数
   const { t } = useTranslation();
 
@@ -24,11 +24,7 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh
     }
   };
 
-  const handleRefreshClick = () => {
-    if (onRefresh) {
-      onRefresh();
-    }
-  };
+
 
   return (
     <motion.div 
@@ -107,21 +103,7 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh
           </motion.a>
         </motion.div>
         
-        {/* 刷新按钮，仅在 Bilibili 和 Blog 标签显示 */}
-        {(mainTab === 'bilibili' || mainTab === 'blog') && (
-          <motion.button
-            className={`refresh-button ${mainTab === 'bilibili' ? 'bilibili-refresh' : 'blog-refresh'}`}
-            onClick={handleRefreshClick}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 10 }}
-          >
-            <i className="ri-refresh-line"></i>
-          </motion.button>
-        )}
+
       </div>
     </motion.div>
   );
