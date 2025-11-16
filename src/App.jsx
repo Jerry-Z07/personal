@@ -12,6 +12,8 @@ import SidebarNav from './components/SidebarNav'
 import ContentArea from './components/ContentArea'
 import Footer from './components/Footer'
 import { preloadAllData } from './dataPreloader'
+import useScrollHandling from './hooks/useScrollHandling'
+import useTouchHandling from './hooks/useTouchHandling'
 
 function App() {
   // 使用i18n翻译函数
@@ -122,109 +124,29 @@ function App() {
     }
   }, []);
 
-  // 监听滚动事件（仅桌面端有效）
-  useEffect(() => {
-    // 移动端不需要滚动检测，直接显示二级页眉
-    if (isMobile()) {
-      setShowSecondaryHeader(true);
-      return;
-    }
+  // 使用自定义Hook处理滚动事件
+  useScrollHandling(
+    isMobile,
+    showViewportContent,
+    mainTab,
+    lastMainTab,
+    lastSubTab,
+    setShowSecondaryHeader,
+    setShowViewportContent,
+    setMainTab,
+    setSubTab
+  );
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      // 只有在主页时（showViewportContent为true）才监听滚动切换到二级页面
-      if (showViewportContent && scrollY > 100) {
-        setShowSecondaryHeader(true);
-        setShowViewportContent(false);
-        // 桌面端滚动时，如果没有选中标签，恢复上次访问的标签
-        if (!mainTab) {
-          setMainTab(lastMainTab);
-          setSubTab(lastSubTab);
-        }
-      }
-      // 删除了向上滚动自动返回主页的逻辑
-    };
-
-    // 添加滚动事件监听器
-    window.addEventListener('scroll', handleScroll);
-    
-    // 清理事件监听器
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [mainTab, lastMainTab, lastSubTab, showViewportContent]);
-
-  // 添加触摸事件支持（仅桌面端有效）
-  useEffect(() => {
-    // 移动端不需要触摸滑动，直接通过点击标签切换
-    if (isMobile()) {
-      return;
-    }
-
-    let touchStartY = 0;
-    let touchEndY = 0;
-    let touchStartTime = 0;
-    let touchEndTime = 0;
-    let touchStartX = 0;
-    let isVerticalSwipe = false;
-    
-    const handleTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-      touchStartX = e.touches[0].clientX;
-      touchStartTime = Date.now();
-      isVerticalSwipe = false;
-    };
-    
-    const handleTouchMove = (e) => {
-      touchEndY = e.touches[0].clientY;
-      const currentX = e.touches[0].clientX;
-      const deltaY = Math.abs(touchStartY - touchEndY);
-      const deltaX = Math.abs(touchStartX - currentX);
-      
-      // 确定滑动方向，只有垂直滑动才被认为是有效滑动
-      if (deltaY > deltaX && deltaY > 20) {
-        isVerticalSwipe = true;
-      }
-    };
-    
-    const handleTouchEnd = () => {
-      touchEndTime = Date.now();
-      const touchDistance = touchStartY - touchEndY;
-      const touchDuration = touchEndTime - touchStartTime;
-      const touchSpeed = Math.abs(touchDistance) / touchDuration;
-      
-      // 增加滑动阈值从50px到100px，并添加速度检测
-      // 只有向下滑动超过100px，且速度大于0.3px/ms，且是垂直滑动才触发
-      if (touchDistance > 100 && touchSpeed > 0.3 && isVerticalSwipe) {
-        // 检查当前是否在页面顶部附近
-        const scrollY = window.scrollY;
-        if (scrollY <= 100) {
-          // 直接更新状态，确保二级界面显示
-          setShowSecondaryHeader(true);
-          setShowViewportContent(false);
-          setMainTab(lastMainTab);
-          setSubTab(lastSubTab);
-          // 触发滚动到下一屏
-          window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth'
-          });
-        }
-      }
-    };
-    
-    // 添加触摸事件监听器
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd);
-    
-    // 清理事件监听器
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [lastMainTab, lastSubTab]);
+  // 使用自定义Hook处理触摸事件
+  useTouchHandling(
+    isMobile,
+    lastMainTab,
+    lastSubTab,
+    setShowSecondaryHeader,
+    setShowViewportContent,
+    setMainTab,
+    setSubTab
+  );
 
   // 页面加载完成后输出console.log并预加载数据
   useEffect(() => {
