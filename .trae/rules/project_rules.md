@@ -10,6 +10,7 @@
 - **React** (v19.1.1) - 使用函数式组件和 Hooks
 - **Vite** (v7.1.7) - 构建工具和开发服务器
 - **Zustand** (v5.0.8) - 轻量级状态管理库
+- **React Query** - 用于数据获取、缓存和状态管理
 - **项目类型**: ES Module
 
 ### UI与动画
@@ -52,8 +53,9 @@ src/
 │   └── useTouchHandling.js   # 触摸处理逻辑
 ├── stores/             # Zustand状态管理
 │   └── index.js        # 主状态store
-├── cacheManager.js     # 数据缓存管理器
-├── dataPreloader.js    # 数据预加载器
+├── query.js            # React Query配置和客户端实例
+├── cacheManager.js     # React Query缓存包装器（轻量级接口）
+├── dataPreloader.js    # 数据预加载器（使用React Query）
 ├── App.jsx             # 主应用组件
 └── main.jsx            # 应用入口
 ```
@@ -112,18 +114,21 @@ src/
 - **监听系统**: 跟随系统模式时监听 `prefers-color-scheme` 变化
 
 #### 4. 数据缓存机制
-- **缓存管理器**: cacheManager.js（基于 Map 实现）
-- **缓存有效期**: 5分钟（300000ms）
+- **缓存管理器**: 使用 React Query 进行数据获取和缓存
+- **缓存包装器**: cacheManager.js（提供简化的 React Query 接口）
+- **缓存有效期**: 5分钟（300000ms），通过 staleTime 参数设置
 - **支持功能**: 
-  - 自动过期检测和清除
-  - 手动刷新（清除缓存并重新获取）
+  - 自动过期检测和数据重获取
+  - 手动刷新（使用 queryClient.invalidateQueries）
+  - 预加载数据（使用 queryClient.prefetchQuery）
   - 页面加载时优先使用缓存
 - **应用场景**: Bilibili 数据、Blog 数据
 
 #### 5. 数据预加载
 - **触发时机**: 页面加载完成后（字体和背景图都加载完成）
 - **预加载内容**: Bilibili 数据、Blog 数据
-- **实现方式**: 后台静默预加载，使用 Promise.all 并行加载
+- **实现方式**: 使用 React Query 的 queryClient.prefetchQuery 方法进行后台静默预加载，通过 Promise.all 并行加载
+- **缓存配置**: 设置 staleTime 为 5 分钟，确保预加载的数据在缓存有效期内不会重新获取
 
 #### 6. 国际化
 - **检测顺序**: localStorage → 浏览器语言 → 默认语言（zh-CN）
@@ -271,6 +276,6 @@ const isMobile = () => window.innerWidth <= 768;
 
 #### 通用组件规范
 - **AnimatedContent**: 提供统一动画配置，减少重复代码
-- **DataContent**: 统一数据获取、缓存、错误处理逻辑
+- **DataContent**: 基于 React Query 实现的数据获取、缓存和错误处理组件，使用 useQuery 钩子
 - **Background**: 动态背景图片管理，支持随机图片API
 - 新组件应优先复用现有通用组件

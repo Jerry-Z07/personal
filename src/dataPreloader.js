@@ -1,8 +1,9 @@
-// 数据预加载器 - 在后台静默预加载 Bilibili 和 Blog 数据
+// 数据预加载器 - 内部使用React Query进行数据预加载
 
-import cacheManager from './cacheManager';
+import queryClient from './query';
 
-// 缓存有效期：5分钟
+// 数据预加载器 - 使用React Query
+// 缓存持续时间 - 5分钟
 const CACHE_DURATION = 5 * 60 * 1000;
 
 // Bilibili API URL 构建函数
@@ -96,13 +97,19 @@ export const fetchBlogData = async () => {
 
 // Bilibili 数据预加载
 export const preloadBilibiliData = async () => {
-  if (cacheManager.has('bilibili')) {
+  // 检查React Query缓存
+  const hasCached = queryClient.getQueryData(['bilibiliData']) !== undefined;
+  if (hasCached) {
     return;
   }
 
   try {
-    const data = await fetchBilibiliData();
-    cacheManager.set('bilibili', data, CACHE_DURATION);
+    // 使用React Query的预加载功能
+    await queryClient.prefetchQuery({
+        queryKey: ['bilibiliData'],
+        queryFn: fetchBilibiliData,
+        staleTime: CACHE_DURATION
+      });
   } catch (err) {
     console.error('预加载Bilibili数据失败:', err);
   }
@@ -110,13 +117,19 @@ export const preloadBilibiliData = async () => {
 
 // Blog 数据预加载
 export const preloadBlogData = async () => {
-  if (cacheManager.has('blog')) {
+  // 检查React Query缓存
+  const hasCached = queryClient.getQueryData(['blogData']) !== undefined;
+  if (hasCached) {
     return;
   }
 
   try {
-    const data = await fetchBlogData();
-    cacheManager.set('blog', data, CACHE_DURATION);
+    // 使用React Query的预加载功能
+    await queryClient.prefetchQuery({
+        queryKey: ['blogData'],
+        queryFn: fetchBlogData,
+        staleTime: CACHE_DURATION
+      });
   } catch (err) {
     console.error('预加载Blog数据失败:', err);
   }

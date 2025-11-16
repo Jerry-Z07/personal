@@ -1,26 +1,20 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import AnimatedContent from './AnimatedContent';
-import cacheManager from '../cacheManager';
 import './DataContent.css';
 
 /**
  * DataContent - 通用数据内容组件
  * 提供数据获取、缓存、加载和错误状态管理的通用逻辑
+ * 基于React Query实现
  * 
  * @param {Object} props - 组件属性
- * @param {string} props.cacheKey - 缓存键
- * @param {Function} props.fetchData - 数据获取函数
+ * @param {Function} props.useQueryHook - React Query hook
  * @param {React.ReactNode} props.renderData - 数据渲染函数
- * @param {number} props.cacheDuration - 缓存时长(毫秒)
  * @param {string} props.titleKey - 页面标题的i18n键
  */
 const DataContent = ({ 
-  cacheKey, 
-  fetchData, 
+  useQueryHook, // React Query hook
   renderData, 
-  cacheDuration = 5 * 60 * 1000, // 5分钟
   titleKey = '',
   loadingComponent,
   errorComponent,
@@ -30,68 +24,19 @@ const DataContent = ({
   // 使用i18n翻译函数
   const { t } = useTranslation();
 
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // 数据加载逻辑
-  const loadData = async () => {
-    // 如果有缓存，直接使用缓存
-    if (cacheManager.has(cacheKey)) {
-      const cachedData = cacheManager.get(cacheKey);
-      setData(cachedData);
-      setLoading(false);
-      return;
-    }
-
-    // 没有缓存则获取数据
-    try {
-      setLoading(true);
-      const fetchedData = await fetchData();
-      setData(fetchedData);
-      cacheManager.set(cacheKey, fetchedData, cacheDuration);
-      setError(null);
-    } catch (err) {
-      console.error(t('app.data.error', { key: cacheKey }), err);
-      setError(t('data.error'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 组件挂载时加载数据
-  useEffect(() => {
-    loadData();
-  }, []);
+  // 使用React Query管理数据
+  const { data, isLoading, error, refetch } = useQueryHook();
   
-  // 提供刷新功能的回调
+  // 处理刷新事件
   const handleRefresh = async () => {
-    try {
-      setLoading(true);
-      cacheManager.clear(cacheKey);
-      
-      const fetchedData = await fetchData();
-      setData(fetchedData);
-      cacheManager.set(cacheKey, fetchedData, cacheDuration);
-      setError(null);
-    } catch (err) {
-      console.error(t('app.data.refreshError', { key: cacheKey }), err);
-      setError(t('data.error'));
-    } finally {
-      setLoading(false);
+    await refetch();
+    if (typeof rest.onRefresh === 'function') {
+      rest.onRefresh();
     }
   };
-
-  // 返回刷新函数给父组件使用
-  useEffect(() => {
-    // 如果父组件需要使用刷新功能，可以在这里暴露
-    if (typeof rest.onRefresh === 'function') {
-      rest.onRefresh(handleRefresh);
-    }
-  }, [rest.onRefresh]);
 
   // 加载状态
-  if (loading) {
+  if (isLoading) {
     return (
       <AnimatedContent titleKey={titleKey}>
         {loadingComponent || (
@@ -110,7 +55,7 @@ const DataContent = ({
       <AnimatedContent titleKey={titleKey}>
         {errorComponent || (
           <div className="data-error">
-            <p>{error}</p>
+            <p>{t('data.error')}</p>
             <button onClick={handleRefresh} className="data-retry-button">
               {t('data.retry')}
             </button>
@@ -122,7 +67,7 @@ const DataContent = ({
 
   // 正常数据状态
   return (
-    <AnimatedContent titleKey={titleKey} className={`data-content ${className}`}>
+    <AnimatedContent titleKey={titleKey} className={`data-content ${className}`} onClick={handleRefresh}>
       {renderData(data)}
     </AnimatedContent>
   );

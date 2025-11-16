@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import DataContent from './DataContent';
-import { fetchBilibiliData } from '../dataPreloader';
+import { useBilibiliData } from '../query/useQueries';
 import './BilibiliContent.css';
 
 const BilibiliContent = ({ onRefresh }) => {
@@ -108,16 +107,30 @@ const BilibiliContent = ({ onRefresh }) => {
     </div>
   );
 
+  // 使用React Query获取Bilibili数据
+  const { data, isLoading, error, refetch } = useBilibiliData();
+
+  // 处理刷新事件
+  const handleRefresh = async () => {
+    await refetch();
+    if (onRefresh) {
+      onRefresh();
+    }
+  };
+
+  // 根据状态渲染不同内容
+  if (isLoading) {
+    return loadingComponent;
+  }
+
+  if (error || !data) {
+    return errorComponent;
+  }
+
   return (
-    <DataContent
-      cacheKey="bilibili"
-      fetchData={fetchBilibiliData}
-      renderData={renderBilibiliData}
-      loadingComponent={loadingComponent}
-      errorComponent={errorComponent}
-      className="bilibili-content"
-      onRefresh={onRefresh}
-    />
+    <div className="bilibili-content" onClick={handleRefresh}>
+      {renderBilibiliData(data)}
+    </div>
   );
 };
 

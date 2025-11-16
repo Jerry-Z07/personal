@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import DataContent from './DataContent';
-import { fetchBlogData } from '../dataPreloader';
+import { useBlogData } from '../query/useQueries';
 import './BlogContent.css';
 
 const BlogContent = ({ onRefresh }) => {
@@ -56,16 +55,30 @@ const BlogContent = ({ onRefresh }) => {
     <div className="blog-error">{t('blog.error')}</div>
   );
 
+  // 使用React Query获取Blog数据
+  const { data, isLoading, error, refetch } = useBlogData();
+
+  // 处理刷新事件
+  const handleRefresh = async () => {
+    await refetch();
+    if (onRefresh) {
+      onRefresh();
+    }
+  };
+
+  // 根据状态渲染不同内容
+  if (isLoading) {
+    return loadingComponent;
+  }
+
+  if (error || !data) {
+    return errorComponent;
+  }
+
   return (
-    <DataContent
-      cacheKey="blog"
-      fetchData={fetchBlogData}
-      renderData={renderBlogData}
-      loadingComponent={loadingComponent}
-      errorComponent={errorComponent}
-      className="blog-content"
-      onRefresh={onRefresh}
-    />
+    <div className="blog-content" onClick={handleRefresh}>
+      {renderBlogData(data)}
+    </div>
   );
 };
 

@@ -1,66 +1,82 @@
-// 缓存管理器 - 用于管理 Bilibili 和 Blog 数据缓存
+/**
+ * 缓存管理器 - 轻量级包装层
+ * 仅提供基础接口，完全依赖React Query管理缓存
+ */
+import queryClient from './query';
 
 class CacheManager {
-  constructor() {
-    this.cache = new Map();
+  /**
+   * 设置缓存 - 使用React Query
+   * @param {string} key - 缓存键
+   * @param {*} value - 缓存值
+   */
+  set(key, value) {
+    try {
+      const queryKey = ['legacy', key];
+      queryClient.setQueriesData(queryKey, value);
+    } catch (error) {
+      console.error('Cache set error:', error);
+    }
   }
 
-  // 设置缓存，可指定有效期（默认5分钟）
-  set(key, data, duration = 5 * 60 * 1000) {
-    this.cache.set(key, {
-      data,
-      timestamp: Date.now(),
-      duration
-    });
-  }
-
-  // 获取缓存，如果过期则自动删除并返回null
+  /**
+   * 获取缓存 - 从React Query获取
+   * @param {string} key - 缓存键
+   * @returns {*} 缓存值
+   */
   get(key) {
-    const cached = this.cache.get(key);
-    if (cached) {
-      const now = Date.now();
-      const isExpired = now - cached.timestamp > cached.duration;
-      
-      if (isExpired) {
-        // 缓存已过期，删除并返回null
-        this.cache.delete(key);
-        return null;
+    try {
+      const queryKey = ['legacy', key];
+      const data = queryClient.getQueriesData(queryKey);
+      if (data && data.length > 0 && data[0][1] !== undefined) {
+        return data[0][1];
       }
-      
-      return cached.data;
+      return null;
+    } catch (error) {
+      console.error('Cache get error:', error);
+      return null;
     }
-    return null;
   }
 
-  // 检查缓存是否存在且未过期
+  /**
+   * 检查缓存是否存在
+   * @param {string} key - 缓存键
+   * @returns {boolean} 是否存在有效缓存
+   */
   has(key) {
-    const cached = this.cache.get(key);
-    if (!cached) {
+    try {
+      const queryKey = ['legacy', key];
+      const data = queryClient.getQueriesData(queryKey);
+      return data && data.length > 0 && data[0][1] !== undefined;
+    } catch (error) {
+      console.error('Cache has error:', error);
       return false;
     }
-    
-    const now = Date.now();
-    const isExpired = now - cached.timestamp > cached.duration;
-    
-    if (isExpired) {
-      // 缓存已过期，删除
-      this.cache.delete(key);
-      return false;
-    }
-    
-    return true;
   }
 
-  // 清除特定缓存
+  /**
+   * 清除指定缓存
+   * @param {string} key - 缓存键
+   */
   clear(key) {
-    this.cache.delete(key);
+    try {
+      const queryKey = ['legacy', key];
+      queryClient.removeQueries(queryKey);
+    } catch (error) {
+      console.error('Cache clear error:', error);
+    }
   }
 
-  // 清除所有缓存
+  /**
+   * 清除所有缓存
+   */
   clearAll() {
-    this.cache.clear();
+    try {
+      queryClient.removeQueries();
+    } catch (error) {
+      console.error('Cache clearAll error:', error);
+    }
   }
 }
 
-// 导出单例
 export default new CacheManager();
