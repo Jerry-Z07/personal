@@ -249,7 +249,7 @@ html[data-theme="light"] .project-description {
     flex-direction: column;
     align-items: flex-start;
     padding-left: 0;
-    min-height: auto;
+    min-height: 0;
     margin-bottom: 0.75rem;
   }
 
@@ -291,7 +291,7 @@ html[data-theme="light"] .project-description {
   }
 
   .project-header {
-    min-height: auto;
+    min-height: 0;
   }
 
   .project-title {
