@@ -1,49 +1,38 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useThemeStore } from '../store';
 import './LanguageSwitcher.css';
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'system';
-  });
   const dropdownRef = useRef(null);
-
-  // 获取当前系统主题
-  const getSystemTheme = () => {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  };
-
-  // 获取实际应用的主题（考虑跟随系统的情况）
-  const getEffectiveTheme = () => {
-    if (theme === 'system') {
-      return getSystemTheme();
-    }
-    return theme;
-  };
-
-  // 应用主题到DOM
-  const applyTheme = (themeValue) => {
-    const effectiveTheme = themeValue === 'system' ? getSystemTheme() : themeValue;
-    document.documentElement.setAttribute('data-theme', effectiveTheme);
-  };
+  
+  // 使用主题状态管理
+  const { 
+    theme, 
+    setTheme, 
+    getSystemTheme, 
+    getEffectiveTheme, 
+    getThemeIcon, 
+    applyTheme 
+  } = useThemeStore();
 
   // 初始化主题
   useEffect(() => {
-    applyTheme(theme);
-  }, []);
+    applyTheme();
+  }, [applyTheme]);
 
   // 监听系统主题变化
   useEffect(() => {
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const handleChange = () => applyTheme('system');
+      const handleChange = () => applyTheme();
       mediaQuery.addEventListener('change', handleChange);
       return () => mediaQuery.removeEventListener('change', handleChange);
     }
-  }, [theme]);
+  }, [theme, applyTheme]);
 
   // 点击外部关闭下拉菜单
   useEffect(() => {
@@ -68,17 +57,7 @@ const LanguageSwitcher = () => {
   // 切换主题
   const handleThemeChange = (newTheme) => {
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    applyTheme(newTheme);
     setIsOpen(false);
-  };
-
-  // 获取主题图标
-  const getThemeIcon = () => {
-    if (theme === 'system') {
-      return 'ri-computer-line';
-    }
-    return getEffectiveTheme() === 'dark' ? 'ri-moon-line' : 'ri-sun-line';
   };
 
   return (

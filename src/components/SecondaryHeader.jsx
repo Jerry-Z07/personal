@@ -1,33 +1,33 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useAppStore } from '../store';
 import './SecondaryHeader.css';
 
 const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack, onRefresh }) => {
   // 使用i18n翻译函数
   const { t } = useTranslation();
+  
+  // 使用全局状态管理
+  const { handleMainTabChange, handleBackToHome, handleRefresh } = useAppStore();
 
   const handleBilibiliClick = () => {
-    onMainTabChange('bilibili');
+    handleMainTabChange('bilibili');
   };
 
   const handleIntroClick = () => {
-    onMainTabChange('intro');
+    handleMainTabChange('intro');
   };
 
   const handleBlogClick = () => {
-    onMainTabChange('blog');
+    handleMainTabChange('blog');
   };
 
   const handleBackClick = () => {
-    if (onBack) {
-      onBack();
-    }
+    handleBackToHome();
   };
 
   const handleRefreshClick = () => {
-    if (onRefresh) {
-      onRefresh();
-    }
+    handleRefresh();
   };
 
   return (

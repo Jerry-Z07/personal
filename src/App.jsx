@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './App.css'
@@ -11,42 +11,38 @@ import SecondaryHeader from './components/SecondaryHeader'
 import SidebarNav from './components/SidebarNav'
 import ContentArea from './components/ContentArea'
 import Footer from './components/Footer'
+import { useAppStore } from './store'
 import { preloadAllData } from './dataPreloader'
 
 function App() {
   // 使用i18n翻译函数
   const { t, i18n } = useTranslation();
-
-  // 检测是否为移动端
-  const isMobile = () => {
-    return window.innerWidth <= 768;
-  };
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [showSecondaryHeader, setShowSecondaryHeader] = useState(false);
-  const [showViewportContent, setShowViewportContent] = useState(true);
-  // 从 sessionStorage 读取保存的标签状态
-  const [mainTab, setMainTab] = useState(() => {
-    const savedMainTab = sessionStorage.getItem('mainTab');
-    return savedMainTab || null;
-  });
-  const [subTab, setSubTab] = useState(() => {
-    const savedSubTab = sessionStorage.getItem('subTab');
-    return savedSubTab || 'intro'; // 默认子标签
-  });
-  // 存储上次访问的主标签，用于从主页返回时恢复
-  const [lastMainTab, setLastMainTab] = useState(() => {
-    const savedMainTab = sessionStorage.getItem('mainTab');
-    return savedMainTab || 'intro';
-  });
-  const [lastSubTab, setLastSubTab] = useState(() => {
-    const savedSubTab = sessionStorage.getItem('subTab');
-    return savedSubTab || 'intro';
-  });
   
-  // 刷新回调函数引用
-  const refreshBilibiliRef = { current: null };
-  const refreshBlogRef = { current: null };
+  // 使用全局状态管理
+  const {
+    isLoading,
+    setIsLoading,
+    showSecondaryHeader,
+    showViewportContent,
+    mainTab,
+    subTab,
+    lastMainTab,
+    lastSubTab,
+    setRefreshBilibiliRef,
+    setRefreshBlogRef,
+    handleBackToHome,
+    handleScrollIndicatorClick,
+    handleMainTabChange,
+    handleSubTabChange,
+    handleRefresh,
+    isMobile,
+    setShowSecondaryHeader,
+    setShowViewportContent,
+    setMainTab,
+    setSubTab,
+    setLastMainTab,
+    setLastSubTab
+  } = useAppStore();
 
   // 同时监听字体和背景图片加载完成
   useEffect(() => {
@@ -91,26 +87,20 @@ function App() {
     return () => {
       window.removeEventListener('backgroundImageLoaded', handleImageLoad);
     };
-  }, []);
+  }, [setIsLoading]);
 
-  // 保存标签状态到 sessionStorage
+  // 保存标签状态到 sessionStorage (现在由 Zustand 的 persist 中间件自动处理)
   useEffect(() => {
     if (mainTab) {
-      sessionStorage.setItem('mainTab', mainTab);
       setLastMainTab(mainTab);
-    } else {
-      sessionStorage.removeItem('mainTab');
     }
-  }, [mainTab]);
+  }, [mainTab, setLastMainTab]);
 
   useEffect(() => {
     if (subTab) {
-      sessionStorage.setItem('subTab', subTab);
       setLastSubTab(subTab);
-    } else {
-      sessionStorage.removeItem('subTab');
     }
-  }, [subTab]);
+  }, [subTab, setLastSubTab]);
 
   // 初始化时根据保存的状态恢复页面
   useEffect(() => {
@@ -120,7 +110,7 @@ function App() {
       setShowSecondaryHeader(true);
       setShowViewportContent(false);
     }
-  }, []);
+  }, [setShowSecondaryHeader, setShowViewportContent]);
 
   // 监听滚动事件（仅桌面端有效）
   useEffect(() => {
@@ -152,7 +142,7 @@ function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [mainTab, lastMainTab, lastSubTab, showViewportContent]);
+  }, [isMobile, showViewportContent, mainTab, lastMainTab, lastSubTab, setShowSecondaryHeader, setShowViewportContent, setMainTab, setSubTab]);
 
   // 添加触摸事件支持（仅桌面端有效）
   useEffect(() => {
@@ -224,7 +214,7 @@ function App() {
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [lastMainTab, lastSubTab]);
+  }, [isMobile, lastMainTab, lastSubTab, setShowSecondaryHeader, setShowViewportContent, setMainTab, setSubTab]);
 
   // 页面加载完成后输出console.log并预加载数据
   useEffect(() => {
@@ -247,54 +237,6 @@ function App() {
 
   const handleLoadingMaskHide = () => {
     setIsLoading(false);
-  };
-
-  const handleScrollIndicatorClick = () => {
-    setShowSecondaryHeader(true);
-    setShowViewportContent(false);
-    // 点击滚动指示器时，恢复上次访问的标签
-    setMainTab(lastMainTab);
-    setSubTab(lastSubTab);
-  };
-
-  // 处理返回主页
-  const handleBackToHome = () => {
-    setShowViewportContent(true);
-    setShowSecondaryHeader(false);
-    setMainTab(null);
-    // 滚动回顶部
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
-  // 处理主标签切换
-  const handleMainTabChange = (tabName) => {
-    setMainTab(tabName);
-    // 切换主标签时，重置子标签为各主标签的默认子标签
-    // 简介标签的默认子标签为 intro
-    if (tabName === 'intro') {
-      setSubTab('intro');
-    } else {
-      setSubTab(null);
-    }
-    // 点击标签时隐去主页内容
-    setShowViewportContent(false);
-  };
-
-  // 处理子标签切换（侧边栏）
-  const handleSubTabChange = (subTabName) => {
-    setSubTab(subTabName);
-  };
-  
-  // 处理刷新
-  const handleRefresh = () => {
-    if (mainTab === 'bilibili' && refreshBilibiliRef.current) {
-      refreshBilibiliRef.current();
-    } else if (mainTab === 'blog' && refreshBlogRef.current) {
-      refreshBlogRef.current();
-    }
   };
 
   return (
@@ -323,8 +265,8 @@ function App() {
               mainTab={mainTab} 
               subTab={subTab} 
               showSidebar={mainTab === 'intro'} 
-              onRefreshBilibili={(callback) => { refreshBilibiliRef.current = callback; }}
-              onRefreshBlog={(callback) => { refreshBlogRef.current = callback; }}
+              onRefreshBilibili={setRefreshBilibiliRef}
+              onRefreshBlog={setRefreshBlogRef}
             />
           </>
         )}
