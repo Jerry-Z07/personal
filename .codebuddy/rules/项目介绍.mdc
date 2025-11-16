@@ -1,0 +1,20 @@
+---
+description: 
+alwaysApply: true
+enabled: true
+updatedAt: 2025-11-14T12:27:25.266Z
+provider: 
+---
+
+## 项目简介
+本项目是一个基于React 19的个人展示网站，采用现代前端技术栈构建，支持响应式设计和国际化。主要功能包括个人简介、Bilibili动态展示、博客文章聚合等模块。
+
+### 核心技术栈
+- **框架**: React 19（使用函数式组件和Hooks）
+- **构建工具**: Vite 7
+- **动画库**: Framer Motion（页面过渡、元素动画）
+- **UI库**: @fluentui/react、@fluentui/react-components
+- **国际化**: react-i18next + i18next-browser-languagedetector（支持中英文切换）
+- **图标库**: Remix Icon
+- **字体**: LXGW WenKai Screen
+- **代码规范**: ESLint

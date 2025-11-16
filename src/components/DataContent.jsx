@@ -88,7 +88,7 @@ const DataContent = ({
     if (typeof rest.onRefresh === 'function') {
       rest.onRefresh(handleRefresh);
     }
-  }, []); // 空依赖数组，只执行一次
+  }, [rest.onRefresh]);
 
   // 加载状态
   if (loading) {

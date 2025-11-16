@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useAppStore } from '../store';
 import './Navigation.css';
 
 const Navigation = ({ 
@@ -11,17 +10,11 @@ const Navigation = ({
 }) => {
   // 使用i18n翻译函数
   const { t } = useTranslation();
-  
-  // 使用全局状态管理
-  const { handleScrollIndicatorClick, handleBackToHome } = useAppStore();
 
   const handleScrollClick = () => {
-    // 如果有传入的回调函数则先调用，以保持向后兼容
+    // 调用父组件传递的回调函数
     if (onScroll) {
       onScroll();
-    } else {
-      // 否则使用全局状态管理的方法
-      handleScrollIndicatorClick();
     }
     // 执行滚动
     window.scrollTo({
@@ -33,9 +26,6 @@ const Navigation = ({
   const handleBackToTopClick = () => {
     if (onClick) {
       onClick();
-    } else {
-      // 使用全局状态管理的方法
-      handleBackToHome();
     }
     if (onBackToTop) {
       onBackToTop();

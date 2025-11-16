@@ -1,13 +1,9 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useAppStore } from '../store';
 import './SidebarNav.css';
 
 const SidebarNav = ({ subTab, onSubTabChange }) => {
   const { t } = useTranslation();
-  
-  // 使用全局状态管理
-  const { handleSubTabChange } = useAppStore();
 
   // 定义菜单项，使用 Remix Icon
   const menuItems = [
@@ -15,21 +11,21 @@ const SidebarNav = ({ subTab, onSubTabChange }) => {
       name: t('sidebar.menu.intro'),
       key: 'intro',
       icon: 'ri-user-line',
-      onClick: () => handleSubTabChange('intro'),
+      onClick: () => onSubTabChange('intro'),
       isSelected: subTab === 'intro'
     },
     {
       name: t('sidebar.menu.nickname'),
       key: 'nickname',
       icon: 'ri-information-line',
-      onClick: () => handleSubTabChange('nickname'),
+      onClick: () => onSubTabChange('nickname'),
       isSelected: subTab === 'nickname'
     },
     {
       name: t('sidebar.menu.projects'),
       key: 'projects',
       icon: 'ri-folder-open-line',
-      onClick: () => handleSubTabChange('projects'),
+      onClick: () => onSubTabChange('projects'),
       isSelected: subTab === 'projects'
     }
   ];
