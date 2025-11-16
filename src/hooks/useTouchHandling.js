@@ -58,8 +58,13 @@ const useTouchHandling = (isMobile, lastMainTab, lastSubTab, setShowSecondaryHea
           // 直接更新状态，确保二级界面显示
           setShowSecondaryHeader(true);
           setShowViewportContent(false);
-          setMainTab(lastMainTab);
-          setSubTab(lastSubTab);
+          // 尝试恢复保存的标签状态，但仅当确实有保存的标签时才设置
+          const savedMainTab = sessionStorage.getItem('mainTab');
+          const savedSubTab = sessionStorage.getItem('subTab');
+          if (savedMainTab && savedSubTab) {
+            setMainTab(savedMainTab);
+            setSubTab(savedSubTab);
+          }
           // 触发滚动到下一屏
           window.scrollTo({
             top: window.innerHeight,

@@ -26,10 +26,15 @@ const useScrollHandling = (isMobile, showViewportContent, mainTab, lastMainTab, 
       if (showViewportContent && scrollY > 100) {
         setShowSecondaryHeader(true);
         setShowViewportContent(false);
-        // 桌面端滚动时，如果没有选中标签，恢复上次访问的标签
+        // 桌面端滚动时，如果没有选中标签，尝试恢复上次访问的标签
+        // 但仅当确实有保存的标签时才设置（避免空状态时默认为intro）
         if (!mainTab) {
-          setMainTab(lastMainTab);
-          setSubTab(lastSubTab);
+          const savedMainTab = sessionStorage.getItem('mainTab');
+          const savedSubTab = sessionStorage.getItem('subTab');
+          if (savedMainTab && savedSubTab) {
+            setMainTab(savedMainTab);
+            setSubTab(savedSubTab);
+          }
         }
       }
       // 注意：删除了向上滚动自动返回主页的逻辑
