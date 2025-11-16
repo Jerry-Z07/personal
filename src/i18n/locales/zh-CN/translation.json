@@ -88,13 +88,7 @@
     "main": "Jerry.Z的个人页"
   },
   "loading": {
-    "text": "加载中",
-    "default": "正在加载内容..."
-  },
-  "error": {
-    "title": "组件加载失败",
-    "message": "很抱歉，该内容无法正常加载。请尝试刷新页面。",
-    "retry": "刷新页面"
+    "text": "加载中"
   },
   "scrollIndicator": {
     "hint": "向下滑动或点击"
