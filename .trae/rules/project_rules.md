@@ -9,6 +9,7 @@
 ### 核心框架
 - **React** (v19.1.1) - 使用函数式组件和 Hooks
 - **Vite** (v7.1.7) - 构建工具和开发服务器
+- **Zustand** (v5.0.8) - 轻量级状态管理库
 - **项目类型**: ES Module
 
 ### UI与动画
@@ -46,6 +47,11 @@ src/
 │   └── locales/        # 翻译资源
 │       ├── zh-CN/      # 中文翻译
 │       └── en-US/      # 英文翻译
+├── hooks/              # 自定义React Hooks
+│   ├── useScrollHandling.js  # 滚动处理逻辑
+│   └── useTouchHandling.js   # 触摸处理逻辑
+├── stores/             # Zustand状态管理
+│   └── index.js        # 主状态store
 ├── cacheManager.js     # 数据缓存管理器
 ├── dataPreloader.js    # 数据预加载器
 ├── App.jsx             # 主应用组件
@@ -69,6 +75,12 @@ src/
 - **BilibiliContent** - Bilibili动态展示（支持缓存和刷新）
 - **BlogContent** - 博客文章聚合（支持缓存和刷新）
 
+#### 通用组件
+- **AnimatedContent** - 提供统一动画配置的包装组件，减少重复代码
+- **DataContent** - 通用数据获取、缓存、加载状态管理组件
+- **Background** - 动态背景图片组件，支持随机图片获取
+- **Navigation** - 通用导航组件
+
 #### 导航组件
 - **SidebarNav** - 侧边栏导航（仅在intro主标签下显示）
 - **LanguageSwitcher** - 语言和主题切换下拉菜单
@@ -76,7 +88,6 @@ src/
 #### 辅助组件
 - **LoadingMask** - 加载遮罩（等待字体和背景图加载）
 - **ScrollIndicator** - 滚动指示器（PC端）
-- **BackgroundImage** - 背景图片组件
 - **BackgroundBlur** - 背景模糊层
 
 ### 关键特性
@@ -84,7 +95,7 @@ src/
 #### 1. 双页面架构
 - **主页**: 显示 PersonalTitle 和 ScrollIndicator
 - **二级页面**: 显示 SecondaryHeader + ContentArea（根据标签切换内容）
-- **状态管理**: 使用 sessionStorage 保存标签状态，刷新后自动恢复
+- **状态管理**: 使用 Zustand + sessionStorage 管理应用状态，刷新后自动恢复标签状态
 
 #### 2. 响应式设计
 - **断点**: 768px（移动端/PC端分界）
@@ -120,6 +131,11 @@ src/
 - **使用方式**: 组件中使用 `useTranslation()` 钩子
 - **动态更新**: 切换语言时自动更新页面标题和 html lang 属性
 
+#### 7. 构建优化
+- **代码分割**: 按供应商库分类打包（React、i18n、Fluent UI、动画库）
+- **代理配置**: 开发环境支持API代理和生产环境CORS代理
+- **Chunk优化**: 调整chunk大小警告阈值至800KB
+
 ### 开发规范
 
 #### 文件命名
@@ -131,12 +147,14 @@ src/
 **务必保证统一的设计风格**
 1. 所有组件使用函数式组件，不使用类组件
 2. 使用 React Hooks 管理状态和副作用
-3. 使用 Framer Motion 添加动画效果
-4. 每个组件对应一个独立的 CSS 文件
-5. 按钮使用圆角样式（border-radius: 8px）
-6. 使用 Remix Icon 图标库（通过类名引用）
-7. 使用 `useTranslation()` 实现国际化
-8. 保持组件单一职责原则
+3. 使用 Zustand 进行全局状态管理（`src/stores/index.js`）
+4. 使用 Framer Motion 添加动画效果
+5. 每个组件对应一个独立的 CSS 文件
+6. 按钮使用圆角样式（border-radius: 8px）
+7. 使用 Remix Icon 图标库（通过类名引用）
+8. 使用 `useTranslation()` 实现国际化
+9. 保持组件单一职责原则
+10. 复用 AnimatedContent 和 DataContent 等通用组件
 
 #### 主题适配规范
 - 使用 `html[data-theme="dark"]` 和 `html[data-theme="light"]` 选择器
@@ -193,12 +211,12 @@ npm run preview
    - 路径重写: 保持原路径不变
 
 2. **博客 RSS Feed**
-   - 代理路径: `/blog-feed`
+   - 代理路径: `/blog-feed/`
    - 目标地址: `https://blog.078465.xyz`
    - 路径重写: `/blog-feed` → `/feed`
 
 #### 生产环境
-- 使用 CORS 代理服务: `https://cors1.078465.xyz/v1/proxy/`
+- 使用 CORS 代理服务: `https://cors1.078465.xyz/v1/proxy/?quest=`
 - API URL 通过 `import.meta.env.MODE` 判断环境自动切换
 
 ### 响应式设计
@@ -225,6 +243,12 @@ const isMobile = () => window.innerWidth <= 768;
 
 ### 项目特定规范
 
+#### 状态管理规范
+- 使用 Zustand 管理全局状态（`src/stores/index.js`）
+- 状态包括: UI状态、标签状态、刷新回调等
+- 标签状态自动同步到 sessionStorage，实现页面刷新后状态恢复
+- 刷新回调通过 ref 的方式在组件间传递
+
 #### PC端卡片规范
 - ProjectsContent 组件中，PC端卡片最小宽度: 500px
 - 需相应调整内边距、字体大小和按钮尺寸
@@ -233,8 +257,20 @@ const isMobile = () => window.innerWidth <= 768;
 - 选中标签添加呼吸效果（3秒周期，ease-in-out，光晕强度0-50%）
 - 刷新按钮悬停效果与对应标签一致（轻微上移+放大，3秒呼吸光效）
 - 禁止刷新按钮使用旋转动画
+- 不同标签使用不同主题色
 
 #### 语言切换按钮规范
 - 位置: 页眉 Jerry.Z 文字右侧
 - 间距: 与文字保持 1rem 间距
 - 高度: Jerry.Z 文字高度的一半（0.8em）
+
+#### 背景图片规范
+- 支持动态随机背景图片获取
+- 图片加载完成后触发 `backgroundImageLoaded` 事件
+- 与字体加载配合，通过 LoadingMask 组件管理加载状态
+
+#### 通用组件规范
+- **AnimatedContent**: 提供统一动画配置，减少重复代码
+- **DataContent**: 统一数据获取、缓存、错误处理逻辑
+- **Background**: 动态背景图片管理，支持随机图片API
+- 新组件应优先复用现有通用组件
