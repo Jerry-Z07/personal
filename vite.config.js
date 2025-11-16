@@ -23,6 +23,9 @@ export default defineConfig({
     chunkSizeWarningLimit: 800
   },
   server: {
+    headers: {
+      'X-Content-Type-Options': 'nosniff'
+    },
     proxy: {
       '/api': {
         target: 'https://uapis.cn',

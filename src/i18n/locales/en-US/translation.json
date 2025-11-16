@@ -29,7 +29,7 @@
   "intro": {
     "title": "About Me",
     "content": {
-      "p1": "I'm Jerry.Z, from China🇨🇳, currently a high school student.",
+      "p1": "I'm Jerry.Z (nickname), from China🇨🇳, currently a high school student.",
       "p2": "My technical skills are almost zero",
       "p2_strikethrough": "(So AI is really useful, you know)",
       "p2_with_strikethrough": "My technical skills are almost zero<1>(So AI is really useful, you know)</1>"

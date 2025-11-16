@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './App.css'
@@ -43,6 +43,32 @@ function App() {
     handleScrollIndicatorClick,
     initializeFromStorage
   } = useStore();
+  
+  // 用于检测双击的状态和引用
+  const [clickCount, setClickCount] = useState(0);
+  const clickTimerRef = useRef(null);
+  
+  // 处理回到顶部/主页按钮点击的函数
+  const handleBackButtonClick = () => {
+    // 增加点击计数
+    setClickCount(prev => prev + 1);
+    
+    // 如果是第一次点击
+    if (clickCount === 0) {
+      // 立即执行回到顶部操作，不等待
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // 设置定时器检测300ms内是否有第二次点击
+      clickTimerRef.current = setTimeout(() => {
+        setClickCount(0); // 300ms后重置点击计数（确认是单击）
+      }, 300);
+    } else {
+      // 双击：清除定时器，回到主页
+      clearTimeout(clickTimerRef.current);
+      handleBackToHome();
+      setClickCount(0); // 重置点击计数
+    }
+  };
 
   // 检测是否为移动端
   const isMobile = () => {
@@ -131,6 +157,15 @@ function App() {
       preloadAllData();
     }
   }, [isLoading]);
+  
+  // 清理定时器，防止内存泄漏
+  useEffect(() => {
+    return () => {
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current);
+      }
+    };
+  }, []);
 
   // 动态更新页面标题和lang属性
   useEffect(() => {
@@ -185,9 +220,13 @@ function App() {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {/* 仅在PC端且在二级页面时显示回到主页按钮 */}
+        {/* 仅在PC端且在二级页面时显示回到顶部按钮 (单击回到顶部，双击回到主页) */}
         {!isMobile() && showSecondaryHeader && !showViewportContent && (
-          <Navigation type="back" onClick={handleBackToHome} />
+          <Navigation 
+            type="backToTop" 
+            onClick={handleBackButtonClick} 
+            className="secondary-back-to-top"
+          />
         )}
       </AnimatePresence>
     </>

@@ -45,7 +45,7 @@
 /* 返回顶部按钮样式 */
 .navigation.back-to-top-button {
   position: fixed;
-  bottom: 2rem;
+  bottom: 5rem;
   right: 2rem;
   width: 56px;
   height: 56px;
