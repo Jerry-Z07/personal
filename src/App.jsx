@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './App.css'
@@ -70,10 +70,10 @@ function App() {
     }
   };
 
-  // 检测是否为移动端
-  const isMobile = () => {
+  // 检测是否为移动端 - 使用useCallback缓存函数实例，避免依赖变化导致无限循环
+  const isMobile = useCallback(() => {
     return window.innerWidth <= 768;
-  };
+  }, []);
 
   // 初始化状态从sessionStorage
   useEffect(() => {

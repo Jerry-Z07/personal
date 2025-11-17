@@ -398,6 +398,19 @@ html[data-theme="light"] .github-link:hover {
   box-shadow: 0 4px 12px rgba(51, 51, 51, 0.3);
 }
 
+/* 浅色主题下的返回按钮样式 */
+html[data-theme="light"] .back-button {
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .back-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.9);
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
   .secondary-header {
