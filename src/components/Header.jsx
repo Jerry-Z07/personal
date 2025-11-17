@@ -36,15 +36,12 @@ const Header = () => {
         </div>
         
         <nav className="header-nav">
-          <motion.a 
+          <a 
             href="#home" 
             className="nav-link active"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
           >
             {t('header.nav.home')}
-          </motion.a>
+          </a>
         </nav>
       </div>
     </motion.header>
