@@ -12,8 +12,7 @@ import SidebarNav from './components/SidebarNav'
 import ContentArea from './components/ContentArea'
 import Footer from './components/Footer'
 import { preloadAllData } from './dataPreloader'
-import useScrollHandling from './hooks/useScrollHandling'
-import useTouchHandling from './hooks/useTouchHandling'
+import useInteractionHandling from './hooks/useInteractionHandling'
 import { useStore } from './stores'
 
 function App() {
@@ -125,23 +124,12 @@ function App() {
     };
   }, []);
 
-  // 使用自定义Hook处理滚动事件
-  useScrollHandling(
+  // 使用自定义Hook处理滚动和触摸事件
+  useInteractionHandling(
     isMobile,
     showViewportContent,
     showSecondaryHeader,
     mainTab,
-    lastMainTab,
-    lastSubTab,
-    setShowSecondaryHeader,
-    setShowViewportContent,
-    setMainTab,
-    setSubTab
-  );
-
-  // 使用自定义Hook处理触摸事件
-  useTouchHandling(
-    isMobile,
     lastMainTab,
     lastSubTab,
     setShowSecondaryHeader,
