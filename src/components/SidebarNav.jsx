@@ -44,7 +44,6 @@ const SidebarNav = ({ subTab, onSubTabChange }) => {
               key={item.key}
               className={`sidebar-menu-item ${item.isSelected ? 'selected' : ''}`}
               onClick={item.onClick}
-              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.15 }}
               aria-label={item.name}

@@ -24,7 +24,6 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="status-button"
-            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.1, ease: "easeOut" }}
           >

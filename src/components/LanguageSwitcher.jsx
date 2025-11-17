@@ -86,7 +86,6 @@ const LanguageSwitcher = () => {
       <motion.button
         className="settings-button"
         onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.15 }}
         aria-label="Settings"

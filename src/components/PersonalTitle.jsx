@@ -19,10 +19,7 @@ const PersonalTitle = () => {
     >
       <motion.h1 
         className="personal-title"
-        whileHover={{ 
-          scale: 1.05,
-          textShadow: "0 0 10px rgba(255, 255, 255, 0.5)"
-        }}
+
         transition={{ 
           type: "spring", 
           stiffness: 400, 
