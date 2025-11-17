@@ -54,9 +54,9 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* 已移除卡片悬停效果，替换为浅色阴影效果 */
 .blog-post-card:hover {
-  border-color: rgba(102, 204, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(102, 204, 255, 0.2);
+  box-shadow: 0 4px 25px rgba(102, 204, 255, 0.15);
 }
 
 .blog-post-link {
@@ -71,11 +71,6 @@
   color: #66ccff;
   margin: 0 0 1rem 0;
   font-family: var(--font-family-main);
-  transition: color 0.15s ease;
-}
-
-.blog-post-link:hover .blog-post-title {
-  color: #99ddff;
 }
 
 .blog-post-description {
@@ -113,10 +108,10 @@ html:not([data-theme]) .blog-post-card {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
+/* 已移除深色主题下的卡片悬停效果，替换为浅色阴影效果 */
 html[data-theme="dark"] .blog-post-card:hover,
 html:not([data-theme]) .blog-post-card:hover {
-  border-color: rgba(102, 204, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(102, 204, 255, 0.2);
+  box-shadow: 0 4px 25px rgba(102, 204, 255, 0.15);
 }
 
 html[data-theme="dark"] .blog-title,
@@ -127,6 +122,7 @@ html:not([data-theme]) .blog-title {
 html[data-theme="dark"] .blog-post-title,
 html:not([data-theme]) .blog-post-title {
   color: #66ccff;
+  transition: none; /* 移除过渡效果 */
 }
 
 html[data-theme="dark"] .blog-post-description,
@@ -146,10 +142,16 @@ html[data-theme="light"] .blog-title {
 
 html[data-theme="light"] .blog-post-card {
   background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .blog-post-card:hover {
+  box-shadow: 0 4px 25px rgba(51, 153, 204, 0.2);
 }
 
 html[data-theme="light"] .blog-post-title {
   color: #3399cc;
+  transition: none; /* 移除过渡效果 */
 }
 
 html[data-theme="light"] .blog-post-description {

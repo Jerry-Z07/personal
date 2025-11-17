@@ -28,7 +28,6 @@ const BlogContent = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
             >
               <a href={item.link} target="_blank" rel="noopener noreferrer" className="blog-post-link">
                 <h3 className="blog-post-title">{item.title}</h3>
