@@ -22,20 +22,11 @@ function App() {
   
   // 从全局store获取状态和方法
   const {
-    isLoading,
-    showSecondaryHeader,
-    showViewportContent,
-    mainTab,
-    subTab,
-    lastMainTab,
-    lastSubTab,
-    setIsLoading,
-    setShowSecondaryHeader,
-    setShowViewportContent,
-    setMainTab,
-    setSubTab,
-    setRefreshBilibiliRef,
-    setRefreshBlogRef,
+    ui: { isLoading, showSecondaryHeader, showViewportContent },
+    tabs: { mainTab, subTab, lastMainTab, lastSubTab },
+    setUIState,
+    setTabState,
+    setCallbackRef,
     handleBackToHome,
     handleMainTabChange,
     handleSubTabChange,
@@ -43,6 +34,15 @@ function App() {
     handleScrollIndicatorClick,
     initializeFromStorage
   } = useStore();
+  
+  // 定义便捷函数映射到新的状态更新方式
+  const setIsLoading = (value) => setUIState({ isLoading: value });
+  const setShowSecondaryHeader = (value) => setUIState({ showSecondaryHeader: value });
+  const setShowViewportContent = (value) => setUIState({ showViewportContent: value });
+  const setMainTab = (value) => setTabState({ mainTab: value });
+  const setSubTab = (value) => setTabState({ subTab: value });
+  const setRefreshBilibiliRef = (ref) => setCallbackRef('refreshBilibiliRef', ref);
+  const setRefreshBlogRef = (ref) => setCallbackRef('refreshBlogRef', ref);
   
   // 用于检测双击的状态和引用
   const [clickCount, setClickCount] = useState(0);
