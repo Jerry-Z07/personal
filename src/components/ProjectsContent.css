@@ -19,14 +19,11 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
   cursor: pointer;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
-
-
 
 /* 项目图标：左上角圆形图片区域 */
 .project-icon {
@@ -141,7 +138,7 @@
 }
 
 .project-action-btn:hover {
-  color: #2196F3;
+  background: #ffffff;
 }
 
 .project-action-btn i {
@@ -154,8 +151,6 @@ html:not([data-theme]) .project-card {
   background: rgba(0, 0, 0, 0.7);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-
-
 
 html[data-theme="dark"] .project-icon,
 html:not([data-theme]) .project-icon {
@@ -197,7 +192,7 @@ html:not([data-theme]) .project-action-btn {
 
 html[data-theme="dark"] .project-action-btn:hover,
 html:not([data-theme]) .project-action-btn:hover {
-  color: #64B5F6;
+  background: #000000;
 }
 
 /* 浅色主题：根据系统主题自动应用 */
