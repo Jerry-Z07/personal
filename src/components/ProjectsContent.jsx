@@ -59,10 +59,7 @@ const ProjectsContent = () => {
             initial="hidden"
             animate="visible"
             variants={cardVariants}
-            whileHover={{ 
-              scale: 1.03,
-              transition: { duration: 0.2 }
-            }}
+
           >
             {/* 项目图标 */}
             <div className="project-icon">

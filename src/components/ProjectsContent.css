@@ -26,9 +26,7 @@
   flex-direction: column;
 }
 
-.project-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
+
 
 /* 项目图标：左上角圆形图片区域 */
 .project-icon {
@@ -50,9 +48,7 @@
   object-fit: cover;
 }
 
-.project-card:hover .project-icon {
-  transform: scale(1.05);
-}
+
 
 /* 项目头部容器：包含标题和状态标签的横向布局 */
 .project-header {
@@ -116,7 +112,6 @@
 
 .project-tag:hover {
   background: rgba(33, 150, 243, 0.2);
-  transform: translateY(-2px);
 }
 
 /* 操作按钮容器：卡片底部操作区 */
@@ -146,8 +141,7 @@
 }
 
 .project-action-btn:hover {
-  background: #2196F3;
-  color: #ffffff;
+  color: #2196F3;
 }
 
 .project-action-btn i {
@@ -161,10 +155,7 @@ html:not([data-theme]) .project-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-html[data-theme="dark"] .project-card:hover,
-html:not([data-theme]) .project-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-}
+
 
 html[data-theme="dark"] .project-icon,
 html:not([data-theme]) .project-icon {
@@ -206,8 +197,7 @@ html:not([data-theme]) .project-action-btn {
 
 html[data-theme="dark"] .project-action-btn:hover,
 html:not([data-theme]) .project-action-btn:hover {
-  background: #64B5F6;
-  color: #000000;
+  color: #64B5F6;
 }
 
 /* 浅色主题：根据系统主题自动应用 */
