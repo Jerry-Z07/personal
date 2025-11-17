@@ -1,4 +1,9 @@
 {
+  "common": {
+    "units": {
+      "hundredThousand": "M"
+    }
+  },
   "header": {
     "brand": "Jerry.Z",
     "nav": {

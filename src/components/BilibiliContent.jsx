@@ -1,27 +1,14 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useBilibiliData } from '../query/useQueries';
+import { formatLargeNumber } from '../utils/formatters';
 import './BilibiliContent.css';
 
 const BilibiliContent = () => {
   // 使用i18n翻译函数
   const { t } = useTranslation();
 
-  // 格式化粉丝数
-  const formatFollowerCount = (count) => {
-    if (count >= 10000) {
-      return `${(count / 10000).toFixed(1)}万`;
-    }
-    return count.toString();
-  };
-
-  // 格式化播放量
-  const formatPlayCount = (count) => {
-    if (count >= 10000) {
-      return `${(count / 10000).toFixed(1)}万`;
-    }
-    return count.toString();
-  };
+  // 已使用通用的formatLargeNumber函数替代重复的格式化函数
 
   // 格式化视频时长
   const formatDuration = (seconds) => {
@@ -44,7 +31,7 @@ const BilibiliContent = () => {
                 <h2 className="username">{userInfo.name}</h2>
                 <div className="user-signature">{userInfo.sign}</div>
                 <div className="user-stats">
-                  <span className="followers-count">{t('bilibili.stats.follower')}{formatFollowerCount(userInfo.follower)}</span>
+                  <span className="followers-count">{t('bilibili.stats.follower')}{formatLargeNumber(userInfo.follower, t)}</span>
                   <span className="divider">|</span>
                   <span className="following-count">{t('bilibili.stats.following')}{userInfo.following}</span>
                   <span className="divider">|</span>
@@ -77,7 +64,7 @@ const BilibiliContent = () => {
                 <div className="video-info">
                   <h4 className="video-title">{video.title}</h4>
                   <div className="video-stats">
-                    <span className="video-views">▶ {formatPlayCount(video.play_count)}</span>
+                    <span className="video-views">▶ {formatLargeNumber(video.play_count, t)}</span>
                   </div>
                 </div>
               </motion.div>
