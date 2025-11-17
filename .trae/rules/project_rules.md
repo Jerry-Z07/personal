@@ -10,13 +10,14 @@
 - **React** (v19.1.1) - 使用函数式组件和 Hooks
 - **Vite** (v7.1.7) - 构建工具和开发服务器
 - **Zustand** (v5.0.8) - 轻量级状态管理库
-- **React Query** - 用于数据获取、缓存和状态管理
+- **React Query** (v5.90.9) - 用于数据获取、缓存和状态管理
 - **项目类型**: ES Module
 
 ### UI与动画
 - **Framer Motion** (v12.23.24) - 页面过渡和元素动画
 - **@fluentui/react** (v8.125.0) - UI组件库
 - **@fluentui/react-components** (v9.72.3) - Fluent UI v9组件
+- **@fluentui/react-icons** - Fluent UI 图标库（通过按需引入）
 - **Remix Icon** (v4.7.0) - 图标库，通过类名引用（如：ri-github-fill）
 
 ### 国际化
@@ -49,11 +50,19 @@ src/
 │       ├── zh-CN/      # 中文翻译
 │       └── en-US/      # 英文翻译
 ├── hooks/              # 自定义React Hooks
-│   ├── useScrollHandling.js  # 滚动处理逻辑
-│   └── useTouchHandling.js   # 触摸处理逻辑
+│   ├── useAppState.js        # 应用状态管理
+│   ├── useCallbackRefs.js    # 回调引用管理
+│   ├── useInteractionHandling.js # 交互处理逻辑
+│   ├── useTabState.js        # 标签状态管理
+│   └── useUIState.js         # UI状态管理
+├── query/              # React Query相关文件
+│   ├── config.js       # React Query配置
+│   ├── index.js        # 导出queryClient实例
+│   └── useQueries.js   # 自定义查询hooks
 ├── stores/             # Zustand状态管理
 │   └── index.js        # 主状态store
-├── query.js            # React Query配置和客户端实例
+├── utils/              # 工具函数
+│   └── formatters.js   # 格式化工具，包含 formatLargeNumber 等通用格式化函数，用于统一处理数字显示格式
 ├── cacheManager.js     # React Query缓存包装器（轻量级接口）
 ├── dataPreloader.js    # 数据预加载器（使用React Query）
 ├── App.jsx             # 主应用组件
@@ -115,14 +124,20 @@ src/
 
 #### 4. 数据缓存机制
 - **缓存管理器**: 使用 React Query 进行数据获取和缓存
-- **缓存包装器**: cacheManager.js（提供简化的 React Query 接口）
-- **缓存有效期**: 5分钟（300000ms），通过 staleTime 参数设置
+- **缓存包装器**: cacheManager.js（提供简化的 React Query 接口，完全依赖React Query管理缓存）
+- **缓存有效期**: 5分钟（300000ms），通过 staleTime 和 gcTime 参数设置
+- **配置文件**: src/query/config.js
+- **查询键**: 使用数组格式的查询键，如 ['bilibiliData']
+- **重试策略**: 查询失败时最多重试1次
+- **窗口聚焦**: 默认不重新获取数据（refetchOnWindowFocus: false）
+- **重连时**: 始终重新获取数据（refetchOnReconnect: 'always'）
 - **支持功能**: 
   - 自动过期检测和数据重获取
   - 手动刷新（使用 queryClient.invalidateQueries）
   - 预加载数据（使用 queryClient.prefetchQuery）
   - 页面加载时优先使用缓存
 - **应用场景**: Bilibili 数据、Blog 数据
+- **自定义 Hooks**: 通过 useQueries.js 提供统一的数据获取接口
 
 #### 5. 数据预加载
 - **触发时机**: 页面加载完成后（字体和背景图都加载完成）
@@ -136,10 +151,13 @@ src/
 - **使用方式**: 组件中使用 `useTranslation()` 钩子
 - **动态更新**: 切换语言时自动更新页面标题和 html lang 属性
 
-#### 7. 构建优化
+#### 构建优化
 - **代码分割**: 按供应商库分类打包（React、i18n、Fluent UI、动画库）
 - **代理配置**: 开发环境支持API代理和生产环境CORS代理
 - **Chunk优化**: 调整chunk大小警告阈值至800KB
+- **Fluent UI分组**: 
+  - 核心组件: `@fluentui/react` 和 `@fluentui/react-components`
+  - 图标库: `@fluentui/react-icons` 单独打包
 
 ### 开发规范
 
@@ -216,13 +234,14 @@ npm run preview
    - 路径重写: 保持原路径不变
 
 2. **博客 RSS Feed**
-   - 代理路径: `/blog-feed/`
+   - 代理路径: `/blog-feed`
    - 目标地址: `https://blog.078465.xyz`
    - 路径重写: `/blog-feed` → `/feed`
 
 #### 生产环境
 - 使用 CORS 代理服务: `https://cors1.078465.xyz/v1/proxy/?quest=`
 - API URL 通过 `import.meta.env.MODE` 判断环境自动切换
+- 在 useQueries.js 和 dataPreloader.js 中实现环境切换逻辑
 
 ### 响应式设计
 
@@ -275,7 +294,7 @@ const isMobile = () => window.innerWidth <= 768;
 - 与字体加载配合，通过 LoadingMask 组件管理加载状态
 
 #### 通用组件规范
-- **AnimatedContent**: 提供统一动画配置，减少重复代码
-- **DataContent**: 基于 React Query 实现的数据获取、缓存和错误处理组件，使用 useQuery 钩子
+- **AnimatedContent**: 提供统一动画配置，减少重复代码，支持自定义动画变体和属性
+- **DataContent**: 基于 React Query 实现的数据获取、缓存和错误处理组件，支持自定义加载和错误状态
 - **Background**: 动态背景图片管理，支持随机图片API
 - 新组件应优先复用现有通用组件
