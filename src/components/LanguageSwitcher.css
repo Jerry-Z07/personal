@@ -54,6 +54,23 @@
   padding: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   z-index: 1000;
+  /* 确保下拉菜单不会超出容器 */
+  max-width: calc(100vw - 20px);
+}
+
+/* 移动端响应式调整 */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    /* 在移动端，将下拉菜单居中显示在按钮下方 */
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    /* 移动端略微减小菜单宽度 */
+    min-width: 160px;
+    /* 确保在屏幕底部不会被截断 */
+    bottom: auto;
+    top: calc(100% + 4px);
+  }
 }
 
 .dropdown-section {

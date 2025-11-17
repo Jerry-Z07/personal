@@ -12,11 +12,14 @@ import { useEffect } from 'react';
  * @param {Function} setMainTab - 设置主标签的函数
  * @param {Function} setSubTab - 设置子标签的函数
  */
-const useScrollHandling = (isMobile, showViewportContent, mainTab, lastMainTab, lastSubTab, setShowSecondaryHeader, setShowViewportContent, setMainTab, setSubTab) => {
+const useScrollHandling = (isMobile, showViewportContent, showSecondaryHeader, mainTab, lastMainTab, lastSubTab, setShowSecondaryHeader, setShowViewportContent, setMainTab, setSubTab) => {
   useEffect(() => {
-    // 移动端不需要滚动检测，直接显示二级页眉
+    // 移动端不需要滚动检测，但只在需要时设置显示二级页眉
     if (isMobile()) {
-      setShowSecondaryHeader(true);
+      // 只有在当前未显示secondaryHeader时才设置，防止无限循环更新
+      if (!showSecondaryHeader) {
+        setShowSecondaryHeader(true);
+      }
       return;
     }
 
@@ -47,7 +50,7 @@ const useScrollHandling = (isMobile, showViewportContent, mainTab, lastMainTab, 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [mainTab, lastMainTab, lastSubTab, showViewportContent, isMobile, setShowSecondaryHeader, setShowViewportContent, setMainTab, setSubTab]);
+  }, [mainTab, lastMainTab, lastSubTab, showViewportContent, showSecondaryHeader, isMobile, setShowSecondaryHeader, setShowViewportContent, setMainTab, setSubTab]);
 };
 
 export default useScrollHandling;

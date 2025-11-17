@@ -129,6 +129,7 @@ function App() {
   useScrollHandling(
     isMobile,
     showViewportContent,
+    showSecondaryHeader,
     mainTab,
     lastMainTab,
     lastSubTab,
