@@ -17,8 +17,8 @@
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   transition: all 0.15s ease-out;
   white-space: nowrap;
 }
@@ -47,8 +47,8 @@
   right: 0;
   min-width: 180px;
   background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   padding: 8px;

@@ -5,8 +5,8 @@
   right: 0;
   z-index: 80;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
@@ -26,10 +26,10 @@
   font-size: 0.9rem;
   font-weight: 500;
   color: #666;
-  user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 
 .footer-right {
@@ -52,10 +52,10 @@
   text-decoration: none;
   background: rgba(16, 185, 129, 0.1);
   border: 1px solid rgba(16, 185, 129, 0.2);
-  user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 
 .status-button:hover {
