@@ -76,7 +76,6 @@ src/
 - **SecondaryHeader** - 二级页眉，包含标签导航（简介、Bilibili、博客、GitHub）和刷新按钮
 - **Footer** - 页脚组件
 - **PersonalTitle** - 主页个人标题展示
-- **BackToTopButton** - 返回主页按钮（PC端显示）
 
 #### 内容组件
 - **ContentArea** - 内容路由容器，根据 mainTab 和 subTab 渲染不同内容
@@ -98,20 +97,17 @@ src/
 
 #### 辅助组件
 - **LoadingMask** - 加载遮罩（等待字体和背景图加载）
-- **ScrollIndicator** - 滚动指示器（PC端）
 - **BackgroundBlur** - 背景模糊层
 
 ### 关键特性
 
-#### 1. 双页面架构
-- **主页**: 显示 PersonalTitle 和 ScrollIndicator
-- **二级页面**: 显示 SecondaryHeader + ContentArea（根据标签切换内容）
+#### 1. 页面架构
+- **统一页面结构**: 始终显示 Header + SecondaryHeader，根据状态切换显示 PersonalTitle 或 ContentArea
 - **状态管理**: 使用 Zustand + sessionStorage 管理应用状态，刷新后自动恢复标签状态
 
 #### 2. 响应式设计
 - **断点**: 768px（移动端/PC端分界）
-- **PC端**: 支持滚动触发、触摸滑动、返回主页按钮
-- **移动端**: 直接显示二级页面，点击返回按钮回到主页
+- **PC端、移动端**: 直接显示二级页眉，切换到二级页面后，点击返回按钮回到主页
 
 #### 3. 主题系统
 - **主题模式**: 浅色（light）/ 深色（dark）/ 跟随系统（system）
@@ -154,10 +150,6 @@ src/
 #### 构建优化
 - **代码分割**: 按供应商库分类打包（React、i18n、Fluent UI、动画库）
 - **代理配置**: 开发环境支持API代理和生产环境CORS代理
-- **Chunk优化**: 调整chunk大小警告阈值至800KB
-- **Fluent UI分组**: 
-  - 核心组件: `@fluentui/react` 和 `@fluentui/react-components`
-  - 图标库: `@fluentui/react-icons` 单独打包
 
 ### 开发规范
 
@@ -243,27 +235,6 @@ npm run preview
 - API URL 通过 `import.meta.env.MODE` 判断环境自动切换
 - 在 useQueries.js 和 dataPreloader.js 中实现环境切换逻辑
 
-### 响应式设计
-
-**断点**: 768px（移动端/PC端分界）
-
-**判断方式**: 
-```javascript
-const isMobile = () => window.innerWidth <= 768;
-```
-
-**差异化设计**:
-- **移动端 (≤768px)**: 
-  - 直接显示二级页面
-  - 显示返回按钮
-  - 不显示滚动指示器
-  - 不显示返回主页按钮
-  
-- **PC端 (>768px)**:
-  - 支持滚动触发页面切换
-  - 支持触摸滑动
-  - 显示滚动指示器
-  - 显示返回主页按钮
 
 ### 项目特定规范
 
@@ -273,9 +244,7 @@ const isMobile = () => window.innerWidth <= 768;
 - 标签状态自动同步到 sessionStorage，实现页面刷新后状态恢复
 - 刷新回调通过 ref 的方式在组件间传递
 
-#### PC端卡片规范
-- ProjectsContent 组件中，PC端卡片最小宽度: 500px
-- 需相应调整内边距、字体大小和按钮尺寸
+
 
 #### 标签交互规范
 - 选中标签添加呼吸效果（3秒周期，ease-in-out，光晕强度0-50%）
@@ -283,10 +252,7 @@ const isMobile = () => window.innerWidth <= 768;
 - 禁止刷新按钮使用旋转动画
 - 不同标签使用不同主题色
 
-#### 语言切换按钮规范
-- 位置: 页眉 Jerry.Z 文字右侧
-- 间距: 与文字保持 1rem 间距
-- 高度: Jerry.Z 文字高度的一半（0.8em）
+
 
 #### 背景图片规范
 - 支持动态随机背景图片获取
