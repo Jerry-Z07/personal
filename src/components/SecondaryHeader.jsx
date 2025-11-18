@@ -35,7 +35,7 @@ const SecondaryHeader = ({ mainTab, onMainTabChange, isMobile, onBack }) => {
       transition={isMobile ? { duration: 0.2 } : { duration: 0.3, ease: "easeInOut" }}
     >
       <div className="secondary-header-container">
-        {isMobile && mainTab && (
+        {mainTab && (
           <motion.button
             className="back-button"
             onClick={handleBackClick}

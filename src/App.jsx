@@ -6,7 +6,7 @@ import Background from './components/Background'
 import Header from './components/Header'
 import LoadingMask from './components/LoadingMask'
 import PersonalTitle from './components/PersonalTitle'
-import Navigation from './components/Navigation'
+
 import SecondaryHeader from './components/SecondaryHeader'
 import SidebarNav from './components/SidebarNav'
 import ContentArea from './components/ContentArea'
@@ -30,7 +30,6 @@ function App() {
     handleMainTabChange,
     handleSubTabChange,
     handleRefresh,
-    handleScrollIndicatorClick,
     initializeFromStorage
   } = useStore();
   
@@ -174,18 +173,14 @@ function App() {
       <Background />
       <Header />
       <AnimatePresence>
-        {showSecondaryHeader && <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} />}
+        <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} />
       </AnimatePresence>
       <AnimatePresence>
-        {showViewportContent && (
-          <>
-            <PersonalTitle />
-            {!isMobile() && <Navigation type="scroll" onScroll={handleScrollIndicatorClick} />}
-          </>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {showSecondaryHeader && !showViewportContent && (
+        {/* 主页状态：只显示PersonalTitle */}
+        {!showSecondaryHeader ? (
+          <PersonalTitle key="personal-title" onClick={handleBackButtonClick} />
+        ) : (
+          // 二级页面状态：显示导航和内容
           <>
             {mainTab === 'intro' && (
               <SidebarNav subTab={subTab} onSubTabChange={handleSubTabChange} />
@@ -201,22 +196,8 @@ function App() {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {/* PC端：在二级页面最底下 */}
-        {/* 移动端：主页页面最底下，如果切换到二级页面就在二级页面最底下 */}
-        {((!isMobile() && showSecondaryHeader && !showViewportContent) || 
-          (isMobile() && (showViewportContent || (!showViewportContent && mainTab)))) && (
-          <Footer />
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {/* 仅在PC端且在二级页面时显示回到顶部按钮 (单击回到顶部，双击回到主页) */}
-        {!isMobile() && showSecondaryHeader && !showViewportContent && (
-          <Navigation 
-            type="backToTop" 
-            onClick={handleBackButtonClick} 
-            className="secondary-back-to-top"
-          />
-        )}
+        {/* 只在二级页面显示Footer */}
+        {showSecondaryHeader && <Footer />}
       </AnimatePresence>
     </>
   )

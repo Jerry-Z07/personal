@@ -54,15 +54,21 @@ export const useStore = create((set, get) => ({
   // 处理返回主页
   handleBackToHome: () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 统一处理：返回主页时显示PersonalTitle页面
+    const { updateStorage } = get();
+    updateStorage(STORAGE_KEYS.MAIN_TAB, null); // 清除标签存储
+    updateStorage(STORAGE_KEYS.SUB_TAB, null);
+    
     set((state) => ({
       ui: {
         ...state.ui,
-        showViewportContent: true,
-        showSecondaryHeader: false
+        showViewportContent: false,
+        showSecondaryHeader: false // 不显示二级页眉，显示PersonalTitle
       },
       tabs: {
         ...state.tabs,
-        mainTab: null
+        mainTab: null, // 清除当前标签
+        subTab: null
       }
     }));
   },
@@ -117,36 +123,26 @@ export const useStore = create((set, get) => ({
     }
   },
   
-  // 处理滚动指示器点击
-  handleScrollIndicatorClick: () => set((state) => ({
-    ui: {
-      ...state.ui,
-      showSecondaryHeader: true,
-      showViewportContent: false
-    },
-    tabs: {
-      ...state.tabs,
-      mainTab: state.tabs.lastMainTab,
-      subTab: state.tabs.lastSubTab
-    }
-  })),
-  
   // 从sessionStorage初始化状态
   initializeFromStorage: () => {
     const savedMainTab = sessionStorage.getItem(STORAGE_KEYS.MAIN_TAB);
     const savedSubTab = sessionStorage.getItem(STORAGE_KEYS.SUB_TAB);
     
+    // 统一处理：默认显示PersonalTitle页面
+    const defaultMainTab = null;
+    const defaultSubTab = null;
+    
     set(() => ({
       tabs: {
-        mainTab: null, // 首页刷新时始终设置为null，保持在首页
-        subTab: null, // 首页刷新时始终设置为null
-        lastMainTab: savedMainTab || null, // 保留上次访问的标签用于记录
-        lastSubTab: savedSubTab || null // 保留上次访问的子标签用于记录
+        mainTab: defaultMainTab, // 默认不设置标签
+        subTab: defaultSubTab, // 默认不设置子标签
+        lastMainTab: savedMainTab || 'intro', // 保留上次访问的标签用于记录
+        lastSubTab: savedSubTab || 'intro' // 保留上次访问的子标签用于记录
       },
       ui: {
         isLoading: true,
-        showSecondaryHeader: false, // 首页刷新时始终显示首页
-        showViewportContent: true // 首页刷新时始终显示主视图内容
+        showSecondaryHeader: false, // 默认不显示二级页眉，显示PersonalTitle
+        showViewportContent: false // 默认不显示主视图内容
       }
     }));
   }

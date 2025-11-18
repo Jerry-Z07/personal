@@ -36,87 +36,9 @@ const useInteractionHandling = (isMobile, showViewportContent, showSecondaryHead
   }, [mainTab, setShowSecondaryHeader, setShowViewportContent, restoreTabState]);
 
   useEffect(() => {
-    // 移动端处理逻辑
-    if (isMobile()) {
-      // 移动端不需要滚动和触摸事件监听，但需要设置显示二级页眉
-      if (!showSecondaryHeader) {
-        setShowSecondaryHeader(true);
-      }
-      return;
-    }
-
-    // 滚动事件处理
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      // 只有在主页时（showViewportContent为true）才监听滚动切换到二级页面
-      if (showViewportContent && scrollY > 100) {
-        switchToSecondaryPage();
-      }
-    };
-
-    // 触摸事件相关变量
-    let touchStartY = 0;
-    let touchStartX = 0;
-    let touchStartTime = 0;
-    let isVerticalSwipe = false;
-
-    // 触摸开始事件处理
-    const handleTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-      touchStartX = e.touches[0].clientX;
-      touchStartTime = Date.now();
-      isVerticalSwipe = false;
-    };
-
-    // 触摸移动事件处理
-    const handleTouchMove = (e) => {
-      const touchEndY = e.touches[0].clientY;
-      const currentX = e.touches[0].clientX;
-      const deltaY = Math.abs(touchStartY - touchEndY);
-      const deltaX = Math.abs(touchStartX - currentX);
-      
-      // 确定滑动方向，只有垂直滑动才被认为是有效滑动
-      if (deltaY > deltaX && deltaY > 20) {
-        isVerticalSwipe = true;
-      }
-    };
-
-    // 触摸结束事件处理
-    const handleTouchEnd = () => {
-      const touchEndY = window.scrollY;
-      const touchEndTime = Date.now();
-      const touchDistance = touchStartY - touchEndY;
-      const touchDuration = touchEndTime - touchStartTime;
-      const touchSpeed = Math.abs(touchDistance) / touchDuration;
-      
-      // 只有向下滑动超过100px，且速度大于0.3px/ms，且是垂直滑动才触发
-      if (touchDistance > 100 && touchSpeed > 0.3 && isVerticalSwipe) {
-        // 检查当前是否在页面顶部附近
-        const scrollY = window.scrollY;
-        if (scrollY <= 100) {
-          switchToSecondaryPage();
-          // 触发滚动到下一屏
-          window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth'
-          });
-        }
-      }
-    };
-
-    // 添加事件监听器，使用事件委托的思想集中管理
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd);
-    
-    // 清理事件监听器
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
+    // 不强制设置showSecondaryHeader为true
+    // 让stores中的默认设置决定初始状态
+    // 保留函数结构以备将来需要添加设备特定的交互处理
   }, [isMobile, showViewportContent, showSecondaryHeader, mainTab, switchToSecondaryPage]);
 };
 
