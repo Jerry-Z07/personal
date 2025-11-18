@@ -113,15 +113,7 @@ export const useStore = create((set, get) => ({
     }));
   },
   
-  // 处理刷新
-  handleRefresh: () => {
-    const { tabs, callbacks } = get();
-    if (tabs.mainTab === 'bilibili' && callbacks.refreshBilibiliRef) {
-      callbacks.refreshBilibiliRef();
-    } else if (tabs.mainTab === 'blog' && callbacks.refreshBlogRef) {
-      callbacks.refreshBlogRef();
-    }
-  },
+
   
   // 从sessionStorage初始化状态
   initializeFromStorage: () => {

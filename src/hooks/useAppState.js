@@ -19,8 +19,6 @@ export const useAppState = () => {
     handleBackToHome,
     handleMainTabChange,
     handleSubTabChange,
-    handleRefresh,
-    handleScrollIndicatorClick,
     initializeFromStorage
   } = store;
 
@@ -39,8 +37,6 @@ export const useAppState = () => {
     handleBackToHome,
     handleMainTabChange,
     handleSubTabChange,
-    handleRefresh,
-    handleScrollIndicatorClick,
     initializeFromStorage
   };
 };

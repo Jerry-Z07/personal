@@ -8,8 +8,7 @@ export const useCallbackRefs = () => {
   // 从store中提取回调引用和操作方法
   const {
     callbacks: { refreshBilibiliRef, refreshBlogRef },
-    setCallbackRef,
-    handleRefresh
+    setCallbackRef
   } = useStore();
 
   // 封装常用的回调设置方法
@@ -23,7 +22,6 @@ export const useCallbackRefs = () => {
     // 回调操作方法
     setCallbackRef,
     setRefreshBilibiliRef,
-    setRefreshBlogRef,
-    handleRefresh
+    setRefreshBlogRef
   };
 };

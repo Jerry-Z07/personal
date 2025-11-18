@@ -89,7 +89,7 @@ src/
 - **AnimatedContent** - 提供统一动画配置的包装组件，减少重复代码
 - **DataContent** - 通用数据获取、缓存、加载状态管理组件
 - **Background** - 动态背景图片组件，支持随机图片获取
-- **Navigation** - 通用导航组件
+
 
 #### 导航组件
 - **SidebarNav** - 侧边栏导航（仅在intro主标签下显示）
@@ -97,7 +97,6 @@ src/
 
 #### 辅助组件
 - **LoadingMask** - 加载遮罩（等待字体和背景图加载）
-- **BackgroundBlur** - 背景模糊层
 
 ### 关键特性
 

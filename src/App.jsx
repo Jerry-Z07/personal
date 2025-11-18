@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './App.css'
@@ -29,7 +29,6 @@ function App() {
     handleBackToHome,
     handleMainTabChange,
     handleSubTabChange,
-    handleRefresh,
     initializeFromStorage
   } = useStore();
   
@@ -42,31 +41,10 @@ function App() {
   const setRefreshBilibiliRef = (ref) => setCallbackRef('refreshBilibiliRef', ref);
   const setRefreshBlogRef = (ref) => setCallbackRef('refreshBlogRef', ref);
   
-  // 用于检测双击的状态和引用
-  const [clickCount, setClickCount] = useState(0);
-  const clickTimerRef = useRef(null);
+
   
   // 处理回到顶部/主页按钮点击的函数
-  const handleBackButtonClick = () => {
-    // 增加点击计数
-    setClickCount(prev => prev + 1);
-    
-    // 如果是第一次点击
-    if (clickCount === 0) {
-      // 立即执行回到顶部操作，不等待
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // 设置定时器检测300ms内是否有第二次点击
-      clickTimerRef.current = setTimeout(() => {
-        setClickCount(0); // 300ms后重置点击计数（确认是单击）
-      }, 300);
-    } else {
-      // 双击：清除定时器，回到主页
-      clearTimeout(clickTimerRef.current);
-      handleBackToHome();
-      setClickCount(0); // 重置点击计数
-    }
-  };
+
 
   // 检测是否为移动端 - 使用useCallback缓存函数实例，避免依赖变化导致无限循环
   const isMobile = useCallback(() => {
@@ -146,14 +124,7 @@ function App() {
     }
   }, [isLoading]);
   
-  // 清理定时器，防止内存泄漏
-  useEffect(() => {
-    return () => {
-      if (clickTimerRef.current) {
-        clearTimeout(clickTimerRef.current);
-      }
-    };
-  }, []);
+
 
   // 动态更新页面标题和lang属性
   useEffect(() => {
@@ -178,7 +149,7 @@ function App() {
       <AnimatePresence>
         {/* 主页状态：只显示PersonalTitle */}
         {!showSecondaryHeader ? (
-          <PersonalTitle key="personal-title" onClick={handleBackButtonClick} />
+          <PersonalTitle key="personal-title" />
         ) : (
           // 二级页面状态：显示导航和内容
           <>
