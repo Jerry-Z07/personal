@@ -2,7 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: -8rem 0 2rem 0; /* 减少上边距，使文字向上移动 */
+  height: 100%; /* 让容器占据父容器的全部高度 */
+  min-height: 300px; /* 设置最小高度确保内容可见 */
+  margin: 1rem 0; /* 减小边距，避免页面过长 */
   position: relative;
   z-index: 10;
 }
@@ -12,7 +14,7 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   margin: 0;
-  padding: 0.5rem 1.5rem;
+  padding: 0.3rem 1rem; /* 减小padding */
   border-radius: 12px;
   transition: all 0.3s ease;
   white-space: nowrap; /* 确保文字在一行显示 */

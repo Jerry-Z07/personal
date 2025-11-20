@@ -146,29 +146,31 @@ function App() {
       <AnimatePresence>
         <SecondaryHeader mainTab={mainTab} onMainTabChange={handleMainTabChange} isMobile={isMobile()} onBack={handleBackToHome} />
       </AnimatePresence>
+      <div className="content-wrapper">
+        <AnimatePresence>
+          {/* 主页状态：显示PersonalTitle */}
+          {!showSecondaryHeader ? (
+            <PersonalTitle key="personal-title" />
+          ) : (
+            // 二级页面状态：显示导航和内容
+            <>
+              {mainTab === 'intro' && (
+                <SidebarNav subTab={subTab} onSubTabChange={handleSubTabChange} />
+              )}
+              <ContentArea 
+                mainTab={mainTab} 
+                subTab={subTab} 
+                showSidebar={mainTab === 'intro'} 
+                onRefreshBilibili={setRefreshBilibiliRef}
+                onRefreshBlog={setRefreshBlogRef}
+              />
+            </>
+          )}
+        </AnimatePresence>
+      </div>
       <AnimatePresence>
-        {/* 主页状态：只显示PersonalTitle */}
-        {!showSecondaryHeader ? (
-          <PersonalTitle key="personal-title" />
-        ) : (
-          // 二级页面状态：显示导航和内容
-          <>
-            {mainTab === 'intro' && (
-              <SidebarNav subTab={subTab} onSubTabChange={handleSubTabChange} />
-            )}
-            <ContentArea 
-              mainTab={mainTab} 
-              subTab={subTab} 
-              showSidebar={mainTab === 'intro'} 
-              onRefreshBilibili={setRefreshBilibiliRef}
-              onRefreshBlog={setRefreshBlogRef}
-            />
-          </>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {/* 只在二级页面显示Footer */}
-        {showSecondaryHeader && <Footer />}
+        {/* 页脚在所有页面都显示 */}
+        <Footer />
       </AnimatePresence>
     </>
   )

@@ -6,19 +6,24 @@ body {
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between; /* 确保页脚在底部 */
   padding-top: 75px; /* 适配页眉高度 */
+  padding-bottom: 0; /* 移除底部padding，让页脚紧贴底部 */
 }
 
 .content-wrapper {
   position: relative;
   z-index: 10;
-  padding-top: 2rem;
+  padding-top: 1rem; /* 减小顶部padding */
+  padding-bottom: 4rem; /* 增加底部padding，避免内容被固定页脚遮挡 */
+  flex: 1; /* 让内容区域占据剩余空间 */
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 允许flex子元素缩小 */
 }
 
 /* 深色主题样式 */
