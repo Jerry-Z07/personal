@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import './PersonalTitle.css';
 
@@ -7,31 +6,11 @@ const PersonalTitle = () => {
   const { t } = useTranslation();
 
   return (
-    <motion.div 
-      className="personal-title-container"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ 
-        duration: 0.5, 
-        ease: "easeInOut"
-      }}
-    >
-      <motion.h1 
-        className="personal-title"
-        whileHover={{ 
-          scale: 1.05,
-          textShadow: "0 0 10px rgba(255, 255, 255, 0.5)"
-        }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 400, 
-          damping: 10 
-        }}
-      >
+    <div className="personal-title-container">
+      <h1 className="personal-title">
         {t('personalTitle.main')}
-      </motion.h1>
-    </motion.div>
+      </h1>
+    </div>
   );
 };
 

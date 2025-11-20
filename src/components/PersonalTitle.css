@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100%; /* 让容器占据父容器的全部高度 */
-  min-height: 300px; /* 设置最小高度确保内容可见 */
+  min-height: 600px; /* 设置最小高度确保内容可见 */
   margin: 1rem 0; /* 减小边距，避免页面过长 */
   position: relative;
   z-index: 10;
@@ -16,7 +16,6 @@
   margin: 0;
   padding: 0.3rem 1rem; /* 减小padding */
   border-radius: 12px;
-  transition: all 0.3s ease;
   white-space: nowrap; /* 确保文字在一行显示 */
   user-select: none;
   -webkit-user-select: none;
