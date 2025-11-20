@@ -1,89 +1,76 @@
+/**
+ * React Query自定义Hooks
+ * 使用统一的API工具模块，确保数据获取的一致性和可维护性
+ * 
+ * 重构说明：
+ * - 移除了重复的数据获取逻辑，统一使用 apiUtils.js
+ * - 使用统一的查询配置对象
+ * - 保持相同的接口，确保持向后兼容性
+ * 
+ * @author Assistant
+ * @date 2025-01-01
+ */
+
 import { useQuery } from '@tanstack/react-query';
+import { 
+  fetchBilibiliData, 
+  fetchBlogData, 
+  queryConfig 
+} from '../utils/apiUtils';
 
-// 获取Bilibili数据的自定义hook
+/**
+ * 获取Bilibili数据的自定义Hook
+ * 使用统一的API工具和配置，确保数据获取的一致性
+ * 
+ * @returns {Object} useQuery返回对象，包含data、isLoading、error等状态
+ */
 export const useBilibiliData = () => {
-  const fetchBilibiliData = async () => {
-    const isDev = import.meta.env.MODE === 'development';
-    const apiUrl = isDev ? '/api/bilibili/334961989' : `https://cors1.078465.xyz/v1/proxy/?quest=https://uapis.cn/bilibili/334961989`;
-    
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error('Failed to fetch Bilibili data');
-    }
-    return response.json();
-  };
-
   return useQuery({
     queryKey: ['bilibiliData'],
     queryFn: fetchBilibiliData,
-    staleTime: 300000, // 5分钟
+    ...queryConfig // 展开统一的查询配置
   });
 };
 
-// 获取Blog数据的自定义hook
+/**
+ * 获取Blog数据的自定义Hook  
+ * 使用统一的API工具和配置，确保数据获取的一致性
+ * 
+ * @returns {Object} useQuery返回对象，包含data、isLoading、error等状态
+ */
 export const useBlogData = () => {
-  const fetchBlogData = async () => {
-    const isDev = import.meta.env.MODE === 'development';
-    const apiUrl = isDev ? '/blog-feed/' : `https://cors1.078465.xyz/v1/proxy/?quest=https://blog.078465.xyz/feed`;
-    
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/xml, text/xml, */*'
-      },
-      mode: 'cors'
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch Blog data: HTTP error! status: ${response.status}`);
-    }
-    
-    // 解析RSS格式数据
-    const text = await response.text();
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(text, 'text/xml');
-    
-    // 检查解析错误
-    const parserError = xmlDoc.querySelector('parsererror');
-    if (parserError) {
-      throw new Error('Failed to parse RSS feed');
-    }
-    
-    const imageNode = xmlDoc.querySelector('image');
-    const blogTitle = imageNode?.querySelector('title')?.textContent || '博客';
-    const blogLink = imageNode?.querySelector('link')?.textContent || '';
-    
-    // 提取博客文章项
-    const items = Array.from(xmlDoc.querySelectorAll('item')).slice(0, 5).map(item => {
-      const title = item.querySelector('title')?.textContent || '';
-      const link = item.querySelector('link')?.textContent || '';
-      const description = item.querySelector('description')?.textContent || '';
-      const shortDescription = description.length > 100 
-        ? description.substring(0, 100) + '...' 
-        : description;
-      return { title, link, description: shortDescription };
-    });
-    
-    return { blogTitle, blogLink, items };
-  };
-
   return useQuery({
     queryKey: ['blogData'],
     queryFn: fetchBlogData,
-    staleTime: 300000, // 5分钟
+    ...queryConfig // 展开统一的查询配置
   });
 };
 
-// 获取所有数据的hook（用于预加载）
+/**
+ * 预加载所有数据的Hook
+ * 用于手动触发数据预加载
+ * 
+ * @returns {Object} 包含preloadAll函数的对象
+ */
 export const usePreloadAllData = () => {
+  // 使用现有的hooks获取refetch函数
   const { refetch: refetchBilibili } = useBilibiliData();
   const { refetch: refetchBlog } = useBlogData();
 
+  /**
+   * 预加载所有数据
+   * 并行执行所有数据获取任务
+   */
   const preloadAll = async () => {
-    await Promise.all([
-      refetchBilibili(),
-      refetchBlog()
-    ]);
+    try {
+      await Promise.all([
+        refetchBilibili(),
+        refetchBlog()
+      ]);
+    } catch (error) {
+      console.error('预加载数据失败:', error);
+      // 静默失败，不影响用户体验
+    }
   };
 
   return { preloadAll };
