@@ -3,27 +3,29 @@
 ## 核心技术栈
 
 ### 前端框架
-- **React 19.2.0** - 主要前端框架
+- **React 19.2.0** - 主要前端框架 (使用函数组件和Hooks)
 - **Vite 7.2.4** - 构建工具和开发服务器
-- **TypeScript支持** - 通过 `@types/react` 和 `@types/react-dom`
+- **TypeScript支持** - 已安装TypeScript依赖，但实际使用JSX格式
+- **PropTypes** - 用于JavaScript类型检查
 
 ### 样式系统
 - **Tailwind CSS 4.1.17** - 原子化CSS框架
-- **PostCSS** - CSS处理器
+- **PostCSS** - CSS处理器 (配置使用 `@tailwindcss/postcss` 插件)
 - **Autoprefixer** - 自动添加浏览器前缀
+- **clsx** - 条件类名合并工具
+- **tailwind-merge** - 合并Tailwind CSS类名 (封装为 `cn()` 函数)
 
 ### 动画和图标
-- **Framer Motion** - React动画库
+- **Framer Motion** - React动画库 (布局动画、悬停效果、弹窗动画)
 - **Remix Icon** - 开源图标库
 
 ## 开发环境配置
 
 ### 构建配置
-- **Vite配置**: `vite.config.js`
-- **PostCSS配置**: `postcss.config.js` 
-- **Tailwind配置**: `tailwind.config.js`
-- **ESLint配置**: `eslint.config.js`
-
+- **Vite配置**: `vite.config.js` (基础React插件配置)
+- **PostCSS配置**: `postcss.config.js` (使用新版本Tailwind CSS语法)
+- **Tailwind配置**: `tailwind.config.js` (扩展主题和自定义动画)
+- **ESLint配置**: `eslint.config.js` (使用ESLint 9.x Flat Config)
 
 ### 脚本命令
 - `npm run dev` - 启动开发服务器 (http://localhost:5173/)
@@ -35,9 +37,11 @@
 
 ```
 src/
-├── main.jsx          # 应用入口点
-├── App.jsx           # 主应用组件
+├── main.jsx          # React应用入口点
+├── App.jsx           # 主应用组件 (Bento卡片布局 + 动画弹窗)
 ├── index.css         # 全局样式和Tailwind导入
+├── components/       # 组件目录
+│   └── BentoCard.jsx # 可复用Bento卡片组件
 └── assets/           # 静态资源
     └── react.svg
 ```
@@ -48,21 +52,39 @@ src/
 - 使用函数组件和Hooks
 - 优先使用Tailwind CSS进行样式设计
 - 合理使用Framer Motion创建流畅动画
+- 使用PropTypes进行组件类型检查
+- 组件放置在 `src/components/` 目录下
 
 ### 样式指南
 - 遵循Tailwind CSS原子化设计原则
 - 使用自定义组件类时，在`@layer components`中定义
 - 保留原生CSS用于复杂动画和过渡效果
+- 支持深色模式 (dark模式)
+- 使用半透明效果和backdrop-blur增强视觉层次
 
 ### 图标使用
 - 使用Remix Icon图标库
 - 图标类名格式: `ri-{icon-name}-line` 或 `ri-{icon-name}-fill`
 - 示例: `<i className="ri-home-line"></i>`
 
+### Bento布局规范
+- 使用响应式网格布局 (md:grid-cols-3)
+- 卡片大小通过 `md:col-span-{x}` 和 `md:row-span-{y}` 控制
+- 卡片组件使用 `BentoCard` 进行统一封装
+- 支持点击展开的弹窗动画效果
+
 ## 性能优化
 - 使用Vite的快速热更新
 - 合理使用React.memo进行组件优化
-- 利用Framer Motion的动画性能优化
+- 利用Framer Motion的布局动画性能优化
+- 使用 `cn()` 函数合并CSS类名避免重复
+
+## 动画特性
+- 页面滚动时的入场动画 (`whileInView`)
+- 卡片悬停缩放效果 (`whileHover`)
+- 点击反馈缩放 (`whileTap`)
+- 弹窗布局变形动画 (`layoutId`)
+- 模态框过渡动画 (`AnimatePresence`)
 
 ## 浏览器兼容性
 - 通过Autoprefixer自动处理浏览器前缀
