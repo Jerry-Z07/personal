@@ -8,32 +8,28 @@ import { useEffect, useCallback } from 'react';
  * @param {string|null} mainTab - 当前选中的主标签
  * @param {string} lastMainTab - 上次访问的主标签
  * @param {string} lastSubTab - 上次访问的子标签
- * @param {Function} setShowSecondaryHeader - 设置是否显示二级页眉的函数
- * @param {Function} setShowViewportContent - 设置是否显示主视图内容的函数
- * @param {Function} setMainTab - 设置主标签的函数
- * @param {Function} setSubTab - 设置子标签的函数
+ * @param {Function} setUIState - 统一UI状态更新函数
+ * @param {Function} setTabState - 统一标签状态更新函数
  */
-const useInteractionHandling = (isMobile, showViewportContent, showSecondaryHeader, mainTab, lastMainTab, lastSubTab, setShowSecondaryHeader, setShowViewportContent, setMainTab, setSubTab) => {
+const useInteractionHandling = (isMobile, showViewportContent, showSecondaryHeader, mainTab, lastMainTab, lastSubTab, setUIState, setTabState) => {
   // 提取通用函数：恢复保存的标签状态
   const restoreTabState = useCallback(() => {
     // 尝试恢复保存的标签状态，但仅当确实有保存的标签时才设置
     const savedMainTab = sessionStorage.getItem('mainTab');
     const savedSubTab = sessionStorage.getItem('subTab');
     if (savedMainTab && savedSubTab) {
-      setMainTab(savedMainTab);
-      setSubTab(savedSubTab);
+      setTabState({ mainTab: savedMainTab, subTab: savedSubTab });
     }
-  }, [setMainTab, setSubTab]);
+  }, [setTabState]);
 
   // 提取通用函数：切换到二级页面
   const switchToSecondaryPage = useCallback(() => {
-    setShowSecondaryHeader(true);
-    setShowViewportContent(false);
+    setUIState({ showSecondaryHeader: true, showViewportContent: false });
     // 桌面端切换时，如果没有选中标签，尝试恢复上次访问的标签
     if (!mainTab) {
       restoreTabState();
     }
-  }, [mainTab, setShowSecondaryHeader, setShowViewportContent, restoreTabState]);
+  }, [mainTab, setUIState, restoreTabState]);
 
   useEffect(() => {
     // 不强制设置showSecondaryHeader为true

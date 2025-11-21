@@ -32,14 +32,6 @@ function App() {
     initializeFromStorage
   } = useStore();
   
-  // 定义便捷函数映射到新的状态更新方式
-  const setIsLoading = (value) => setUIState({ isLoading: value });
-  const setShowSecondaryHeader = (value) => setUIState({ showSecondaryHeader: value });
-  const setShowViewportContent = (value) => setUIState({ showViewportContent: value });
-  const setMainTab = (value) => setTabState({ mainTab: value });
-  const setSubTab = (value) => setTabState({ subTab: value });
-  const setRefreshBilibiliRef = (ref) => setCallbackRef('refreshBilibiliRef', ref);
-  const setRefreshBlogRef = (ref) => setCallbackRef('refreshBlogRef', ref);
   
 
   
@@ -64,7 +56,7 @@ function App() {
     // 检查是否所有资源都加载完成
     const checkAllLoaded = () => {
       if (fontLoaded && imageLoaded) {
-        setIsLoading(false);
+        setUIState({ isLoading: false });
       }
     };
 
@@ -109,10 +101,8 @@ function App() {
     mainTab,
     lastMainTab,
     lastSubTab,
-    setShowSecondaryHeader,
-    setShowViewportContent,
-    setMainTab,
-    setSubTab
+    setUIState,
+    setTabState
   );
 
   // 页面加载完成后输出console.log并预加载数据
@@ -135,7 +125,7 @@ function App() {
   }, [i18n.language]);
 
   const handleLoadingMaskHide = () => {
-    setIsLoading(false);
+    setUIState({ isLoading: false });
   };
 
   return (
@@ -161,8 +151,8 @@ function App() {
                 mainTab={mainTab} 
                 subTab={subTab} 
                 showSidebar={mainTab === 'intro'} 
-                onRefreshBilibili={setRefreshBilibiliRef}
-                onRefreshBlog={setRefreshBlogRef}
+                onRefreshBilibili={(ref) => setCallbackRef('refreshBilibiliRef', ref)}
+                onRefreshBlog={(ref) => setCallbackRef('refreshBlogRef', ref)}
               />
             </>
           )}
