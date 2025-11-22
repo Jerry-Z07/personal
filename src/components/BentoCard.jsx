@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-function cn(...inputs) {
+// 合并Tailwind类名的工具函数
+export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
@@ -42,3 +43,5 @@ const BentoCard = ({
 };
 
 export default BentoCard;
+
+// 导出cn函数供其他组件使用

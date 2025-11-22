@@ -88,14 +88,11 @@ function App() {
           <div className="flex justify-between items-start">
              <div className="flex items-center gap-2 text-[#00aeec]">
                 <i className="ri-bilibili-fill text-3xl"></i>
-                <span className="font-bold text-xl">Bilibili</span>
-             </div>
-             <div className="rounded-full bg-white/30 p-2 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                <i className="ri-fullscreen-line"></i>
+                <span className="font-bold text-xl">Bilibili / 哔哩哔哩</span>
              </div>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-300 mt-auto">
-            点击查看我的最新视频 →
+            我的B站账号
           </p>
         </BentoCard>
 
@@ -107,7 +104,7 @@ function App() {
         >
            <div className="flex items-center gap-2 text-orange-500">
               <i className="ri-article-fill text-2xl"></i>
-              <span className="font-bold text-lg">Blog</span>
+              <span className="font-bold text-lg">Blog / 博客</span>
            </div>
            <p className="text-xs text-gray-500 dark:text-gray-400 mt-auto">
              随心随记

@@ -1,5 +1,8 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import BilibiliUserInfo from './BilibiliUserInfo';
+import BilibiliVideoList from './BilibiliVideoList';
+import { useBilibiliData } from '../hooks/useData';
 
 /**
  * 独立的弹窗组件
@@ -10,6 +13,8 @@ import { motion, AnimatePresence } from "framer-motion";
  * @param {Function} props.setSelectedId - 设置选中卡片的函数
  */
 function Modal({ selectedId, setSelectedId }) {
+  // 获取B站数据
+  const { userInfo, videos, loading, error, refresh } = useBilibiliData();
   
   // 根据选中的卡片ID获取对应的内容数据
   const getModalContent = (id) => {
@@ -18,13 +23,51 @@ function Modal({ selectedId, setSelectedId }) {
         return {
           icon: "ri-bilibili-fill",
           iconColor: "text-[#00aeec]",
-          title: "Bilibili 动态",
+          title: "Bilibili",
           content: (
-            <div className="space-y-4">
-              <p className="text-gray-500">这里可以通过 API 获取 B 站数据，或者放个 iframe 播放器。</p>
-              {/* 示例占位符 */}
-              <div className="h-32 rounded-xl bg-gray-200 dark:bg-white/5 animate-pulse" />
-              <div className="h-32 rounded-xl bg-gray-200 dark:bg-white/5 animate-pulse" />
+            <div className="space-y-6">
+              {/* 用户信息条 */}
+              <div>
+                <BilibiliUserInfo 
+                  userInfo={userInfo} 
+                  loading={loading && !userInfo}
+                />
+              </div>
+
+              {/* 视频列表容器 */}
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <i className="ri-film-line mr-2"></i>最近视频
+                  </h3>
+                  {/* 刷新按钮 */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={refresh}
+                    disabled={loading}
+                    className="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center disabled:opacity-50"
+                  >
+                    <i className={`ri-refresh-line mr-1.5 ${loading ? 'animate-spin' : ''}`}></i>
+                    {loading ? '加载中...' : '刷新'}
+                  </motion.button>
+                </div>
+
+                {/* 视频列表 - 使用响应式网格布局 */}
+                <BilibiliVideoList
+                  videos={videos}
+                  loading={loading && !videos.length}
+                  error={error}
+                  onVideoClick={(video) => {
+                    // 处理视频点击事件，可以打开视频播放或跳转到B站
+                    const url = video.bvid 
+                      ? `https://www.bilibili.com/video/${video.bvid}`
+                      : `https://www.bilibili.com/video/av${video.aid}`;
+                    window.open(url, '_blank');
+                  }}
+                  className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                />
+              </div>
             </div>
           )
         };
