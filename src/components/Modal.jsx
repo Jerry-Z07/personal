@@ -67,29 +67,29 @@ function Modal({ selectedId, setSelectedId }) {
             className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
           />
 
-          {/* 2. 弹出的内容窗口 */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none p-4">
+          {/* 2. 弹出的内容窗口 - 自适应缩放 */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none p-2 sm:p-4 md:p-6 lg:p-8">
             <motion.div
               layoutId={`card-${selectedId}`} // 对应上面的 layoutId，实现无缝变形
-              className="pointer-events-auto w-full max-w-2xl overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl"
+              className="pointer-events-auto w-full h-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl"
             >
-              {/* 弹窗头部 */}
-              <div className="relative p-6 border-b border-gray-100 dark:border-white/10 flex justify-between items-center">
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
+              {/* 弹窗头部 - 自适应内边距 */}
+              <div className="relative p-3 sm:p-4 md:p-6 border-b border-gray-100 dark:border-white/10 flex justify-between items-center">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold flex items-center gap-2">
                       <i className={`${modalData.icon} ${modalData.iconColor}`}></i>
                       {modalData.title}
                   </h2>
                   <button 
                     onClick={() => setSelectedId(null)} 
-                    className="p-2 hover:bg-gray-100 rounded-full dark:hover:bg-white/10 transition-colors"
+                    className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full dark:hover:bg-white/10 transition-colors"
                     aria-label="关闭弹窗"
                   >
-                      <i className="ri-close-line text-xl"></i>
+                      <i className="ri-close-line text-lg sm:text-xl"></i>
                   </button>
               </div>
 
-              {/* 弹窗内容区 */}
-              <div className="p-8 h-[400px] overflow-y-auto">
+              {/* 弹窗内容区 - 自适应高度和内边距 */}
+              <div className="p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto max-h-[calc(90vh-4rem)] sm:max-h-[calc(90vh-5rem)] md:max-h-[calc(90vh-6rem)]">
                 {modalData.content}
               </div>
             </motion.div>
