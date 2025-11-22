@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* 深色模式初始化 */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
 /* 自定义基础样式 */
 @layer base {
   :root {
@@ -12,5 +19,12 @@
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
+    /* 支持主题色切换 */
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* 避免页面闪烁，确保主题正确应用 */
+  html {
+    color-scheme: light dark;
   }
 }
