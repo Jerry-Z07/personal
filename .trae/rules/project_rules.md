@@ -37,12 +37,20 @@
 
 ```
 src/
-├── main.jsx          # React应用入口点
-├── App.jsx           # 主应用组件 (Bento卡片布局 + 动画弹窗)
-├── index.css         # 全局样式和Tailwind导入
-├── components/       # 组件目录
-│   └── BentoCard.jsx # 可复用Bento卡片组件
-└── assets/           # 静态资源
+├── main.jsx              # React应用入口点
+├── App.jsx               # 主应用组件 (Bento卡片布局 + 动画弹窗)
+├── index.css             # 全局样式和Tailwind导入
+├── App.css               # App组件样式
+├── components/           # 组件目录
+│   ├── BentoCard.jsx     # 可复用Bento卡片组件
+│   ├── BilibiliUserInfo.jsx # B站用户信息组件
+│   ├── BilibiliVideoList.jsx # B站视频列表组件
+│   └── Modal.jsx         # 模态弹窗组件
+├── hooks/                # 自定义Hooks目录
+│   └── useData.js        # 数据获取相关Hooks
+├── utils/                # 工具函数目录
+│   └── api.js            # API接口和数据处理工具
+└── assets/               # 静态资源
     └── react.svg
 ```
 
@@ -54,6 +62,8 @@ src/
 - 合理使用Framer Motion创建流畅动画
 - 使用PropTypes进行组件类型检查
 - 组件放置在 `src/components/` 目录下
+- 组件命名使用PascalCase格式
+- 为组件添加适当的JSDoc注释说明
 
 ### 样式指南
 - 遵循Tailwind CSS原子化设计原则
@@ -85,7 +95,24 @@ src/
 - 点击反馈缩放 (`whileTap`)
 - 弹窗布局变形动画 (`layoutId`)
 - 模态框过渡动画 (`AnimatePresence`)
+- 使用Canvas实现卡片聚光灯效果
+- 加载状态使用骨架屏动画 (`animate-pulse`)
+
+## API服务与数据处理
+
+### Bilibili集成
+- 使用第三方API服务获取B站用户信息和视频列表
+- API基础URL: `https://uapis.cn/api/v1/social/bilibili/`
+- 支持获取用户基本信息、粉丝数、视频数量
+- 支持获取最近发布的视频列表，包括封面、标题、播放量等
+
+### 数据格式化工具
+- `formatPlayCount`: 格式化播放量数字（转换为万单位）
+- `formatDuration`: 格式化视频时长（秒转换为分:秒格式）
+- `formatPublishTime`: 格式化发布时间（显示为今天/昨天/X天前或具体日期）
+
 
 ## 浏览器兼容性
 - 通过Autoprefixer自动处理浏览器前缀
 - 支持现代浏览器 (Chrome 88+, Firefox 85+, Safari 14+)
+- 响应式设计支持移动端和桌面端

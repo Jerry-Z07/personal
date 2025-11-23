@@ -19,7 +19,11 @@ function App() {
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 sm:max-w-5xl md:max-w-6xl lg:max-w-7xl md:grid-cols-3 md:auto-rows-[220px] lg:auto-rows-[240px]">
         
         {/* 1. 主卡片：个人信息 (占 2x2) */}
-        <BentoCard className="md:col-span-2 md:row-span-2">
+        {/* 延迟 0.1s 入场 */}
+        <BentoCard 
+          className="md:col-span-2 md:row-span-2"
+          delay={0.1}
+        >
           <div className="h-full flex flex-col">
             {/* 上半部分：头像和个人信息 */}
             <div className="flex-1 flex flex-col justify-center items-center text-center">
@@ -63,7 +67,11 @@ function App() {
         </BentoCard>
 
         {/* 2. PROJECT卡片：个人项目 (占 1x2) */}
-        <BentoCard className="md:col-span-1 md:row-span-2 flex flex-col justify-center items-center text-center">
+        {/* 延迟 0.2s 入场 */}
+        <BentoCard 
+          className="md:col-span-1 md:row-span-2 flex flex-col justify-center items-center text-center"
+          delay={0.2}
+        >
           <div className="text-center">
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
@@ -80,10 +88,13 @@ function App() {
         </BentoCard>
 
         {/* 3. Bilibili 卡片 (占 2x1, 可点击) */}
+        {/* 延迟 0.3s 入场 */}
         <BentoCard 
           className="md:col-span-2 md:row-span-1 group justify-between bg-[#00aeec]/10 dark:bg-[#00aeec]/20 border-[#00aeec]/20"
           onClick={() => setSelectedId('bilibili')}
-          layoutId="card-bilibili" // 动画ID
+          layoutId="card-bilibili" 
+          spotlightColor="0, 174, 236" // 使用品牌色光效
+          delay={0.3} 
         >
           <div className="flex justify-between items-start">
              <div className="flex items-center gap-2 text-[#00aeec]">
@@ -97,10 +108,13 @@ function App() {
         </BentoCard>
 
         {/* 4. Blog 卡片 (占 1x1, 可点击) */}
+        {/* 延迟 0.4s 入场 */}
         <BentoCard 
           className="md:col-span-1 md:row-span-1 group justify-between bg-orange-500/10 dark:bg-orange-500/20 border-orange-500/20"
           onClick={() => setSelectedId('blog')}
-          layoutId="card-blog" // 动画ID
+          layoutId="card-blog"
+          spotlightColor="255, 115, 0" // 使用品牌色光效
+          delay={0.4}
         >
            <div className="flex items-center gap-2 text-orange-500">
               <i className="ri-article-fill text-2xl"></i>
