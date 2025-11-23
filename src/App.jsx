@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import BentoCard from "./components/BentoCard";
 import Modal from "./components/Modal";
+// 引入上一两步创建的下拉菜单组件
+import ThemeDropdown from "./components/ThemeDropdown";
 
 // 模拟链接数据
 const SOCIAL_LINKS = [
@@ -13,20 +15,26 @@ function App() {
   const [selectedId, setSelectedId] = useState(null);
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-12 text-zinc-800 dark:bg-[#0a0a0a] dark:text-gray-100">
+    <div className="min-h-screen bg-gray-100 px-4 py-12 text-zinc-800 dark:bg-[#0a0a0a] dark:text-gray-100 transition-colors duration-300">
       
       {/* 布局容器：自适应屏幕宽度的大布局 */}
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 sm:max-w-5xl md:max-w-6xl lg:max-w-7xl md:grid-cols-3 md:auto-rows-[220px] lg:auto-rows-[240px]">
         
         {/* 1. 主卡片：个人信息 (占 2x2) */}
-        {/* 延迟 0.1s 入场 */}
         <BentoCard 
-          className="md:col-span-2 md:row-span-2"
+          className="md:col-span-2 md:row-span-2 relative group/card" // 必须有 relative
           delay={0.1}
         >
+          {/* --- 设置菜单区域 --- */}
+          {/* 绝对定位在主卡片右上角，z-30 确保下拉菜单展开时覆盖在内容之上 */}
+          <div className="absolute top-6 right-6 z-30">
+             <ThemeDropdown />
+          </div>
+          {/* ------------------- */}
+
           <div className="h-full flex flex-col">
             {/* 上半部分：头像和个人信息 */}
-            <div className="flex-1 flex flex-col justify-center items-center text-center">
+            <div className="flex-1 flex flex-col justify-center items-center text-center mt-4">
               <div className="relative">
                 <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-white/20 shadow-2xl">
                   {/* 替换为你的头像 */}
@@ -67,7 +75,6 @@ function App() {
         </BentoCard>
 
         {/* 2. PROJECT卡片：个人项目 (占 1x2) */}
-        {/* 延迟 0.2s 入场 */}
         <BentoCard 
           className="md:col-span-1 md:row-span-2 flex flex-col justify-center items-center text-center"
           delay={0.2}
@@ -88,7 +95,6 @@ function App() {
         </BentoCard>
 
         {/* 3. Bilibili 卡片 (占 2x1, 可点击) */}
-        {/* 延迟 0.3s 入场 */}
         <BentoCard 
           className="md:col-span-2 md:row-span-1 group justify-between bg-[#00aeec]/10 dark:bg-[#00aeec]/20 border-[#00aeec]/20"
           onClick={() => setSelectedId('bilibili')}
@@ -108,7 +114,6 @@ function App() {
         </BentoCard>
 
         {/* 4. Blog 卡片 (占 1x1, 可点击) */}
-        {/* 延迟 0.4s 入场 */}
         <BentoCard 
           className="md:col-span-1 md:row-span-1 group justify-between bg-orange-500/10 dark:bg-orange-500/20 border-orange-500/20"
           onClick={() => setSelectedId('blog')}
