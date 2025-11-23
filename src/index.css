@@ -1,27 +1,30 @@
 @import "tailwindcss";
 
+/* 深色模式初始化 */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* 自定义基础样式 */
 @layer base {
   :root {
-    /* 定义基础字体 */
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
-    
-    /* 默认让浏览器认为这是浅色方案 */
-    color-scheme: light;
-  }
-
-  /* 核心修改：只有当 html 标签上有 .dark 类时，才强制为深色方案 */
-  /* 注意：Tailwind v4 会自动处理 dark: 前缀的类，这里主要是为了滚动条和原生控件变黑 */
-  :root.dark {
-    color-scheme: dark;
   }
 
   body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
-    /* 添加背景色过渡，让切换更丝滑 */
+    /* 支持主题色切换 */
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* 避免页面闪烁，确保主题正确应用 */
+  html {
+    color-scheme: light dark;
   }
 }
