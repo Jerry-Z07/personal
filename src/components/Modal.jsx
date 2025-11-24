@@ -2,10 +2,12 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BilibiliUserInfo from './BilibiliUserInfo';
 import BilibiliVideoList from './BilibiliVideoList';
-import { useBilibiliData } from '../hooks/useData';
+import BlogList from './BlogList';
+import { useBilibiliData, useBlogFeed } from '../hooks/useData';
 
 function Modal({ selectedId, setSelectedId }) {
   const { userInfo, videos, loading, error, refresh } = useBilibiliData();
+  const { posts, loading: blogLoading, error: blogError, refresh: refreshBlog } = useBlogFeed(5);
   
   // ... (getModalContent 内容保持不变，省略以节省篇幅) ...
   const getModalContent = (id) => {
@@ -38,7 +40,17 @@ function Modal({ selectedId, setSelectedId }) {
       case 'blog':
         return {
           icon: "ri-article-fill", iconColor: "text-orange-500", title: "博客文章",
-          content: (<div className="prose dark:prose-invert"><h3>最近更新</h3><p>这里用来展示你的博客文章列表。</p></div>)
+          content: (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white"><i className="ri-article-line mr-2"></i>最近更新</h3>
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={refreshBlog} disabled={blogLoading} className="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center disabled:opacity-50">
+                  <i className={`ri-refresh-line mr-1.5 ${blogLoading ? 'animate-spin' : ''}`}></i>{blogLoading ? '加载中...' : '刷新'}
+                </motion.button>
+              </div>
+              <BlogList posts={posts} loading={blogLoading} error={blogError} className="" />
+            </div>
+          )
         };
       default: return null;
     }

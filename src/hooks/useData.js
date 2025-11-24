@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchBilibiliUserInfo, fetchBilibiliArchives } from '../utils/api';
+import { fetchBilibiliUserInfo, fetchBilibiliArchives, fetchBlogFeed } from '../utils/api';
 
 /**
  * 标准化B站用户信息数据格式
@@ -213,5 +213,46 @@ export const useBilibiliData = () => {
     refreshUserInfo: userInfoHook.refreshUserInfo,
     refreshVideos: videosHook.refreshVideos,
     changeOrderBy: videosHook.changeOrderBy
+  };
+};
+
+/**
+ * 获取博客 RSS 列表的Hook
+ * 默认只返回前 limit 条
+ * @param {number} limit 最大返回条数
+ */
+export const useBlogFeed = (limit = 5) => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const items = await fetchBlogFeed();
+      setPosts(Array.isArray(items) ? items.slice(0, limit) : []);
+    } catch (err) {
+      setError(err.message);
+      setPosts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [limit]);
+
+  const refresh = async () => {
+    await load();
+  };
+
+  return {
+    posts,
+    loading,
+    error,
+    refresh,
   };
 };

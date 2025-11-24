@@ -95,3 +95,62 @@ export const formatPublishTime = (timestamp) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
 };
+
+// 博客 RSS 地址
+const BLOG_RSS_URL = 'https://blog.078465.xyz/feed/';
+
+// CORS 代理地址
+const CORS_PROXY = 'https://cors1.078465.xyz/v1/proxy/?quest=';
+
+/**
+ * 获取博客 RSS 并解析为文章列表
+ * 返回字段：title、link、description
+ * @returns {Promise<Array<{title:string,link:string,description:string}>>}
+ */
+export const fetchBlogFeed = async () => {
+  try {
+    // 通过CORS代理请求博客RSS
+    const proxyUrl = `${CORS_PROXY}${encodeURIComponent(BLOG_RSS_URL)}`;
+    const response = await fetch(proxyUrl, {
+      headers: {
+        // 尽量声明接受 XML/RSS，提升兼容性
+        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const xmlText = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xmlText, 'application/xml');
+
+    // 优先解析 RSS 的 <item>
+    const itemNodes = Array.from(doc.getElementsByTagName('item'));
+    let items = itemNodes.map((node) => {
+      const title = node.getElementsByTagName('title')[0]?.textContent?.trim() || '';
+      const link = node.getElementsByTagName('link')[0]?.textContent?.trim() || '';
+      const description = node.getElementsByTagName('description')[0]?.textContent?.trim() || '';
+      return { title, link, description };
+    });
+
+    // 兼容 Atom 格式 (<entry>)
+    if (!items.length) {
+      const entryNodes = Array.from(doc.getElementsByTagName('entry'));
+      items = entryNodes.map((node) => {
+        const title = node.getElementsByTagName('title')[0]?.textContent?.trim() || '';
+        const linkEl = node.getElementsByTagName('link')[0];
+        const link = linkEl?.getAttribute('href')?.trim() || '';
+        const description = node.getElementsByTagName('summary')[0]?.textContent?.trim()
+          || node.getElementsByTagName('content')[0]?.textContent?.trim()
+          || '';
+        return { title, link, description };
+      });
+    }
+
+    return items;
+  } catch (error) {
+    console.error('获取博客RSS失败:', error);
+    throw error;
+  }
+};
