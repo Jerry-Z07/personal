@@ -42,7 +42,6 @@ const BlogItem = ({ post }) => {
         <div className="flex-1">
           <div className="flex items-center gap-2 text-orange-500 mb-1">
             <i className="ri-article-line"></i>
-            <span className="text-xs font-medium">Blog</span>
           </div>
           <a
             href={post.link}

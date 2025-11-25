@@ -35,6 +35,7 @@ const VideoCard = ({ video, onClick }) => {
           alt={video.title || '视频封面'}
           className="w-full aspect-video object-cover"
           loading="lazy"
+          referrerPolicy="no-referrer"
         />
         {/* 时长标签 */}
         <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
