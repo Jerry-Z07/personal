@@ -4,8 +4,7 @@ import Modal from "./components/Modal";
 
 // 模拟链接数据
 const SOCIAL_LINKS = [
-  { name: "GitHub", icon: "ri-github-fill", url: "#", color: "bg-gray-800 text-white" },
-  { name: "Email", icon: "ri-mail-send-fill", url: "#", color: "bg-blue-600 text-white" },
+  { name: "GitHub", icon: "ri-github-fill", url: "https://github.com/Jerry-Z07", color: "bg-gray-800 text-white" },
 ];
 
 function App() {
@@ -43,7 +42,11 @@ function App() {
             {/* 下半部分：相关链接 */}
             <div className="mt-6 pt-6 border-t border-gray-200/50 dark:border-white/10">
               <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Links / 相关链接</h3>
-              <div className="grid grid-cols-2 gap-3">
+              <div className={`grid gap-3 ${
+                SOCIAL_LINKS.length === 1 
+                  ? 'grid-cols-1' 
+                  : 'grid-cols-2 sm:grid-cols-3'
+              }`}>
                 {SOCIAL_LINKS.map((link) => (
                   <a
                     key={link.name}
