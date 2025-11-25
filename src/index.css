@@ -28,3 +28,20 @@
     color-scheme: light dark;
   }
 }
+
+/* 光标闪烁动画与样式 */
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@layer components {
+  .typing-cursor {
+    width: 1px;
+    height: 1em;
+    background-color: currentColor;
+    display: inline-block;
+    animation: cursor-blink 0.9s steps(1, end) infinite;
+    vertical-align: -0.1em;
+  }
+}

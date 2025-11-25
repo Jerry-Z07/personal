@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BentoCard from "./components/BentoCard";
 import Modal from "./components/Modal";
+import { fetchDailyPoemText } from "./utils/api";
 
 // 模拟链接数据
 const SOCIAL_LINKS = [
@@ -10,6 +11,106 @@ const SOCIAL_LINKS = [
 function App() {
   // 状态：记录当前哪个卡片被选中了 (null | 'bilibili' | 'blog')
   const [selectedId, setSelectedId] = useState(null);
+  // 打字机相关状态
+  const [typedText, setTypedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimerRef = useRef(null);
+  const deletingTimerRef = useRef(null);
+  const refreshTimerRef = useRef(null);
+
+  // 打字动画：逐字符追加显示
+  const typeText = (text) => {
+    if (typingTimerRef.current) clearInterval(typingTimerRef.current);
+    if (refreshTimerRef.current) { clearTimeout(refreshTimerRef.current); refreshTimerRef.current = null; }
+    const normalized = typeof text === "string" ? text.trim() : String(text ?? "").trim();
+    setTypedText("");
+    if (normalized.length === 0) {
+      setIsTyping(false);
+      setTypedText("热衷于创造简洁、优雅的代码艺术。");
+      refreshTimerRef.current = setTimeout(() => { startDeletionThenRefresh(); }, 15000);
+      return;
+    }
+    setIsTyping(true);
+    let i = 0;
+    typingTimerRef.current = setInterval(() => {
+      if (i < normalized.length) {
+        const ch = normalized.charAt(i);
+        setTypedText((prev) => prev + ch);
+        i += 1;
+      } else {
+        clearInterval(typingTimerRef.current);
+        typingTimerRef.current = null;
+        setIsTyping(false);
+        refreshTimerRef.current = setTimeout(() => { startDeletionThenRefresh(); }, 15000);
+      }
+    }, 60);
+  };
+
+  // 删除动画：逐字符从末尾删除
+  const deleteText = () => {
+    return new Promise((resolve) => {
+      if (deletingTimerRef.current) clearInterval(deletingTimerRef.current);
+      let current = "";
+      setTypedText((prev) => {
+        current = prev;
+        return prev;
+      });
+      if (!current || current.length === 0) {
+        resolve();
+        return;
+      }
+      deletingTimerRef.current = setInterval(() => {
+        current = current.slice(0, -1);
+        setTypedText(current);
+        if (current.length === 0) {
+          clearInterval(deletingTimerRef.current);
+          deletingTimerRef.current = null;
+          resolve();
+        }
+      }, 40);
+    });
+  };
+
+  // 删除后请求新文本并执行打字动画
+  const startDeletionThenRefresh = async () => {
+    // 清理可能遗留的刷新定时器
+    if (refreshTimerRef.current) {
+      clearTimeout(refreshTimerRef.current);
+      refreshTimerRef.current = null;
+    }
+    await deleteText();
+    try {
+      const text = await fetchDailyPoemText();
+      const normalized = typeof text === "string" ? text.trim() : String(text ?? "").trim();
+      typeText(normalized || "热衷于创造简洁、优雅的代码艺术。");
+    } catch (err) {
+      // 失败回退为默认文案
+      typeText("热衷于创造简洁、优雅的代码艺术。");
+    }
+  };
+
+  // 初始加载：立即请求一次并执行打字动画
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const text = await fetchDailyPoemText();
+        if (!mounted) return;
+        const normalized = typeof text === "string" ? text.trim() : String(text ?? "").trim();
+        typeText(normalized || "热衷于创造简洁、优雅的代码艺术。");
+      } catch {
+        if (!mounted) return;
+        typeText("热衷于创造简洁、优雅的代码艺术。");
+      }
+    })();
+
+    return () => {
+      mounted = false;
+      if (typingTimerRef.current) clearInterval(typingTimerRef.current);
+      if (deletingTimerRef.current) clearInterval(deletingTimerRef.current);
+      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-12 text-zinc-800 dark:bg-[#0a0a0a] dark:text-gray-100">
@@ -34,8 +135,9 @@ function App() {
               </div>
               
               <h1 className="mt-6 text-3xl font-bold tracking-tight">Jerry.Z</h1>
-              <p className="mt-2 text-lg text-gray-500 dark:text-gray-400">
-                热衷于创造简洁、优雅的代码艺术。
+              <p className="mt-2 text-lg text-gray-500 dark:text-gray-400 flex items-center justify-center">
+                <span>{typedText}</span>
+                {isTyping && <span className="typing-cursor ml-1" />}
               </p>
             </div>
             

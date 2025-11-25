@@ -103,6 +103,32 @@ const BLOG_RSS_URL = 'https://blog.078465.xyz/feed/';
 const CORS_PROXY = 'https://cors1.078465.xyz/v1/proxy/?quest=';
 
 /**
+ * 获取今日诗词纯文本（通过CORS代理）
+ * @returns {Promise<string>} 诗词纯文本
+ */
+export const fetchDailyPoemText = async () => {
+  try {
+    const targetUrl = 'https://v1.jinrishici.com/all.txt';
+    const proxyUrl = `${CORS_PROXY}${encodeURIComponent(targetUrl)}`;
+    const response = await fetch(proxyUrl, {
+      headers: {
+        'Accept': 'text/plain, */*'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const text = await response.text();
+    return text.trim();
+  } catch (error) {
+    console.error('获取今日诗词失败:', error);
+    throw error;
+  }
+};
+
+/**
  * 获取博客 RSS 并解析为文章列表
  * 返回字段：title、link、description
  * @returns {Promise<Array<{title:string,link:string,description:string}>>}

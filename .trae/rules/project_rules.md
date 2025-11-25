@@ -31,7 +31,6 @@
 - `npm run dev` - 启动开发服务器 (http://localhost:5173/)
 - `npm run build` - 构建生产版本
 - `npm run preview` - 预览构建结果
-- `npm run lint` - 运行ESLint检查
 
 ## 项目结构
 
