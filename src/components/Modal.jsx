@@ -9,7 +9,7 @@ function Modal({ selectedId, setSelectedId }) {
   const { userInfo, videos, loading, error, refresh } = useBilibiliData();
   const { posts, loading: blogLoading, error: blogError, refresh: refreshBlog } = useBlogFeed(5);
   
-  // ... (getModalContent 内容保持不变，省略以节省篇幅) ...
+
   const getModalContent = (id) => {
     switch (id) {
       case 'bilibili':

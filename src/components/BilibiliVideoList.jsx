@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { cn } from './BentoCard';
 import { formatPlayCount, formatDuration, formatPublishTime } from '../utils/api';
+import { cardMotionPreset } from './motionPresets';
 
 /**
  * 单个视频卡片组件
@@ -23,8 +24,7 @@ const VideoCard = ({ video, onClick }) => {
 
   return (
     <motion.div
-      whileHover={{ y: -2 }}
-      transition={{ duration: 0.25 }}
+      {...cardMotionPreset}
       className="relative overflow-hidden rounded-2xl flex flex-col h-full cursor-pointer bg-white/60 dark:bg-zinc-900/60 border border-gray-200/50 dark:border-white/10 shadow-sm hover:shadow-xl backdrop-blur-md ring-1 ring-transparent hover:ring-[#00aeec]/30 transition-all duration-300"
       onClick={handleClick}
     >
@@ -168,29 +168,16 @@ const BilibiliVideoList = ({ videos = [], loading, error, onVideoClick, classNam
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
-      transition={{ duration: 0.3, staggerChildren: 0.1 }}
-      className={cn('grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4', className)}
-    >
+    <div className={cn('grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4', className)}>
       {videos.map((video) => (
-        <motion.div
-          key={video.aid || video.bvid || Math.random()}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-          whileHover={{ y: -4 }}
-        >
+        <div key={video.aid || video.bvid || Math.random()}>
           <VideoCard
             video={video}
             onClick={() => onVideoClick && onVideoClick(video)}
           />
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { cn } from './BentoCard';
+import { cardMotionPreset } from './motionPresets';
 
 /**
  * 文章列表骨架屏
@@ -30,10 +31,7 @@ const BlogItem = ({ post }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -3 }}
-      transition={{ duration: 0.2 }}
+      {...cardMotionPreset}
       onClick={handleClick}
       className="group relative overflow-hidden rounded-xl border border-gray-200/50 dark:border-white/10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md p-4 shadow-sm hover:shadow-xl cursor-pointer"
     >
