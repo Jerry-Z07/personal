@@ -3,7 +3,7 @@ import BentoCard from "./components/BentoCard";
 import Modal from "./components/Modal";
 import { fetchDailyPoemText } from "./utils/api";
 
-// 模拟链接数据
+// 链接数据
 const SOCIAL_LINKS = [
   { name: "GitHub", icon: "ri-github-fill", url: "https://github.com/Jerry-Z07", color: "bg-gray-800 text-white" },
 ];

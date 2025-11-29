@@ -134,7 +134,7 @@ const BentoCard = ({
   onClick,
   layoutId,
   // 新增属性：
-  forceWhiteOverlay = false, // 为 true 时，强制使用亮光模式 (适合深色背景卡片)
+  forceWhiteOverlay = false, // 为 true 时，强制使用亮光模式
   spotlightColor,            // 可选：自定义光晕颜色 RGB 字符串 (如 "59, 130, 246")
   delay = 0,                 // 可选：入场动画延迟时间 (秒)
 }) => {
@@ -163,7 +163,7 @@ const BentoCard = ({
       transition={{ 
         // 1. 这里的 duration/delay 依然用于 opacity 和 y 轴的入场动画 
         duration: 0.5, 
-        delay: delay,  // 保留入场延迟 (钢琴音阶效果) 
+        delay: delay,  
         type: "spring", 
         stiffness: 100, 
         damping: 20, 
@@ -181,7 +181,7 @@ const BentoCard = ({
     whileHover={{ 
     scale: onClick ? 1.02 : 1.0,
     transition: {
-      duration: 0.2,    // 悬停响应时间：0.2秒 (更快响应)
+      duration: 0.2,    
       type: "tween", 
       ease: "easeInOut"
     }
@@ -189,7 +189,7 @@ const BentoCard = ({
    whileTap={{ 
     scale: 0.98,
     transition: {
-      duration: 0.1,    // 更快的点击反馈
+      duration: 0.1,  
       type: "tween"
     }
   }}
@@ -218,7 +218,7 @@ const BentoCard = ({
         spotlightColor={spotlightColor}
       />
 
-      {/* 2. 静态高光层 (中间层，增加玻璃质感) */}
+      {/* 2. 静态高光层 (中间层) */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-50 dark:from-white/5" />
 
       {/* 3. 内容层 (最顶层) */}
