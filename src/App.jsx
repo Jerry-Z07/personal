@@ -275,6 +275,26 @@ function App() {
       {/* 使用独立的弹窗组件 */}
       <Modal selectedId={selectedId} setSelectedId={setSelectedId} />
 
+{/* 页脚：左文右按钮 */}
+<footer className="mt-10 pt-6 border-t border-gray-200/50 dark:border-white/10">
+  <div className="mx-auto w-full max-w-7xl">
+    <div className="flex items-center justify-between">
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        By <span className="font-semibold">JerryZ</span> with <span className="align-middle">❤️</span>
+      </p>
+      <a
+        href="https://uptime.078465.xyz/status/default"
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center gap-2 rounded-xl bg-white/50 px-3 py-1.5 text-sm font-medium transition-all hover:bg-white hover:shadow-md dark:bg-white/5 dark:hover:bg-white/10"
+      >
+        <i className="ri-server-line text-gray-500 dark:text-gray-400"></i>
+        网站状态
+        <i className="ri-arrow-right-up-line text-gray-400"></i>
+      </a>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }
