@@ -15,7 +15,23 @@ const USER_UID = '401175768';
  */
 export const fetchBilibiliUserInfo = async () => {
   try {
-    const response = await fetch(`${BILIBILI_USERINFO_API}?uid=${USER_UID}`);
+    // 判断是否在生产环境，使用CORS代理
+    const isProduction = process.env.NODE_ENV === 'production';
+    const apiUrl = `${BILIBILI_USERINFO_API}?uid=${USER_UID}`;
+    
+    let response;
+    if (isProduction) {
+      // 生产环境使用CORS代理
+      const proxyUrl = `${CORS_PROXY}${encodeURIComponent(apiUrl)}`;
+      response = await fetch(proxyUrl, {
+        headers: {
+          'Accept': 'application/json, */*'
+        }
+      });
+    } else {
+      // 开发环境直接请求
+      response = await fetch(apiUrl);
+    }
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,7 +53,23 @@ export const fetchBilibiliUserInfo = async () => {
  */
 export const fetchBilibiliArchives = async (ps = 8, orderby = 'pubdate') => {
   try {
-    const response = await fetch(`${BILIBILI_ARCHIVES_API}?ps=${ps}&mid=${USER_UID}&orderby=${orderby}`);
+    // 判断是否在生产环境，使用CORS代理
+    const isProduction = process.env.NODE_ENV === 'production';
+    const apiUrl = `${BILIBILI_ARCHIVES_API}?ps=${ps}&mid=${USER_UID}&orderby=${orderby}`;
+    
+    let response;
+    if (isProduction) {
+      // 生产环境使用CORS代理
+      const proxyUrl = `${CORS_PROXY}${encodeURIComponent(apiUrl)}`;
+      response = await fetch(proxyUrl, {
+        headers: {
+          'Accept': 'application/json, */*'
+        }
+      });
+    } else {
+      // 开发环境直接请求
+      response = await fetch(apiUrl);
+    }
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
