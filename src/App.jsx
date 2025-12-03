@@ -174,20 +174,60 @@ function App() {
         {/* 2. PROJECT卡片：个人项目 (占 1x2) */}
         {/* 延迟 0.2s 入场 */}
         <BentoCard 
-          className="md:col-span-1 md:row-span-2 flex flex-col justify-center items-center text-center"
+          className="md:col-span-1 md:row-span-2 flex flex-col"
           delay={0.2}
         >
-          <div className="text-center">
+          <div className="mb-4">
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
                 <i className="ri-rocket-line text-3xl text-purple-500"></i>
               </div>
             </div>
-            <h3 className="text-lg font-bold mb-2">PROJECT / 个人项目</h3>
-            <div className="mt-4 pt-4 border-t border-gray-200/50 dark:border-white/10">
-              <p className="text-xs text-gray-400">
-                即将上线 🚀
-              </p>
+            <h3 className="text-lg font-bold mb-2 text-center">PROJECT / 个人项目</h3>
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-200/50 dark:border-white/10">
+            {/* 个人项目列表 */}
+            <div className="flex flex-col gap-3">
+              {/* 项目数据 */}
+              {[
+                {
+                  name: "Mixi",
+                  description: "Mix Inteligence.一个多功能的QQ机器人",
+                  icon: "https://q.qlogo.cn/headimg_dl?dst_uin=3834216037&spec=640",
+                  color: "bg-blue-500/20 text-blue-500",
+                  url: "https://mh.078465.xyz"
+                },
+              ].map((project, index) => (
+                <a
+                  key={index}
+                  href={project.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-4 p-3 rounded-xl transition-all duration-200 hover:bg-white/10 dark:hover:bg-white/5"
+                >
+                  {/* 左侧：项目图标 - 支持图标名称和图片链接 */}
+                  <div className={`w-10 h-10 rounded-full ${project.color} flex items-center justify-center overflow-hidden`}>
+                    {project.icon && (project.icon.startsWith('http://') || project.icon.startsWith('https://')) ? (
+                      <img 
+                        src={project.icon} 
+                        alt={`${project.name} icon`} 
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <i className={`${project.icon} text-xl`}></i>
+                    )}
+                  </div>
+                  
+                  {/* 中间：项目名称和描述 */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-white dark:text-gray-100 truncate">{project.name}</h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{project.description}</p>
+                  </div>
+                  
+                  {/* 右侧：链接跳转Icon */}
+                  <i className="ri-arrow-right-up-line text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" style={{ width: '16px' }}></i>
+                </a>
+              ))}
             </div>
           </div>
         </BentoCard>
