@@ -130,7 +130,7 @@ function App() {
               <div className="relative">
                 <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-white/20 shadow-2xl">
                   {/* 替换为你的头像 */}
-                  <img src="https://blog.078465.xyz/wp-content/uploads/2025/11/163709829.jpg" alt="Avatar" className="h-full w-full object-cover" />
+                  <img src="/psg.jpg" alt="Avatar" className="h-full w-full object-cover" />
                 </div>
               </div>
               
