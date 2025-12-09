@@ -232,14 +232,55 @@ function App() {
           </div>
         </BentoCard>
 
-        {/* 3. Bilibili 卡片 (占 2x1, 可点击) */}
+        {/* 3. 工具集卡片 (占 3x1, 长条形) */}
         {/* 延迟 0.3s 入场 */}
+        <BentoCard 
+          className="md:col-span-3 md:row-span-1"
+          delay={0.3}
+        >
+          <div className="h-full flex flex-col">
+            {/* 工具集标题 */}
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Tools / 工具集</h3>
+            
+            {/* 工具列表：网格布局，自动适应内容 */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
+              {/* 工具数据 */}
+              {[
+                { name: "Todo List", icon: "ri-list-check", color: "bg-blue-500/20 text-blue-500", url: "#" },
+                { name: "Calendar", icon: "ri-calendar-2-line", color: "bg-green-500/20 text-green-500", url: "#" },
+                { name: "Calculator", icon: "ri-calculator-line", color: "bg-purple-500/20 text-purple-500", url: "#" },
+                { name: "Notes", icon: "ri-notebook-line", color: "bg-yellow-500/20 text-yellow-500", url: "#" },
+                { name: "Timer", icon: "ri-timer-line", color: "bg-red-500/20 text-red-500", url: "#" },
+                { name: "Settings", icon: "ri-settings-3-line", color: "bg-gray-500/20 text-gray-500", url: "#" },
+              ].map((tool, index) => (
+                <a
+                  key={index}
+                  href={tool.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all duration-200 hover:bg-white/10 dark:hover:bg-white/5"
+                >
+                  {/* 工具图标 */}
+                  <div className={`w-10 h-10 rounded-full ${tool.color} flex items-center justify-center`}>
+                    <i className={`${tool.icon} text-xl`}></i>
+                  </div>
+                  
+                  {/* 工具名称 */}
+                  <span className="text-xs font-medium text-center truncate max-w-full">{tool.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </BentoCard>
+
+        {/* 4. Bilibili 卡片 (占 2x1, 可点击) */}
+        {/* 延迟 0.4s 入场 */}
         <BentoCard 
           className="md:col-span-2 md:row-span-1 group justify-between bg-[#00aeec]/10 dark:bg-[#00aeec]/20 border-[#00aeec]/20"
           onClick={() => setSelectedId('bilibili')}
           layoutId="card-bilibili" 
-          spotlightColor="0, 174, 236" // 使用品牌色光效
-          delay={0.3} 
+          spotlightColor="0, 174, 236" 
+          delay={0.4} 
         >
           <div className="flex justify-between items-start">
              <div className="flex items-center gap-2 text-[#00aeec]">
@@ -252,14 +293,14 @@ function App() {
           </p>
         </BentoCard>
 
-        {/* 4. Blog 卡片 (占 1x1, 可点击) */}
-        {/* 延迟 0.4s 入场 */}
+        {/* 5. Blog 卡片 (占 1x1, 可点击) */}
+        {/* 延迟 0.5s 入场 */}
         <BentoCard 
           className="md:col-span-1 md:row-span-1 group justify-between bg-orange-500/10 dark:bg-orange-500/20 border-orange-500/20"
           onClick={() => setSelectedId('blog')}
           layoutId="card-blog"
-          spotlightColor="255, 115, 0" // 使用品牌色光效
-          delay={0.4}
+          spotlightColor="255, 115, 0" 
+          delay={0.5}
         >
            <div className="flex items-center gap-2 text-orange-500">
               <i className="ri-article-fill text-2xl"></i>

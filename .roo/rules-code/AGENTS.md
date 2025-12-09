@@ -7,6 +7,5 @@
 - DOM dependency: `fetchBlogFeed` uses DOMParser and expects browser DOM — do NOT call it from Node tests without a DOM polyfill. See [`src/utils/api.js`](src/utils/api.js:151).
 - Tailwind paths: tailwind only scans "./index.html" and "./src/**/*.{js,ts,jsx,tsx}" — add paths in [`tailwind.config.js`](tailwind.config.js:1) if you introduce non-src UI files.
 - ESLint quirk: 'no-unused-vars' is configured with varsIgnorePattern '^[A-Z_]' — renaming helpers that start with _ or uppercase can bypass warnings/errors. See [`eslint.config.js`](eslint.config.js:25).
-- Component conventions: components use .jsx files and default exports; follow the same to avoid import/ESLint friction (see [`src/main.jsx`](src/main.jsx:1), [`src/App.jsx`](src/App.jsx:1)).
 - Vite legacy plugin: legacy() is enabled after react()/tailwindcss() — it injects polyfills and increases bundle size; plugin order matters. See [`vite.config.js`](vite.config.js:7).
 - Localization gotcha: `formatPlayCount` returns Chinese unit '万' — UI strings are localized; don't blindly normalize to english units. See [`src/utils/api.js`](src/utils/api.js:59).

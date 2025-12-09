@@ -13,4 +13,3 @@ This file provides guidance to agents when working with code in this repository.
 - Error handling pattern: API helpers log then throw (they rethrow Error). Hooks set error to err.message — when mocking, throw Error('message') so hooks surface the message correctly.
 - Tailwind content paths are restricted to index+src (see [`tailwind.config.js`](tailwind.config.js:3-6)). Add new non-src HTML/JSX paths there to avoid missing styles.
 - Critical gotcha: many utilities assume browser environment (document, DOMParser, fetch). Avoid invoking UI utilities from Node/CI without polyfills.
-- Component conventions: existing components use .jsx files and default export/import patterns (see [`src/main.jsx`](src/main.jsx:1) and [`src/App.jsx`](src/App.jsx:1)); follow the same to avoid import/ESLint friction.
