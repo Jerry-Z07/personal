@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import BentoCard from "./components/BentoCard";
 import Modal from "./components/Modal";
 import { fetchDailyPoemText } from "./utils/api";
+import { Link } from "react-router";
 
 // 链接数据
 const SOCIAL_LINKS = [
@@ -246,18 +247,11 @@ function App() {
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
               {/* 工具数据 */}
               {[
-                { name: "Todo List", icon: "ri-list-check", color: "bg-blue-500/20 text-blue-500", url: "#" },
-                { name: "Calendar", icon: "ri-calendar-2-line", color: "bg-green-500/20 text-green-500", url: "#" },
-                { name: "Calculator", icon: "ri-calculator-line", color: "bg-purple-500/20 text-purple-500", url: "#" },
-                { name: "Notes", icon: "ri-notebook-line", color: "bg-yellow-500/20 text-yellow-500", url: "#" },
-                { name: "Timer", icon: "ri-timer-line", color: "bg-red-500/20 text-red-500", url: "#" },
-                { name: "Settings", icon: "ri-settings-3-line", color: "bg-gray-500/20 text-gray-500", url: "#" },
+                { name: "Live / 直播", icon: "ri-broadcast-line", color: "bg-pink-500/20 text-pink-500", url: "/live" },
               ].map((tool, index) => (
-                <a
+                <Link
                   key={index}
-                  href={tool.url}
-                  target="_blank"
-                  rel="noreferrer"
+                  to={tool.url}
                   className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all duration-200 hover:bg-white/10 dark:hover:bg-white/5"
                 >
                   {/* 工具图标 */}
@@ -267,7 +261,7 @@ function App() {
                   
                   {/* 工具名称 */}
                   <span className="text-xs font-medium text-center truncate max-w-full">{tool.name}</span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

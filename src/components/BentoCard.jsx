@@ -157,25 +157,22 @@ const BentoCard = ({
       layoutId={layoutId}
       onClick={onClick}
       
-      // --- 入场动画优化 ---
-      initial={{ opacity: 0, y: 50, scale: 0.9 }} // 初始状态：向下偏移 + 稍微缩小
-      whileInView={{ opacity: 1, y: 0, scale: 1 }} // 结束状态：归位
-      transition={{ 
-        // 1. 这里的 duration/delay 依然用于 opacity 和 y 轴的入场动画 
-        duration: 0.5, 
-        delay: delay,  
-        type: "spring", 
-        stiffness: 100, 
-        damping: 20, 
-
-        layout: { 
-          type: "spring", 
-          stiffness: 200, 
-          damping: 25, 
-          delay: 0,      
-        } 
+      // --- 入场动画优化（保留动画且避免不可见） ---
+      initial={{ opacity: 1, y: 40, scale: 0.98 }} // 初始可见，仅位移+缩放
+      animate={{ opacity: 1, y: 0, scale: 1 }}     // 回到正常位置
+      transition={{
+        duration: 0.6,
+        delay: delay,
+        type: "spring",
+        stiffness: 120,
+        damping: 22,
+        layout: {
+          type: "spring",
+          stiffness: 200,
+          damping: 25,
+          delay: 0,
+        }
       }}
-      viewport={{ once: true, margin: "-50px" }} // 视口判定余量
       
       // --- 交互动画 ---
     whileHover={{ 

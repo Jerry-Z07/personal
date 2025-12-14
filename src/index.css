@@ -26,6 +26,8 @@
   /* 避免页面闪烁，确保主题正确应用 */
   html {
     color-scheme: light dark;
+    /* 关闭滚动锚定，防止异步内容插入导致初始滚动位置漂移 */
+    overflow-anchor: none;
   }
 }
 
