@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // 动态导入大型子组件进行代码分割
@@ -24,6 +24,15 @@ const ComponentLoader = ({ children }) => (
 function Modal({ selectedId, setSelectedId }) {
   const { userInfo, videos, loading, error, refresh } = useBilibiliData();
   const { posts, loading: blogLoading, error: blogError, refresh: refreshBlog } = useBlogFeed(5);
+
+  // 动画过渡参数：统一与 PC 保持一致的 spring，确保视觉一致性
+  const containerTransition = { type: "spring", stiffness: 260, damping: 30, mass: 0.7 };
+
+  // 内容显隐：在容器布局动画完成后再展示重内容，降低绘制压力
+  const [contentVisible, setContentVisible] = useState(false);
+  useEffect(() => {
+    if (selectedId) setContentVisible(false);
+  }, [selectedId]);
   
 
   const getModalContent = (id) => {
@@ -95,31 +104,27 @@ function Modal({ selectedId, setSelectedId }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }} 
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             onClick={() => setSelectedId(null)}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] sm:backdrop-blur-sm"
           />
 
           {/* 弹窗容器 */}
           <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none p-2 sm:p-4 md:p-6 lg:p-8">
             <motion.div
               layoutId={`card-${selectedId}`}
-              
-              transition={{ 
-                type: "spring", 
-                stiffness: 260, 
-                damping: 30,    
-                mass: 0.7       
-              }}
-              
-              className="pointer-events-auto w-full h-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl flex flex-col"
+              transition={containerTransition}
+              style={{ willChange: "transform" }}
+              onLayoutAnimationComplete={() => setContentVisible(true)}
+              className="transform-gpu pointer-events-auto w-full h-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900 shadow-xl md:shadow-2xl flex flex-col"
             >
               {/* 
               */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0 } }} // 瞬发消失
+                style={{ willChange: "opacity" }}
                 className="flex flex-col h-full"
               >
                 {/* 头部 */}
@@ -137,8 +142,8 @@ function Modal({ selectedId, setSelectedId }) {
                 </div>
 
                 {/* 内容 */}
-                <div className="p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto flex-1">
-                  {modalData.content}
+                <div className="p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto flex-1" style={{ contentVisibility: "auto", contain: "layout paint style" }}>
+                  {contentVisible && modalData.content}
                 </div>
               </motion.div>
             </motion.div>
