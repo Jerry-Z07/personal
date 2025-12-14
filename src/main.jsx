@@ -5,7 +5,6 @@ import './index.css'
 
 // 路由级别的代码分割 - 动态导入
 const App = React.lazy(() => import('./App.jsx'))
-const Live = React.lazy(() => import('./pages/Live.jsx'))
 
 function ScrollToTop() {
   const location = useLocation()
@@ -36,7 +35,6 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { path: '/', element: <App /> },
-      { path: '/live', element: <Live /> },
     ],
   },
 ])

@@ -247,7 +247,6 @@ function App() {
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
               {/* 工具数据 */}
               {[
-                { name: "Live / 直播", icon: "ri-broadcast-line", color: "bg-pink-500/20 text-pink-500", url: "/live" },
               ].map((tool, index) => (
                 <Link
                   key={index}
