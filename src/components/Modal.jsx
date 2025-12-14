@@ -1,9 +1,25 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import BilibiliUserInfo from './BilibiliUserInfo';
-import BilibiliVideoList from './BilibiliVideoList';
-import BlogList from './BlogList';
+
+// 动态导入大型子组件进行代码分割
+const BilibiliUserInfo = React.lazy(() => import('./BilibiliUserInfo'));
+const BilibiliVideoList = React.lazy(() => import('./BilibiliVideoList'));
+const BlogList = React.lazy(() => import('./BlogList'));
 import { useBilibiliData, useBlogFeed } from '../hooks/useData';
+
+// 加载状态组件
+const ComponentLoader = ({ children }) => (
+  <Suspense fallback={
+    <div className="flex items-center justify-center p-8">
+      <div className="animate-pulse flex flex-col items-center gap-3">
+        <div className="h-8 w-8 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+        <div className="h-3 w-24 bg-gray-300 dark:bg-gray-700 rounded"></div>
+      </div>
+    </div>
+  }>
+    {children}
+  </Suspense>
+);
 
 function Modal({ selectedId, setSelectedId }) {
   const { userInfo, videos, loading, error, refresh } = useBilibiliData();
@@ -19,7 +35,9 @@ function Modal({ selectedId, setSelectedId }) {
           title: "Bilibili",
           content: (
             <div className="space-y-6">
-              <div><BilibiliUserInfo userInfo={userInfo} loading={loading && !userInfo}/></div>
+              <ComponentLoader>
+                <BilibiliUserInfo userInfo={userInfo} loading={loading && !userInfo}/>
+              </ComponentLoader>
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white"><i className="ri-film-line mr-2"></i>最近视频</h3>
@@ -27,12 +45,18 @@ function Modal({ selectedId, setSelectedId }) {
                     <i className={`ri-refresh-line mr-1.5 ${loading ? 'animate-spin' : ''}`}></i>{loading ? '加载中...' : '刷新'}
                   </motion.button>
                 </div>
-                <BilibiliVideoList videos={videos} loading={loading && !videos.length} error={error} className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                  onVideoClick={(video) => {
-                    const url = video.bvid ? `https://www.bilibili.com/video/${video.bvid}` : `https://www.bilibili.com/video/av${video.aid}`;
-                    window.open(url, '_blank');
-                  }}
-                />
+                <ComponentLoader>
+                  <BilibiliVideoList 
+                    videos={videos} 
+                    loading={loading && !videos.length} 
+                    error={error} 
+                    className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    onVideoClick={(video) => {
+                      const url = video.bvid ? `https://www.bilibili.com/video/${video.bvid}` : `https://www.bilibili.com/video/av${video.aid}`;
+                      window.open(url, '_blank');
+                    }}
+                  />
+                </ComponentLoader>
               </div>
             </div>
           )
@@ -48,7 +72,9 @@ function Modal({ selectedId, setSelectedId }) {
                   <i className={`ri-refresh-line mr-1.5 ${blogLoading ? 'animate-spin' : ''}`}></i>{blogLoading ? '加载中...' : '刷新'}
                 </motion.button>
               </div>
-              <BlogList posts={posts} loading={blogLoading} error={blogError} className="" />
+              <ComponentLoader>
+                <BlogList posts={posts} loading={blogLoading} error={blogError} className="" />
+              </ComponentLoader>
             </div>
           )
         };
