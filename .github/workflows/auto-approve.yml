@@ -1,12 +1,63 @@
-name: Auto approve
-on: pull_request_target
+name: Dependabot Auto Merge
+
+on:
+  pull_request_target:
+    # Dependabot PR 常见触发场景：首次创建、后续更新、重新打开
+    types: [opened, synchronize, reopened]
+
 jobs:
-  auto-approve:
+  dependabot-auto-merge:
     runs-on: ubuntu-latest
+    # 仅处理 dependabot[bot] 创建的 PR，避免影响人工 PR
+    if: github.actor == 'dependabot[bot]'
     permissions:
       pull-requests: write
-    if: github.actor == 'dependabot[bot]'
+      contents: write
     steps:
-      - uses: hmarr/auto-approve-action@v4
+      # 读取 Dependabot 元数据，用于判断是否属于 patch/minor 更新
+      - name: 获取 Dependabot 元数据
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
         with:
-            github-token: ${{ secrets.DPBOT }}
+          github-token: ${{ secrets.DPBOT }}
+
+      - name: 判定是否允许自动合并
+        id: merge-policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
+          echo "检测到更新类型: ${UPDATE_TYPE}"
+          if [[ "${UPDATE_TYPE}" == "version-update:semver-patch" || "${UPDATE_TYPE}" == "version-update:semver-minor" ]]; then
+            echo "should_merge=true" >> "$GITHUB_OUTPUT"
+            echo "结论: 允许自动审批并自动合并"
+          else
+            echo "should_merge=false" >> "$GITHUB_OUTPUT"
+            echo "结论: 跳过自动合并（仅允许 patch/minor）"
+          fi
+
+      # 仅在 patch/minor 场景下自动审批
+      - name: 自动审批 PR
+        if: steps.merge-policy.outputs.should_merge == 'true'
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.DPBOT }}
+
+      # 开启自动合并：若仓库存在必需检查会等待检查通过；否则会尽快合并
+      - name: 启用自动合并（squash）
+        if: steps.merge-policy.outputs.should_merge == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DPBOT }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "准备启用自动合并: ${PR_URL}"
+          gh pr merge --auto --squash "${PR_URL}"
+          echo "自动合并已启用（squash）"
+
+      - name: 记录跳过信息
+        if: steps.merge-policy.outputs.should_merge != 'true'
+        shell: bash
+        run: |
+          echo "当前 PR 不符合自动合并策略（非 patch/minor），已跳过。"
