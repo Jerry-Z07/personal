@@ -1,15 +1,43 @@
-# AGENTS.md
+# Repository Guidelines
 
-This file provides guidance to agents when working with code in this repository.
+## Project Structure & Module Organization
+- `src/main.jsx` boots the app, router, and lazy-load flow.
+- `src/components/` contains reusable UI blocks (for example `BentoCard.jsx`, `Modal.jsx`).
+- `src/hooks/useData.js` holds data-fetching hooks for Bilibili and blog feeds.
+- `src/utils/api.js` centralizes API calls, RSS parsing, and display format helpers.
+- `public/` stores static assets; `dist/` is build output (do not edit directly).
+- `.github/workflows/` contains automation such as Dependabot auto-merge.
 
-- No test runner configured: no "test" script present in [`package.json`](package.json:6). To run unit tests you must add a test framework (Vitest/Jest) and remember to polyfill browser globals.
-- Network/CORS specifics: USER_UID is hardcoded as '401175768' and a CORS proxy is used — see [`src/utils/api.js`](src/utils/api.js:10) and [`src/utils/api.js`](src/utils/api.js:103). If the proxy or uapis.cn endpoints are down, feeds will silently fail or throw.
-- Browser-only APIs: [`src/utils/api.js`](src/utils/api.js:151) uses DOMParser (and code relies on global fetch). Tests/Node scripts must polyfill DOMParser + fetch (jsdom/node-fetch or undici global polyfill).
-- Time units: [`formatPublishTime`](src/utils/api.js:82) expects a UNIX timestamp in seconds (it multiplies by 1000). Passing milliseconds yields wrong dates.
-- Localization: [`formatPlayCount`](src/utils/api.js:59) returns Chinese unit '万' — UI strings are localized and not generic.
-- ESLint quirk: rule 'no-unused-vars' ignores identifiers starting with uppercase or underscore (varsIgnorePattern: '^[A-Z_]') — do not rename leading-underscore helpers or uppercase-only variables expecting to be flagged; see [`eslint.config.js`](eslint.config.js:25).
-- Vite build detail: project enables legacy builds (plugins ordered as react(), tailwindcss(), legacy()) — legacy builds add polyfills and increase bundle size; see [`vite.config.js`](vite.config.js:7).
-- API response shapes: hooks in [`src/hooks/useData.js`](src/hooks/useData.js:33) tolerate multiple shapes ({data}, {code:0,data}, plain arrays). When mocking or changing APIs, match one of these shapes or update the hooks.
-- Error handling pattern: API helpers log then throw (they rethrow Error). Hooks set error to err.message — when mocking, throw Error('message') so hooks surface the message correctly.
-- Tailwind content paths are restricted to index+src (see [`tailwind.config.js`](tailwind.config.js:3-6)). Add new non-src HTML/JSX paths there to avoid missing styles.
-- Critical gotcha: many utilities assume browser environment (document, DOMParser, fetch). Avoid invoking UI utilities from Node/CI without polyfills.
+## Build, Test, and Development Commands
+- `npm install`: install dependencies.
+- `npm run dev`: start Vite dev server with HMR.
+- `npm run build`: create production bundle in `dist/`.
+- `npm run preview`: serve the production build locally.
+- `npm run lint`: run ESLint checks across the project.
+- Optional quality tools: `qlty check` and `qlty fmt` for extra lint/format review.
+
+## Coding Style & Naming Conventions
+- Use React function components and hooks.
+- Component files use `PascalCase.jsx`; hooks use `useXxx.js`; utilities use descriptive `camelCase` exports.
+- Keep imports grouped: external packages first, then local modules.
+- Follow the existing file style (quotes/semicolon usage may differ by file) and rely on `npm run lint` before committing.
+- ESLint note: `no-unused-vars` ignores names beginning with uppercase letters or `_`.
+
+## Testing Guidelines
+- No test runner is currently configured (`package.json` has no `test` script).
+- Minimum validation before PR: `npm run lint && npm run build`.
+- For UI/data changes, include manual verification steps in PR (desktop + mobile, API error path).
+- If adding tests, prefer Vitest + React Testing Library under `src/__tests__/` with `*.test.jsx` naming.
+- Browser API reminder: mock/polyfill `fetch` and `DOMParser` for any Node-based tests.
+
+## Commit & Pull Request Guidelines
+- Follow Conventional Commit style seen in history, e.g. `chore(deps): bump react-router...`.
+- Recommended format: `type(scope): short imperative summary` (`feat`, `fix`, `chore`, `docs`, `refactor`).
+- PRs should include: purpose, key changes, validation steps, linked issue, and screenshots for UI updates.
+- Keep PRs focused and small; avoid mixing unrelated refactors.
+- Dependabot patch/minor dependency PRs may be auto-approved/auto-merged by workflow.
+
+## Security & Configuration Notes
+- `src/utils/api.js` hardcodes `USER_UID` and uses a CORS proxy; verify both dev/prod request paths when changing API logic.
+- `formatPublishTime` expects Unix timestamps in seconds (not milliseconds).
+- Never commit secrets; keep environment-specific values in `.env` only.
