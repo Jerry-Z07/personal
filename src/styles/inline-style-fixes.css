@@ -1,0 +1,18 @@
+/* 抽离原本写在 JSX 中的内联样式，便于统一维护 */
+
+.project-card-arrow-icon {
+  width: 16px;
+}
+
+.modal-will-change-transform {
+  will-change: transform;
+}
+
+.modal-will-change-opacity {
+  will-change: opacity;
+}
+
+.modal-content-optimization {
+  content-visibility: auto;
+  contain: layout paint style;
+}

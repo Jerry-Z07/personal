@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import RootLayout from './components/RootLayout'
 import './index.css'
+import './styles/inline-style-fixes.css'
 
 // 路由级别的代码分割 - 动态导入
 const App = lazy(() => import('./App'))

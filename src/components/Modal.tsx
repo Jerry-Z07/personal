@@ -188,17 +188,15 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
               key={selectedId}
               layoutId={`card-${selectedId}`}
               transition={containerTransition}
-              style={{ willChange: 'transform' }}
+              className="modal-will-change-transform transform-gpu pointer-events-auto w-full h-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900 shadow-xl md:shadow-2xl flex flex-col"
               onAnimationStart={() => setContentVisible(false)}
               onLayoutAnimationComplete={() => setContentVisible(true)}
-              className="transform-gpu pointer-events-auto w-full h-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900 shadow-xl md:shadow-2xl flex flex-col"
             >
               <MotionDiv
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0 } }}
-                style={{ willChange: 'opacity' }}
-                className="flex flex-col h-full"
+                className="modal-will-change-opacity flex flex-col h-full"
               >
                 <div className="relative p-3 sm:p-4 md:p-6 border-b border-gray-100 dark:border-white/10 flex justify-between items-center shrink-0">
                   <h2 className="text-lg sm:text-xl md:text-2xl font-bold flex items-center gap-2">
@@ -214,8 +212,7 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
                 </div>
 
                 <div
-                  className="p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto flex-1"
-                  style={{ contentVisibility: 'auto', contain: 'layout paint style' }}
+                  className="modal-content-optimization p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto flex-1"
                 >
                   {contentVisible && modalData.content}
                 </div>

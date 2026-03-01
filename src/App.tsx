@@ -304,8 +304,7 @@ export default function App() {
                   </div>
 
                   <i
-                    className="ri-arrow-right-up-line text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ width: '16px' }}
+                    className="ri-arrow-right-up-line project-card-arrow-icon text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
                   />
                 </a>
               ))}
