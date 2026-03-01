@@ -18,6 +18,8 @@ const MotionButton = motion.button
 const DESKTOP_MEDIA_QUERY = '(min-width: 768px)'
 const SHEET_COLLAPSED_RATIO = 0.6
 const SHEET_EXPANDED_RATIO = 0.85
+const SHEET_EXPANDED_HEIGHT_DVH = Math.round(SHEET_EXPANDED_RATIO * 100)
+const SHEET_COLLAPSED_OFFSET_DVH = Math.round((SHEET_EXPANDED_RATIO - SHEET_COLLAPSED_RATIO) * 100)
 const SHEET_CLOSE_DISTANCE = 180
 const SHEET_CLOSE_VELOCITY = 900
 const SHEET_SNAP_DISTANCE = 70
@@ -88,27 +90,24 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
 
   // 内容显隐：仅在布局动画完成后展示重内容，降低绘制压力。
   const [contentVisible, setContentVisible] = useState<boolean>(false)
-  const [sheetSnapRatio, setSheetSnapRatio] = useState<number>(SHEET_EXPANDED_RATIO)
+  const [sheetContentVisible, setSheetContentVisible] = useState<boolean>(false)
+  const [isSheetExpanded, setIsSheetExpanded] = useState<boolean>(true)
   const closeButtonRef = useRef<HTMLButtonElement | null>(null)
   const previousBodyOverflowRef = useRef<string>('')
   const lastFocusedElementRef = useRef<HTMLElement | null>(null)
   const sheetDragControls = useDragControls()
-  const isSheetExpanded = sheetSnapRatio > (SHEET_COLLAPSED_RATIO + SHEET_EXPANDED_RATIO) / 2
 
   const closeModal = useCallback((): void => {
     // 关闭前重置内容可见状态，避免下次打开时重内容提前闪现。
     setContentVisible(false)
-    setSheetSnapRatio(SHEET_EXPANDED_RATIO)
+    setSheetContentVisible(false)
+    setIsSheetExpanded(true)
     setSelectedId(null)
   }, [setSelectedId])
 
   // 手动切换抽屉吸附点，便于单手快速展开/收起。
   const toggleSheetSnap = useCallback((): void => {
-    setSheetSnapRatio((prev) =>
-      prev > (SHEET_COLLAPSED_RATIO + SHEET_EXPANDED_RATIO) / 2
-        ? SHEET_COLLAPSED_RATIO
-        : SHEET_EXPANDED_RATIO,
-    )
+    setIsSheetExpanded((prev) => !prev)
   }, [])
 
   // 根据拖拽位移与速度决定关闭或吸附到最近的 snap point。
@@ -122,13 +121,13 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
 
       const shouldCollapse = info.offset.y > SHEET_SNAP_DISTANCE || info.velocity.y > SHEET_SNAP_VELOCITY
       if (shouldCollapse) {
-        setSheetSnapRatio(SHEET_COLLAPSED_RATIO)
+        setIsSheetExpanded(false)
         return
       }
 
       const shouldExpand = info.offset.y < -SHEET_SNAP_DISTANCE || info.velocity.y < -SHEET_SNAP_VELOCITY
       if (shouldExpand) {
-        setSheetSnapRatio(SHEET_EXPANDED_RATIO)
+        setIsSheetExpanded(true)
       }
     },
     [closeModal],
@@ -186,6 +185,21 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
       }
     }
   }, [selectedId])
+
+  // 移动端抽屉延迟挂载重内容，降低首击后的首帧压力。
+  useEffect(() => {
+    if (!selectedId || isDesktop) {
+      return
+    }
+
+    const revealTimer = window.setTimeout(() => {
+      setSheetContentVisible(true)
+    }, 160)
+
+    return () => {
+      window.clearTimeout(revealTimer)
+    }
+  }, [isDesktop, selectedId])
 
   // 记录触发元素并在弹层打开后将焦点引导到关闭按钮，提升可访问性。
   useEffect(() => {
@@ -335,6 +349,8 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
 
   const modalData = selectedId ? getModalContent(selectedId) : null
   const titleId = selectedId ? `modal-title-${selectedId}` : 'modal-title'
+  // 使用 transform 切换展开/收起，避免 height 动画触发布局重排。
+  const sheetTranslateY = isSheetExpanded ? '0dvh' : `${SHEET_COLLAPSED_OFFSET_DVH}dvh`
 
   return (
     <AnimatePresence>
@@ -346,7 +362,7 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
             onClick={closeModal}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] sm:backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[1px] sm:backdrop-blur-[2px] md:backdrop-blur-sm"
           />
 
           {isDesktop ? (
@@ -403,14 +419,18 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
                 dragControls={sheetDragControls}
                 dragListener={false}
                 dragConstraints={{ top: 0, bottom: 0 }}
-                dragElastic={{ top: 0, bottom: 0.35 }}
+                dragElastic={{ top: 0.15, bottom: 0.35 }}
                 dragMomentum={false}
                 initial={{ y: '100%' }}
-                animate={{ y: 0, height: `${Math.round(sheetSnapRatio * 100)}dvh` }}
+                animate={{ y: sheetTranslateY }}
                 exit={{ y: '100%' }}
                 transition={{ type: 'spring', stiffness: 300, damping: 35, mass: 0.8 }}
                 onDragEnd={handleSheetDragEnd}
-                className="sheet-will-change-transform transform-gpu pointer-events-auto w-full max-h-[85dvh] rounded-t-3xl bg-white dark:bg-zinc-900 shadow-2xl flex flex-col"
+                style={{
+                  height: `${SHEET_EXPANDED_HEIGHT_DVH}dvh`,
+                  maxHeight: `${SHEET_EXPANDED_HEIGHT_DVH}dvh`,
+                }}
+                className="sheet-will-change-transform transform-gpu pointer-events-auto w-full rounded-t-3xl bg-white dark:bg-zinc-900 shadow-xl md:shadow-2xl flex flex-col"
               >
                 <div className="relative px-4 pt-3 pb-3 border-b border-gray-100 dark:border-white/10 shrink-0">
                   <div
@@ -452,7 +472,16 @@ export default function Modal({ selectedId, setSelectedId }: ModalProps) {
                 </div>
 
                 <div className="sheet-scroll-region sheet-safe-padding modal-content-optimization p-4 overflow-y-auto flex-1">
-                  {modalData.content}
+                  {sheetContentVisible ? (
+                    modalData.content
+                  ) : (
+                    <div className="flex items-center justify-center p-8">
+                      <div className="animate-pulse flex flex-col items-center gap-3">
+                        <div className="h-8 w-8 bg-gray-300 dark:bg-gray-700 rounded-full" />
+                        <div className="h-3 w-24 bg-gray-300 dark:bg-gray-700 rounded" />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </MotionDiv>
             </div>
