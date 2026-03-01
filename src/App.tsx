@@ -305,9 +305,9 @@ export default function App() {
                 onClick={() => {
                   setIsThemeMenuOpen((prev) => !prev)
                 }}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200/70 bg-white/70 text-gray-600 shadow-sm backdrop-blur-md transition-all hover:bg-white hover:text-zinc-900 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/60 dark:border-white/10 dark:bg-zinc-900/70 dark:text-gray-200 dark:hover:bg-zinc-800"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-gray-200/50 bg-gradient-to-br from-white/80 to-white/40 text-gray-500 shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-gray-300/60 hover:text-zinc-700 hover:shadow-lg hover:shadow-gray-200/50 active:scale-95 dark:border-white/10 dark:from-zinc-800/80 dark:to-zinc-900/60 dark:text-gray-400 dark:hover:border-white/20 dark:hover:text-gray-200 dark:hover:shadow-zinc-900/50"
               >
-                <i className={`${currentThemeIcon} text-lg`} aria-hidden="true" />
+                <i className={`${currentThemeIcon} text-base`} aria-hidden="true" />
               </button>
 
               {isThemeMenuOpen && (
@@ -316,9 +316,9 @@ export default function App() {
                   ref={themeMenuRef}
                   role="menu"
                   aria-label="颜色模式"
-                  className="absolute right-0 mt-2 w-44 rounded-2xl border border-gray-200/70 bg-white/90 p-1.5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/85"
+                  className="absolute right-0 mt-2 w-44 origin-top-right animate-in fade-in-0 zoom-in-95 rounded-2xl border border-gray-200/50 bg-gradient-to-br from-white/95 to-white/80 p-1.5 shadow-xl shadow-gray-200/30 backdrop-blur-xl duration-200 dark:border-white/10 dark:from-zinc-900/95 dark:to-zinc-800/80 dark:shadow-zinc-900/30"
                 >
-                  <p className="px-3 py-1 text-xs text-gray-500 dark:text-gray-400">
+                  <p className="px-3 py-1.5 text-xs font-medium text-gray-400 dark:text-gray-500">
                     当前生效：{resolvedThemeLabel}
                   </p>
 
@@ -333,14 +333,14 @@ export default function App() {
                         onClick={() => {
                           handleThemeModeChange(option.mode)
                         }}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm transition-colors hover:bg-gray-100/80 dark:hover:bg-white/10"
+                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm transition-all duration-200 hover:bg-gray-100/80 active:scale-[0.98] dark:hover:bg-white/10"
                       >
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-center gap-2.5">
                           <i className={`${option.icon} text-base`} aria-hidden="true" />
                           <span className="font-medium">{option.label}</span>
                         </span>
                         {isActive ? (
-                          <i className="ri-check-line text-sm text-zinc-700 dark:text-gray-100" aria-hidden="true" />
+                          <i className="ri-check-line text-sm font-bold text-zinc-600 dark:text-gray-200" aria-hidden="true" />
                         ) : null}
                       </button>
                     )
