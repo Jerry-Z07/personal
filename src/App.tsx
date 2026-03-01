@@ -17,6 +17,8 @@ interface ProjectItem {
   name: string
   description: string
   icon?: string
+  // 图标展示形态：默认圆形；矩形图标可设置为 rect，避免被圆形裁切。
+  iconShape?: 'circle' | 'rect'
   color: string
   url: string
 }
@@ -54,6 +56,14 @@ const PROJECTS: ProjectItem[] = [
     icon: 'https://q.qlogo.cn/headimg_dl?dst_uin=3834216037&spec=640',
     color: 'bg-blue-500/20 text-blue-500',
     url: 'https://mh.078465.xyz',
+  },
+  {
+    name: '轻风白板',
+    description: '开源、简洁、易上手的电子白板',
+    icon: 'https://edgeone.gh-proxy.org/https://github.com/Jerry-Z07/WindBoard/blob/main/WindBoard/Assets/icon.ico',
+    iconShape: 'rect',
+    color: 'bg-emerald-500/20 text-emerald-500',
+    url: 'https://github.com/Jerry-Z07/WindBoard',
   },
 ]
 
@@ -400,40 +410,48 @@ export default function App() {
           </div>
           <div className="mt-4 pt-4 border-t border-gray-200/50 dark:border-white/10">
             <div className="flex flex-col gap-3">
-              {PROJECTS.map((project) => (
-                <a
-                  key={project.name}
-                  href={project.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-4 p-3 rounded-xl transition-all duration-200 hover:bg-white/10 dark:hover:bg-white/5"
-                >
-                  <div
-                    className={`w-10 h-10 rounded-full ${project.color} flex items-center justify-center overflow-hidden`}
+              {PROJECTS.map((project) => {
+                const isRectIcon = project.iconShape === 'rect'
+                const iconContainerClassName = isRectIcon
+                  ? 'h-10 w-10 rounded-none bg-transparent'
+                  : `h-10 w-10 rounded-full ${project.color}`
+                const imageClassName = isRectIcon
+                  ? 'h-full w-full object-contain'
+                  : 'h-full w-full rounded-full object-cover'
+
+                return (
+                  <a
+                    key={project.name}
+                    href={project.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-4 p-3 rounded-xl transition-all duration-200 hover:bg-white/10 dark:hover:bg-white/5"
                   >
-                    {project.icon && (project.icon.startsWith('http://') || project.icon.startsWith('https://')) ? (
-                      <img
-                        src={project.icon}
-                        alt={`${project.name} icon`}
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    ) : (
-                      <i className={`${project.icon} text-xl`} />
-                    )}
-                  </div>
+                    <div className={`${iconContainerClassName} flex shrink-0 items-center justify-center overflow-hidden`}>
+                      {project.icon && (project.icon.startsWith('http://') || project.icon.startsWith('https://')) ? (
+                        <img
+                          src={project.icon}
+                          alt={`${project.name} icon`}
+                          className={imageClassName}
+                        />
+                      ) : (
+                        <i className={`${project.icon} text-xl`} />
+                      )}
+                    </div>
 
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-zinc-800 dark:text-gray-100 truncate">{project.name}</h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
-                      {project.description}
-                    </p>
-                  </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-zinc-800 dark:text-gray-100 truncate">{project.name}</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                        {project.description}
+                      </p>
+                    </div>
 
-                  <i
-                    className="ri-arrow-right-up-line project-card-arrow-icon text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                  />
-                </a>
-              ))}
+                    <i
+                      className="ri-arrow-right-up-line project-card-arrow-icon text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                    />
+                  </a>
+                )
+              })}
             </div>
           </div>
         </BentoCard>
