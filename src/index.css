@@ -1,11 +1,6 @@
 @import "tailwindcss";
-
-/* 深色模式初始化 */
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
+/* Tailwind v4：将 dark 变体切换为 class 驱动，统一由 html.dark 控制 */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* 自定义基础样式 */
 @layer base {
@@ -25,7 +20,8 @@
 
   /* 避免页面闪烁，确保主题正确应用 */
   html {
-    color-scheme: light dark;
+    /* 默认回退为浅色，运行时由 useThemeMode 动态同步到 light/dark */
+    color-scheme: light;
     /* 关闭滚动锚定，防止异步内容插入导致初始滚动位置漂移 */
     overflow-anchor: none;
   }

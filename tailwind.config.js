@@ -4,7 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'media', // 使用系统偏好设置
+  darkMode: 'class', // 使用 html.dark 统一控制主题
   theme: {
     extend: {
       // 扩展主题配置

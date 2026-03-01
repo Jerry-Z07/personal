@@ -104,8 +104,9 @@ function CanvasSpotlight({
       const isDark = document.documentElement.classList.contains('dark')
 
       // 深色模式或强制白光时，使用发光模式；浅色模式用阴影模式。
+      // 说明：`lighter` 在部分浏览器 + 半透明卡片场景下会出现过曝/泛灰，改为 `screen` 更稳定。
       const useLightEffect = isDark || forceWhiteOverlay
-      ctx.globalCompositeOperation = useLightEffect ? 'lighter' : 'multiply'
+      ctx.globalCompositeOperation = useLightEffect ? 'screen' : 'multiply'
 
       const colorRgb = spotlightColor || (useLightEffect ? '255, 255, 255' : '100, 100, 110')
       const opacityMultiplier = forceWhiteOverlay ? 0.8 : 1
@@ -113,7 +114,8 @@ function CanvasSpotlight({
 
       // 层级 A：广域氛围光。
       const radiusHalo = 300
-      const alphaHalo = (useLightEffect ? 0.08 : 0.04) * opacityMultiplier
+      // 深色模式下进一步降低光效强度，使体感接近浅色模式的低侵入表现。
+      const alphaHalo = (useLightEffect ? 0.03 : 0.04) * opacityMultiplier
       const haloGradient = ctx.createRadialGradient(
         x,
         y,
@@ -130,7 +132,7 @@ function CanvasSpotlight({
 
       // 层级 B：核心聚焦光。
       const radiusCore = 100
-      const alphaCore = (useLightEffect ? 0.15 : 0.08) * opacityMultiplier
+      const alphaCore = (useLightEffect ? 0.06 : 0.08) * opacityMultiplier
       const coreGradient = ctx.createRadialGradient(
         x,
         y,

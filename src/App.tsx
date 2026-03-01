@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import BentoCard from './components/BentoCard'
 import Modal from './components/Modal'
+import { useThemeMode, type ThemeMode } from './hooks/useThemeMode'
 import { fetchDailyPoemText } from './utils/api'
 import type { ModalSelectedId } from './types/domain'
 
@@ -25,6 +26,12 @@ interface ToolItem {
   icon: string
   color: string
   url: string
+}
+
+interface ThemeModeOption {
+  mode: ThemeMode
+  label: string
+  icon: string
 }
 
 const DEFAULT_POEM_TEXT = '热衷于创造简洁、优雅的代码艺术。'
@@ -53,6 +60,12 @@ const PROJECTS: ProjectItem[] = [
 // 工具数据（当前为空，保留类型以便后续扩展）
 const TOOLS: ToolItem[] = []
 
+const THEME_MODE_OPTIONS: ThemeModeOption[] = [
+  { mode: 'system', label: '跟随系统', icon: 'ri-computer-line' },
+  { mode: 'light', label: '浅色模式', icon: 'ri-sun-line' },
+  { mode: 'dark', label: '深色模式', icon: 'ri-moon-clear-line' },
+]
+
 /**
  * 统一文本归一化，避免 API 返回空值或非字符串导致渲染异常。
  */
@@ -67,6 +80,10 @@ function normalizeText(text: unknown): string {
 export default function App() {
   // 状态：记录当前哪个卡片被选中了 (null | 'bilibili' | 'blog')
   const [selectedId, setSelectedId] = useState<ModalSelectedId>(null)
+  const { mode: themeMode, resolvedMode, setMode: setThemeMode } = useThemeMode()
+  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState<boolean>(false)
+  const themeTriggerRef = useRef<HTMLButtonElement | null>(null)
+  const themeMenuRef = useRef<HTMLDivElement | null>(null)
 
   // 打字机相关状态
   const [typedText, setTypedText] = useState<string>('')
@@ -180,6 +197,43 @@ export default function App() {
     refreshCallbackRef.current = startDeletionThenRefresh
   }, [startDeletionThenRefresh])
 
+  // 处理主题菜单交互：点击外部区域或按 Esc 时自动收起菜单。
+  useEffect(() => {
+    if (!isThemeMenuOpen) {
+      return
+    }
+
+    const handlePointerDown = (event: PointerEvent): void => {
+      const target = event.target
+      if (!(target instanceof Node)) {
+        return
+      }
+
+      if (themeMenuRef.current?.contains(target) || themeTriggerRef.current?.contains(target)) {
+        return
+      }
+
+      setIsThemeMenuOpen(false)
+    }
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      if (event.key !== 'Escape') {
+        return
+      }
+
+      setIsThemeMenuOpen(false)
+      themeTriggerRef.current?.focus()
+    }
+
+    window.addEventListener('pointerdown', handlePointerDown, { passive: true })
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('pointerdown', handlePointerDown)
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isThemeMenuOpen])
+
   // 初始加载：立即请求一次并执行打字动画
   useEffect(() => {
     let mounted = true
@@ -216,13 +270,85 @@ export default function App() {
     }
   }, [typeText])
 
+  const currentThemeIcon = (() => {
+    if (themeMode === 'system') {
+      return 'ri-computer-line'
+    }
+    return themeMode === 'dark' ? 'ri-moon-clear-line' : 'ri-sun-line'
+  })()
+
+  const resolvedThemeLabel = resolvedMode === 'dark' ? '深色' : '浅色'
+
+  const handleThemeModeChange = useCallback(
+    (mode: ThemeMode): void => {
+      setThemeMode(mode)
+      setIsThemeMenuOpen(false)
+    },
+    [setThemeMode],
+  )
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-12 text-zinc-800 dark:bg-[#0a0a0a] dark:text-gray-100">
       {/* 布局容器：自适应屏幕宽度的大布局 */}
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 sm:max-w-5xl md:max-w-6xl lg:max-w-7xl md:grid-cols-3 md:auto-rows-[220px] lg:auto-rows-[240px]">
         {/* 1. 主卡片：个人信息 (占 2x2) */}
         <BentoCard className="md:col-span-2 md:row-span-2" delay={0.1}>
-          <div className="h-full flex flex-col">
+          <div className="relative h-full flex flex-col">
+            <div className="absolute right-0 top-0 z-20">
+              <button
+                ref={themeTriggerRef}
+                type="button"
+                aria-haspopup="menu"
+                aria-controls="theme-mode-menu"
+                aria-expanded={isThemeMenuOpen}
+                aria-label="切换颜色模式"
+                onClick={() => {
+                  setIsThemeMenuOpen((prev) => !prev)
+                }}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200/70 bg-white/70 text-gray-600 shadow-sm backdrop-blur-md transition-all hover:bg-white hover:text-zinc-900 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/60 dark:border-white/10 dark:bg-zinc-900/70 dark:text-gray-200 dark:hover:bg-zinc-800"
+              >
+                <i className={`${currentThemeIcon} text-lg`} aria-hidden="true" />
+              </button>
+
+              {isThemeMenuOpen && (
+                <div
+                  id="theme-mode-menu"
+                  ref={themeMenuRef}
+                  role="menu"
+                  aria-label="颜色模式"
+                  className="absolute right-0 mt-2 w-44 rounded-2xl border border-gray-200/70 bg-white/90 p-1.5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/85"
+                >
+                  <p className="px-3 py-1 text-xs text-gray-500 dark:text-gray-400">
+                    当前生效：{resolvedThemeLabel}
+                  </p>
+
+                  {THEME_MODE_OPTIONS.map((option) => {
+                    const isActive = option.mode === themeMode
+                    return (
+                      <button
+                        key={option.mode}
+                        type="button"
+                        role="menuitemradio"
+                        aria-checked={isActive}
+                        onClick={() => {
+                          handleThemeModeChange(option.mode)
+                        }}
+                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm transition-colors hover:bg-gray-100/80 dark:hover:bg-white/10"
+                      >
+                        <span className="flex items-center gap-2">
+                          <i className={`${option.icon} text-base`} aria-hidden="true" />
+                          <span className="font-medium">{option.label}</span>
+                        </span>
+                        {isActive ? (
+                          <i className="ri-check-line text-sm text-zinc-700 dark:text-gray-100" aria-hidden="true" />
+                        ) : null}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+
             <div className="flex-1 flex flex-col justify-center items-center text-center">
               <div className="relative">
                 <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-white/20 shadow-2xl">
