@@ -41,3 +41,6 @@
 - `src/utils/api.js` hardcodes `USER_UID` and uses a CORS proxy; verify both dev/prod request paths when changing API logic.
 - `formatPublishTime` expects Unix timestamps in seconds (not milliseconds).
 - Never commit secrets; keep environment-specific values in `.env` only.
+
+## 特有的可用 MCP 工具
+- **chrome-devtools**：辅助调试网页
