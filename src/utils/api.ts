@@ -17,8 +17,9 @@ const BILIBILI_ARCHIVES_API = 'https://uapis.cn/api/v1/social/bilibili/archives'
 // 博客 RSS 地址
 const BLOG_RSS_URL = 'https://blog.078465.xyz/feed/'
 
-// CORS 代理地址
-const CORS_PROXY = 'https://cors1.078465.xyz/v1/proxy/?quest='
+// CORS 代理网关地址（由代理负责读取 quest 查询参数并转发）
+const DEFAULT_CORS_PROXY_ENDPOINT = 'https://cors1.078465.xyz/v1/proxy/'
+const CORS_PROXY_ENDPOINT = (import.meta.env.VITE_CORS_PROXY_ENDPOINT || DEFAULT_CORS_PROXY_ENDPOINT).trim()
 
 // 用户 UID
 const USER_UID = '401175768'
@@ -45,7 +46,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  */
 async function requestByEnv(targetUrl: string, accept: string): Promise<Response> {
   const requestUrl = import.meta.env.PROD
-    ? `${CORS_PROXY}${encodeURIComponent(targetUrl)}`
+    ? buildProxyRequestUrl(targetUrl)
     : targetUrl
 
   return fetch(requestUrl, {
@@ -59,12 +60,27 @@ async function requestByEnv(targetUrl: string, accept: string): Promise<Response
  * 强制使用代理请求目标地址。
  */
 async function requestByProxy(targetUrl: string, accept: string): Promise<Response> {
-  const proxyUrl = `${CORS_PROXY}${encodeURIComponent(targetUrl)}`
+  const proxyUrl = buildProxyRequestUrl(targetUrl)
   return fetch(proxyUrl, {
     headers: {
       Accept: accept,
     },
   })
+}
+
+/**
+ * 生成代理请求地址。
+ */
+function buildProxyRequestUrl(targetUrl: string): string {
+  try {
+    const proxyUrl = new URL(CORS_PROXY_ENDPOINT)
+    proxyUrl.searchParams.set('quest', targetUrl)
+    return proxyUrl.toString()
+  } catch {
+    const fallback = new URL(DEFAULT_CORS_PROXY_ENDPOINT)
+    fallback.searchParams.set('quest', targetUrl)
+    return fallback.toString()
+  }
 }
 
 /**
