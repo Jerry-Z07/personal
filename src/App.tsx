@@ -99,54 +99,11 @@ export default function App() {
   const [typedText, setTypedText] = useState<string>('')
   const [isTyping, setIsTyping] = useState<boolean>(false)
   const typingTimerRef = useRef<number | null>(null)
-  const deletingTimerRef = useRef<number | null>(null)
-  const refreshTimerRef = useRef<number | null>(null)
-
-  // 使用 ref 保存最新刷新函数，避免定时器闭包引用过期函数。
-  const refreshCallbackRef = useRef<() => Promise<void>>(async () => {})
-
-  // 删除动画：逐字符从末尾删除
-  const deleteText = useCallback((): Promise<void> => {
-    return new Promise((resolve) => {
-      if (deletingTimerRef.current) {
-        window.clearInterval(deletingTimerRef.current)
-      }
-
-      let current = ''
-      setTypedText((prev) => {
-        current = prev
-        return prev
-      })
-
-      if (!current.length) {
-        resolve()
-        return
-      }
-
-      deletingTimerRef.current = window.setInterval(() => {
-        current = current.slice(0, -1)
-        setTypedText(current)
-
-        if (!current.length) {
-          if (deletingTimerRef.current) {
-            window.clearInterval(deletingTimerRef.current)
-            deletingTimerRef.current = null
-          }
-          resolve()
-        }
-      }, 40)
-    })
-  }, [])
 
   // 打字动画：逐字符追加显示
   const typeText = useCallback((text: string): void => {
     if (typingTimerRef.current) {
       window.clearInterval(typingTimerRef.current)
-    }
-
-    if (refreshTimerRef.current) {
-      window.clearTimeout(refreshTimerRef.current)
-      refreshTimerRef.current = null
     }
 
     const normalized = normalizeText(text)
@@ -155,9 +112,6 @@ export default function App() {
     if (!normalized.length) {
       setIsTyping(false)
       setTypedText(DEFAULT_POEM_TEXT)
-      refreshTimerRef.current = window.setTimeout(() => {
-        void refreshCallbackRef.current()
-      }, 15000)
       return
     }
 
@@ -178,34 +132,8 @@ export default function App() {
       }
 
       setIsTyping(false)
-      refreshTimerRef.current = window.setTimeout(() => {
-        void refreshCallbackRef.current()
-      }, 15000)
     }, 60)
   }, [])
-
-  // 删除后请求新文本并执行打字动画
-  const startDeletionThenRefresh = useCallback(async (): Promise<void> => {
-    if (refreshTimerRef.current) {
-      window.clearTimeout(refreshTimerRef.current)
-      refreshTimerRef.current = null
-    }
-
-    await deleteText()
-
-    try {
-      const text = await fetchDailyPoemText()
-      typeText(normalizeText(text))
-    } catch (error) {
-      // 失败回退为默认文案，同时输出错误日志。
-      console.error('刷新诗词失败，使用默认文案:', error)
-      typeText(DEFAULT_POEM_TEXT)
-    }
-  }, [deleteText, typeText])
-
-  useEffect(() => {
-    refreshCallbackRef.current = startDeletionThenRefresh
-  }, [startDeletionThenRefresh])
 
   // 处理主题菜单交互：点击外部区域或按 Esc 时自动收起菜单。
   useEffect(() => {
@@ -270,12 +198,6 @@ export default function App() {
       mounted = false
       if (typingTimerRef.current) {
         window.clearInterval(typingTimerRef.current)
-      }
-      if (deletingTimerRef.current) {
-        window.clearInterval(deletingTimerRef.current)
-      }
-      if (refreshTimerRef.current) {
-        window.clearTimeout(refreshTimerRef.current)
       }
     }
   }, [typeText])
@@ -520,7 +442,7 @@ export default function App() {
               By <span className="font-semibold">JerryZ</span> with <span className="align-middle">❤️</span>
             </p>
             <a
-              href="https://uptime.078465.xyz/status/default"
+              href="https://stats.uptimerobot.com/bYVW2cRJ5T"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-xl bg-white/50 px-3 py-1.5 text-sm font-medium transition-all hover:bg-white hover:shadow-md dark:bg-white/5 dark:hover:bg-white/10"
