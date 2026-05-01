@@ -4,19 +4,14 @@
 - `src/main.tsx`：应用启动入口，配置 `createBrowserRouter`，通过 `lazy + Suspense` 进行路由级代码分割，并挂载 `RootLayout`。
 - `src/App.tsx`：首页 Bento 布局、诗词打字机动画、链接/项目/工具区块，以及弹层触发入口。
 - `src/components/`：核心 UI 与交互组件。
-  - `BentoCard.tsx`：卡片容器与 Canvas 光效。
-  - `Modal.tsx`：桌面弹窗 + 移动端抽屉，按需懒加载内容组件。
-  - `BilibiliUserInfo.tsx`、`BilibiliVideoList.tsx`、`BlogList.tsx`：弹层内容组件。
-  - `RootLayout.tsx`：路由切换自动回顶。
-  - `motionPresets.ts`：Framer Motion 公共动画预设。
 - `src/hooks/useData.ts`：B 站用户/视频与博客 RSS 的数据获取 Hook，包含标准化、容错和刷新逻辑。
+- `src/hooks/useThemeMode.ts`：主题模式管理 Hook，支持 light/dark/system 三种模式，支持 localStorage 持久化和系统主题监听。
 - `src/utils/api.ts`：API 请求、RSS 解析、时间/数字格式化与错误处理；`src/utils/cn.ts` 用于 Tailwind 类名合并。
 - `src/types/domain.ts`：领域模型类型定义（B 站用户、视频、博客文章、弹层状态等）。
 - `src/styles/inline-style-fixes.css`：从 JSX 抽离的内联样式与性能优化样式。
 - `public/`：静态资源目录。
 - `dist/`：构建产物目录（禁止直接修改）。
-- `.github/workflows/auto-approve.yml`：Dependabot patch/minor 依赖更新自动审批与自动合并。
-- `docs/`：当前为空目录，可用于后续补充项目文档。
+- `docs/`：项目文档目录，包含 EdgeOne CORS 代理迁移说明等。
 
 ## 构建、检查与开发命令
 - `npm install`：安装依赖。
@@ -56,5 +51,3 @@
 - 禁止提交密钥或敏感配置，环境相关值仅放入 `.env`。
 - 当前实际入口文件为 `src/main.tsx`，若调整 HTML 中模块入口路径，需保持与源码一致以避免启动失败。
 
-## 特有可用 MCP 工具
-- `chrome-devtools`：辅助调试网页。
