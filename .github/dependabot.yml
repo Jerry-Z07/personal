@@ -5,7 +5,44 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+    groups:
+      # React 生态：react/react-dom 必须同步更新，否则运行时崩溃
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+          - "react-router"
+      # Vite 生态：核心与插件一起更新，避免插件兼容性问题
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+          - "@tailwindcss/vite"
+      # Tailwind 生态：引擎与工具链同步
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "tailwind-merge"
+          - "postcss"
+          - "autoprefixer"
+      # TypeScript + ESLint：类型检查与代码规范工具链同步
+      typescript-eslint:
+        patterns:
+          - "typescript"
+          - "@typescript-eslint/*"
+          - "eslint"
+          - "@eslint/js"
+          - "eslint-plugin-react-hooks"
+          - "eslint-plugin-react-refresh"
+          - "globals"
