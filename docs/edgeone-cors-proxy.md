@@ -25,13 +25,14 @@
 项目新增了 `VITE_CORS_PROXY_ENDPOINT` 环境变量。
 
 ```env
-VITE_CORS_PROXY_ENDPOINT=https://cors1.078465.xyz/v1/proxy/
+VITE_CORS_PROXY_ENDPOINT=/api/proxy
 ```
 
 说明：
 
-- 建议在 EdgeOne Pages 生产环境配置为 `/api/proxy`，代码会自动追加 `quest` 查询参数。
-- 若变量未配置，代码会回退到当前外部代理地址 `https://cors1.078465.xyz/v1/proxy/`。
+- 建议在 EdgeOne Pages 生产环境配置为 `/api/proxy`，代码会自动追加 `quest` 查询参数（相对路径依赖边缘函数与前端同源部署）。
+- 若变量未配置，代码会回退到 EdgeOne Pages 内置代理 `https://www.078465.xyz/api/proxy`（本地开发同样可用，域名已在函数 Origin 白名单内）。
+- 历史外部代理地址 `https://cors1.078465.xyz/v1/proxy/` 已于 2026-09 停用。
 
 ## 切换步骤
 

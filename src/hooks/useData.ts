@@ -119,10 +119,8 @@ export function useBilibiliUserInfo(): {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
-  const loadUserInfo = useCallback(async (): Promise<void> => {
-    setLoading(true)
-    setError(null)
-
+  // 纯请求逻辑：所有 setState 均在 await 之后，可在 effect 中直接调用（无同步级联渲染）
+  const fetchAndApplyUserInfo = useCallback(async (): Promise<void> => {
     try {
       const data = await fetchBilibiliUserInfo()
       const normalized = extractUserInfo(data)
@@ -136,9 +134,17 @@ export function useBilibiliUserInfo(): {
     }
   }, [])
 
+  // 手动刷新：先重置加载态再请求
+  const loadUserInfo = useCallback(async (): Promise<void> => {
+    setLoading(true)
+    setError(null)
+    await fetchAndApplyUserInfo()
+  }, [fetchAndApplyUserInfo])
+
   useEffect(() => {
-    void loadUserInfo()
-  }, [loadUserInfo])
+    // 首次挂载时初始 state 已是加载态；经微任务边界调用，setState 全部发生在异步回调中
+    void Promise.resolve().then(fetchAndApplyUserInfo)
+  }, [fetchAndApplyUserInfo])
 
   return {
     userInfo,
@@ -168,10 +174,8 @@ export function useBilibiliArchives(
   const [total, setTotal] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
 
-  const loadVideos = useCallback(async (): Promise<void> => {
-    setLoading(true)
-    setError(null)
-
+  // 纯请求逻辑：所有 setState 均在 await 之后，可在 effect 中直接调用（无同步级联渲染）
+  const fetchAndApplyVideos = useCallback(async (): Promise<void> => {
     try {
       const data = await fetchBilibiliArchives(ps, orderby)
       const normalized = extractVideos(data)
@@ -187,9 +191,17 @@ export function useBilibiliArchives(
     }
   }, [ps, orderby])
 
+  // 手动刷新：先重置加载态再请求
+  const loadVideos = useCallback(async (): Promise<void> => {
+    setLoading(true)
+    setError(null)
+    await fetchAndApplyVideos()
+  }, [fetchAndApplyVideos])
+
   useEffect(() => {
-    void loadVideos()
-  }, [loadVideos])
+    // 首次挂载时初始 state 已是加载态；经微任务边界调用，setState 全部发生在异步回调中
+    void Promise.resolve().then(fetchAndApplyVideos)
+  }, [fetchAndApplyVideos])
 
   const changeOrderBy = useCallback(
     (newOrderBy: string): void => {
@@ -262,10 +274,8 @@ export function useBlogFeed(limit = 5): {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
-  const load = useCallback(async (): Promise<void> => {
-    setLoading(true)
-    setError(null)
-
+  // 纯请求逻辑：所有 setState 均在 await 之后，可在 effect 中直接调用（无同步级联渲染）
+  const fetchAndApplyPosts = useCallback(async (): Promise<void> => {
     try {
       const items = await fetchBlogFeed()
       setPosts(Array.isArray(items) ? items.slice(0, limit) : [])
@@ -279,9 +289,17 @@ export function useBlogFeed(limit = 5): {
     }
   }, [limit])
 
+  // 手动刷新：先重置加载态再请求
+  const load = useCallback(async (): Promise<void> => {
+    setLoading(true)
+    setError(null)
+    await fetchAndApplyPosts()
+  }, [fetchAndApplyPosts])
+
   useEffect(() => {
-    void load()
-  }, [load])
+    // 首次挂载时初始 state 已是加载态；经微任务边界调用，setState 全部发生在异步回调中
+    void Promise.resolve().then(fetchAndApplyPosts)
+  }, [fetchAndApplyPosts])
 
   const refresh = useCallback(async (): Promise<void> => {
     await load()

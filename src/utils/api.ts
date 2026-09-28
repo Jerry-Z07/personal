@@ -18,7 +18,8 @@ const BILIBILI_ARCHIVES_API = 'https://uapis.cn/api/v1/social/bilibili/archives'
 const BLOG_RSS_URL = 'https://blog.078465.xyz/feed/'
 
 // CORS 代理网关地址（由代理负责读取 quest 查询参数并转发）
-const DEFAULT_CORS_PROXY_ENDPOINT = 'https://cors1.078465.xyz/v1/proxy/'
+// 默认走 EdgeOne Pages 内置代理（edge-functions/api/proxy.js，部署于 www.078465.xyz）
+const DEFAULT_CORS_PROXY_ENDPOINT = 'https://www.078465.xyz/api/proxy'
 const CORS_PROXY_ENDPOINT = (import.meta.env.VITE_CORS_PROXY_ENDPOINT || DEFAULT_CORS_PROXY_ENDPOINT).trim()
 
 // 用户 UID
@@ -70,10 +71,12 @@ async function requestByProxy(targetUrl: string, accept: string): Promise<Respon
 
 /**
  * 生成代理请求地址。
+ * 支持绝对地址与相对路径（如 /api/proxy，依赖与前端同源部署的边缘函数）。
  */
 function buildProxyRequestUrl(targetUrl: string): string {
   try {
-    const proxyUrl = new URL(CORS_PROXY_ENDPOINT)
+    // 传入 base 使相对路径可解析；绝对地址会自动忽略 base
+    const proxyUrl = new URL(CORS_PROXY_ENDPOINT, window.location.origin)
     proxyUrl.searchParams.set('quest', targetUrl)
     return proxyUrl.toString()
   } catch {

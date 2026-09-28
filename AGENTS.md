@@ -20,7 +20,6 @@
 - `npm run lint`：运行 ESLint。
 - `npm run build`：执行生产构建，输出到 `dist/`。
 - `npm run preview`：本地预览生产构建结果。
-- 可选质量工具：`qlty check`、`qlty fmt`、`qlty metrics [PATHS]...`、`qlty smells [PATHS]...`。
 - 建议提交前最小校验：`npm run typecheck && npm run lint && npm run build`。
 
 ## 编码规范与命名约定
