@@ -98,6 +98,8 @@ export default function App() {
   // 打字机相关状态
   const [typedText, setTypedText] = useState<string>('')
   const [isTyping, setIsTyping] = useState<boolean>(false)
+  // 当前文案（完整目标文本）：作为不可见占位撑开高度，避免打字换行导致页面抖动
+  const [poemText, setPoemText] = useState<string>(DEFAULT_POEM_TEXT)
   const typingTimerRef = useRef<number | null>(null)
 
   // 打字动画：逐字符追加显示
@@ -107,6 +109,8 @@ export default function App() {
     }
 
     const normalized = normalizeText(text)
+    // 先同步占位文本，使排版高度在打字开始前即确定
+    setPoemText(normalized)
     setTypedText('')
 
     if (!normalized.length) {
@@ -289,9 +293,17 @@ export default function App() {
               </div>
 
               <h1 className="mt-6 text-3xl font-bold tracking-tight">Jerry.Z</h1>
-              <p className="mt-2 text-lg text-gray-500 dark:text-gray-400 flex items-center justify-center">
-                <span>{typedText}</span>
-                {isTyping && <span className="typing-cursor ml-1" />}
+              {/* 网格重叠：不可见占位（完整文案）与打字文本占据同一格，行数变化不再影响布局高度 */}
+              <p className="mt-2 grid min-h-14 content-center text-lg text-gray-500 dark:text-gray-400">
+                <span className="invisible col-start-1 row-start-1" aria-hidden="true">
+                  {poemText}
+                  {/* 与打字光标等宽，保证临界行宽时占位高度不低于可见内容 */}
+                  <span className="ml-1 inline-block w-px" />
+                </span>
+                <span className="col-start-1 row-start-1">
+                  {typedText}
+                  {isTyping && <span className="typing-cursor ml-1" />}
+                </span>
               </p>
             </div>
 
