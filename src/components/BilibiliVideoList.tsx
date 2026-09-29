@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import type { MouseEvent } from 'react'
 import { cn } from '../utils/cn'
-import { formatPlayCount, formatDuration, formatPublishTime } from '../utils/api'
+import { formatCompactCount, formatDuration, formatPublishTime } from '../utils/api'
 import { cardMotionPreset } from './motionPresets'
 import type { BilibiliVideo } from '../types/domain'
 
@@ -73,7 +73,7 @@ function VideoCard({ video, onClick }: VideoCardProps) {
         <div className="flex items-center text-xs text-zinc-500 dark:text-zinc-400 space-x-4">
           <span className="flex items-center">
             <i className="ri-play-circle-line text-[#00aeec] mr-1" />
-            {formatPlayCount(video.play_count || 0)}
+            {formatCompactCount(video.play_count || 0)}
           </span>
           <span className="flex items-center">
             <i className="ri-calendar-line text-[#00aeec] mr-1" />

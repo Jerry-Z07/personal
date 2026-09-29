@@ -10,7 +10,7 @@ import {
   type SetStateAction,
 } from 'react'
 import { motion, AnimatePresence, useDragControls, type PanInfo } from 'framer-motion'
-import { useBilibiliData, useBlogFeed } from '../hooks/useData'
+import type { BilibiliDataState, BlogFeedState } from '../hooks/useData'
 import type { BilibiliVideo, ModalSelectedId } from '../types/domain'
 
 const MotionDiv = motion.div
@@ -57,6 +57,9 @@ function ComponentLoader({ children }: ComponentLoaderProps) {
 interface ModalProps {
   selectedId: ModalSelectedId
   setSelectedId: Dispatch<SetStateAction<ModalSelectedId>>
+  // 数据由 App 统一下发：首页卡片与弹层共用同一份结果，避免重复请求。
+  bilibiliData: BilibiliDataState
+  blogFeed: BlogFeedState
 }
 
 interface ModalContent {
@@ -69,14 +72,14 @@ interface ModalContent {
 /**
  * 详情弹窗组件。
  */
-export default function Modal({ selectedId, setSelectedId }: ModalProps) {
-  const { userInfo, videos, loading, error, refresh } = useBilibiliData()
+export default function Modal({ selectedId, setSelectedId, bilibiliData, blogFeed }: ModalProps) {
+  const { userInfo, videos, loading, error, refresh } = bilibiliData
   const {
     posts,
     loading: blogLoading,
     error: blogError,
     refresh: refreshBlog,
-  } = useBlogFeed(5)
+  } = blogFeed
 
   const containerTransition = { type: 'spring' as const, stiffness: 260, damping: 30, mass: 0.7 }
 

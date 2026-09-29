@@ -3,192 +3,27 @@ import {
   useEffect,
   useRef,
   useState,
-  type MutableRefObject,
+  type CSSProperties,
   type PointerEvent,
   type ReactNode,
 } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '../utils/cn'
+import { CARD_ENTRANCE_TRANSITION, MICRO_INTERACTION_TRANSITION } from './motionPresets'
 
 const MotionDiv = motion.div
 
-interface MousePosition {
-  x: number
-  y: number
-}
+// 全局只创建一次「减弱动态效果」查询，用于把边缘高光退化为静态镜面高光。
+let reduceMotionQuery: MediaQueryList | null = null
 
-interface CanvasSpotlightProps {
-  hostRef: MutableRefObject<HTMLDivElement | null>
-  mousePositionRef: MutableRefObject<MousePosition>
-  isHovering: boolean
-  forceWhiteOverlay: boolean
-  spotlightColor?: string
-}
-
-/**
- * CanvasSpotlight 组件
- * 负责绘制高性能、细腻的鼠标跟随光效。
- */
-function CanvasSpotlight({
-  hostRef,
-  mousePositionRef,
-  isHovering,
-  forceWhiteOverlay,
-  spotlightColor,
-}: CanvasSpotlightProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    const host = hostRef.current
-    if (!canvas || !host) {
-      return
-    }
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) {
-      console.error('获取 Canvas 2D 上下文失败')
-      return
-    }
-
-    if (!isHovering) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      return
-    }
-
-    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (reduceMotionQuery.matches) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      return
-    }
-
-    let animationFrameId = 0
-    let width = 0
-    let height = 0
-
-    // 仅在尺寸发生变化时重设画布，降低布局读取与重绘开销。
-    const syncCanvasSize = (): void => {
-      const rect = host.getBoundingClientRect()
-      const nextWidth = Math.max(1, Math.round(rect.width))
-      const nextHeight = Math.max(1, Math.round(rect.height))
-      if (nextWidth === width && nextHeight === height) {
-        return
-      }
-
-      const dpr = window.devicePixelRatio || 1
-      width = nextWidth
-      height = nextHeight
-      canvas.width = Math.max(1, Math.round(nextWidth * dpr))
-      canvas.height = Math.max(1, Math.round(nextHeight * dpr))
-      canvas.style.width = `${nextWidth}px`
-      canvas.style.height = `${nextHeight}px`
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-    }
-
-    const clearCanvas = (): void => {
-      if (width <= 0 || height <= 0) {
-        return
-      }
-      ctx.clearRect(0, 0, width, height)
-    }
-
-    const render = (): void => {
-      if (!isHovering) {
-        clearCanvas()
-        return
-      }
-
-      clearCanvas()
-
-      // 检测暗色模式（通过 html 标签上的 class="dark" 控制）。
-      const isDark = document.documentElement.classList.contains('dark')
-
-      // 深色模式或强制白光时，使用发光模式；浅色模式用阴影模式。
-      // 说明：`lighter` 在部分浏览器 + 半透明卡片场景下会出现过曝/泛灰，改为 `screen` 更稳定。
-      const useLightEffect = isDark || forceWhiteOverlay
-      ctx.globalCompositeOperation = useLightEffect ? 'screen' : 'multiply'
-
-      const colorRgb = spotlightColor || (useLightEffect ? '255, 255, 255' : '100, 100, 110')
-      const opacityMultiplier = forceWhiteOverlay ? 0.8 : 1
-      const { x, y } = mousePositionRef.current
-
-      // 层级 A：广域氛围光。
-      const radiusHalo = 300
-      // 深色模式下进一步降低光效强度，使体感接近浅色模式的低侵入表现。
-      const alphaHalo = (useLightEffect ? 0.03 : 0.04) * opacityMultiplier
-      const haloGradient = ctx.createRadialGradient(
-        x,
-        y,
-        0,
-        x,
-        y,
-        radiusHalo,
-      )
-      haloGradient.addColorStop(0, `rgba(${colorRgb}, ${alphaHalo})`)
-      haloGradient.addColorStop(0.5, `rgba(${colorRgb}, ${alphaHalo * 0.5})`)
-      haloGradient.addColorStop(1, `rgba(${colorRgb}, 0)`)
-      ctx.fillStyle = haloGradient
-      ctx.fillRect(0, 0, width, height)
-
-      // 层级 B：核心聚焦光。
-      const radiusCore = 100
-      const alphaCore = (useLightEffect ? 0.06 : 0.08) * opacityMultiplier
-      const coreGradient = ctx.createRadialGradient(
-        x,
-        y,
-        0,
-        x,
-        y,
-        radiusCore,
-      )
-      coreGradient.addColorStop(0, `rgba(${colorRgb}, ${alphaCore})`)
-      coreGradient.addColorStop(1, `rgba(${colorRgb}, 0)`)
-      ctx.fillStyle = coreGradient
-      ctx.fillRect(0, 0, width, height)
-
-      animationFrameId = requestAnimationFrame(render)
-    }
-
-    syncCanvasSize()
-
-    let resizeObserver: ResizeObserver | null = null
-    let useWindowResizeFallback = false
-    try {
-      resizeObserver = new ResizeObserver(() => {
-        syncCanvasSize()
-      })
-      resizeObserver.observe(host)
-    } catch (error) {
-      useWindowResizeFallback = true
-      console.error('注册 ResizeObserver 失败，回退到 window.resize 监听:', error)
-      window.addEventListener('resize', syncCanvasSize)
-    }
-
-    animationFrameId = requestAnimationFrame(render)
-
-    return () => {
-      if (useWindowResizeFallback) {
-        window.removeEventListener('resize', syncCanvasSize)
-      }
-      if (resizeObserver) {
-        resizeObserver.disconnect()
-      }
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId)
-      }
-      clearCanvas()
-    }
-  }, [forceWhiteOverlay, hostRef, isHovering, mousePositionRef, spotlightColor])
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className={cn(
-        'pointer-events-none absolute inset-0 h-full w-full transition-opacity duration-500 ease-in-out card-spotlight-canvas',
-        isHovering ? 'opacity-100' : 'opacity-0',
-      )}
-    />
-  )
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') {
+    return false
+  }
+  if (!reduceMotionQuery) {
+    reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  }
+  return reduceMotionQuery.matches
 }
 
 interface BentoCardProps {
@@ -196,26 +31,29 @@ interface BentoCardProps {
   className?: string
   onClick?: () => void
   layoutId?: string
-  forceWhiteOverlay?: boolean
-  spotlightColor?: string
+  // 边缘高光颜色（"r, g, b"）：让光效呼应卡片自身的品牌色。
+  rimColor?: string
   delay?: number
 }
 
 /**
  * 通用 Bento 卡片组件。
+ *
+ * 悬停反馈参考 Liquid Glass 的分层思路：磨砂底 + 静态高光 + 沿边缘游走的镜面高光。
+ * 光只作用在 1px 的圆角边框环上、卡面保持通透——早期版本在卡面上打了一层大范围的
+ * 面光源，观感既像手电筒又覆盖面过大，层的位置错了，强度再调也没用。
  */
 export default function BentoCard({
   children,
   className,
   onClick,
   layoutId,
-  forceWhiteOverlay = false,
-  spotlightColor,
+  rimColor,
   delay = 0,
 }: BentoCardProps) {
-  const mousePositionRef = useRef<MousePosition>({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState<boolean>(false)
   const cardRef = useRef<HTMLDivElement | null>(null)
+  const rimRef = useRef<HTMLDivElement | null>(null)
   const cardRectRef = useRef<DOMRect | null>(null)
   const pendingPointerRef = useRef<{ clientX: number; clientY: number } | null>(null)
   const pointerFrameRef = useRef<number | null>(null)
@@ -237,19 +75,25 @@ export default function BentoCard({
     return rect
   }, [])
 
-  const syncMousePosition = useCallback(
+  /**
+   * 把指针的视口坐标换算成卡片内坐标，写到 CSS 变量上驱动边缘高光。
+   * 开启「减弱动态效果」时直接返回，光会停在 CSS 里预设的顶边位置，
+   * 退化成一道静态镜面高光。
+   */
+  const updateRimPosition = useCallback(
     (clientX: number, clientY: number): void => {
-      let rect = cardRectRef.current
-      if (!rect) {
-        rect = updateCardRect()
+      const rim = rimRef.current
+      if (!rim || prefersReducedMotion()) {
+        return
       }
+
+      const rect = cardRectRef.current ?? updateCardRect()
       if (!rect) {
         return
       }
-      mousePositionRef.current = {
-        x: clientX - rect.left,
-        y: clientY - rect.top,
-      }
+
+      rim.style.setProperty('--rim-x', `${clientX - rect.left}px`)
+      rim.style.setProperty('--rim-y', `${clientY - rect.top}px`)
     },
     [updateCardRect],
   )
@@ -260,10 +104,10 @@ export default function BentoCard({
         return
       }
       updateCardRect()
-      syncMousePosition(event.clientX, event.clientY)
+      updateRimPosition(event.clientX, event.clientY)
       setIsHovering(true)
     },
-    [syncMousePosition, updateCardRect],
+    [updateCardRect, updateRimPosition],
   )
 
   const handlePointerMove = useCallback(
@@ -277,20 +121,20 @@ export default function BentoCard({
         return
       }
 
+      // 一帧内最多写一次样式，避免高频 pointermove 下的重复样式计算。
       pointerFrameRef.current = requestAnimationFrame(() => {
         pointerFrameRef.current = null
         const pendingPointer = pendingPointerRef.current
         if (!pendingPointer) {
           return
         }
-        syncMousePosition(pendingPointer.clientX, pendingPointer.clientY)
+        updateRimPosition(pendingPointer.clientX, pendingPointer.clientY)
       })
     },
-    [isHovering, syncMousePosition],
+    [isHovering, updateRimPosition],
   )
 
   const handlePointerLeave = useCallback((): void => {
-    pendingPointerRef.current = null
     cancelPendingPointerFrame()
     setIsHovering(false)
   }, [cancelPendingPointerFrame])
@@ -301,58 +145,57 @@ export default function BentoCard({
     }
   }, [cancelPendingPointerFrame])
 
+  // 滚动 / 尺寸变化后卡片位置变了，需要用最近一次指针坐标重新换算边缘光位置。
   useEffect(() => {
     if (!isHovering) {
       return
     }
 
-    const refreshRect = (): void => {
+    const refreshRim = (): void => {
       updateCardRect()
+      const pendingPointer = pendingPointerRef.current
+      if (pendingPointer) {
+        updateRimPosition(pendingPointer.clientX, pendingPointer.clientY)
+      }
     }
 
-    window.addEventListener('resize', refreshRect, { passive: true })
-    window.addEventListener('scroll', refreshRect, { capture: true, passive: true })
+    window.addEventListener('resize', refreshRim, { passive: true })
+    window.addEventListener('scroll', refreshRim, { capture: true, passive: true })
 
     return () => {
-      window.removeEventListener('resize', refreshRect)
-      window.removeEventListener('scroll', refreshRect, { capture: true })
+      window.removeEventListener('resize', refreshRim)
+      window.removeEventListener('scroll', refreshRim, { capture: true })
     }
-  }, [isHovering, updateCardRect])
+  }, [isHovering, updateCardRect, updateRimPosition])
 
   return (
     <MotionDiv
       ref={cardRef}
       layoutId={layoutId}
       onClick={onClick}
-      initial={{ opacity: 1, y: 40, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.6,
+        ...CARD_ENTRANCE_TRANSITION,
         delay,
-        type: 'spring',
-        stiffness: 120,
-        damping: 22,
+        // 卡片展开成弹窗时仍用弹簧，保证形变连贯。
         layout: {
           type: 'spring',
-          stiffness: 200,
-          damping: 25,
+          stiffness: 220,
+          damping: 28,
           delay: 0,
         },
       }}
       whileHover={{
-        scale: onClick ? 1.02 : 1,
-        transition: {
-          duration: 0.2,
-          type: 'tween',
-          ease: 'easeInOut',
-        },
+        // 用统一的像素位移而非 scale：scale 是相对值，2 列宽的卡片会比 1 列宽的多涨一倍，
+        // 视觉上就是“两张卡抬升高度不一致”。位移不受卡片尺寸影响。
+        y: onClick ? -3 : 0,
+        transition: MICRO_INTERACTION_TRANSITION,
       }}
       whileTap={{
-        scale: 0.98,
-        transition: {
-          duration: 0.1,
-          type: 'tween',
-        },
+        // 按下反馈同样压到最小幅度，避免宽卡在按下瞬间收缩得更明显。
+        scale: 0.99,
+        transition: { ...MICRO_INTERACTION_TRANSITION, duration: 0.08 },
       }}
       onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
@@ -362,27 +205,31 @@ export default function BentoCard({
         'group relative overflow-hidden rounded-3xl p-6 flex flex-col',
         'bg-white/60 dark:bg-zinc-900/60',
         'border border-gray-200/50 dark:border-white/10',
-        'shadow-sm hover:shadow-xl transition-shadow duration-300',
+        // 阴影保持即时切换：动 box-shadow 会触发重绘，抬升感交给 whileHover 的 transform 表达。
+        'shadow-sm hover:shadow-lg',
         'backdrop-blur-md',
         'cursor-default',
         onClick && 'cursor-pointer',
         className,
       )}
     >
-      {/* 1. Canvas 光效层（最底层） */}
-      <CanvasSpotlight
-        hostRef={cardRef}
-        mousePositionRef={mousePositionRef}
-        isHovering={isHovering}
-        forceWhiteOverlay={forceWhiteOverlay}
-        spotlightColor={spotlightColor}
+      {/* 1. 静态高光层：斜向的一层极淡白光，负责“玻璃”的底色质感 */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-50 transition-opacity duration-200 ease-out group-hover:opacity-80 dark:from-white/5 dark:group-hover:opacity-100" />
+
+      {/* 2. 边缘镜面高光层：光沿圆角边框游走，卡面保持通透 */}
+      <div
+        ref={rimRef}
+        aria-hidden="true"
+        style={rimColor ? ({ '--rim-rgb': rimColor } as CSSProperties) : undefined}
+        className={cn(
+          'card-rim-layer pointer-events-none absolute inset-0 rounded-3xl',
+          'transition-opacity duration-200 ease-out',
+          isHovering ? 'opacity-100' : 'opacity-0',
+        )}
       />
 
-      {/* 2. 静态高光层（中间层） */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-50 dark:from-white/5" />
-
-      {/* 3. 内容层（最顶层） */}
-      <div className="relative z-10 h-full w-full">{children}</div>
+      {/* 3. 内容层（最顶层）：设为 flex 列，使调用方的 justify-between / mt-auto 生效 */}
+      <div className="relative z-10 flex h-full w-full flex-col">{children}</div>
     </MotionDiv>
   )
 }

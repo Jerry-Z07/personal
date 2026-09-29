@@ -49,4 +49,32 @@
     animation: cursor-blink 0.9s steps(1, end) infinite;
     vertical-align: -0.1em;
   }
+
+  /*
+   * 卡片边缘镜面高光（参考 Liquid Glass 的 specular highlight）。
+   * 用 padding + mask 挖空中间，只保留 1px 的圆角边框环，
+   * 再由 --rim-x / --rim-y 决定哪个位置的边缘被点亮——光在边缘游走，卡面保持通透。
+   * 默认位置停在顶边：开启「减弱动态效果」时不再跟随指针，就退化成一道静态镜面高光。
+   */
+  .card-rim-layer {
+    --rim-rgb: 118, 122, 134;
+    --rim-alpha: 0.3;
+    --rim-x: 50%;
+    --rim-y: 0%;
+    padding: 1px;
+    background: radial-gradient(
+      140px circle at var(--rim-x) var(--rim-y),
+      rgba(var(--rim-rgb), var(--rim-alpha)),
+      transparent 85%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  .dark .card-rim-layer {
+    --rim-rgb: 255, 255, 255;
+    --rim-alpha: 0.5;
+  }
 }

@@ -52,8 +52,3 @@
 .sheet-drag-handle-zone:active {
   cursor: grabbing;
 }
-
-.card-spotlight-canvas {
-  contain: strict;
-  will-change: opacity;
-}

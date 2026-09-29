@@ -140,9 +140,9 @@ export async function fetchBilibiliArchives(
 }
 
 /**
- * 格式化播放量数字。
+ * 格式化紧凑数字（播放量、粉丝数等）：超过一万时以“万”为单位。
  */
-export function formatPlayCount(count: number): string {
+export function formatCompactCount(count: number): string {
   const safeCount = Number.isFinite(count) ? count : 0
   if (safeCount >= 10000) {
     return `${(safeCount / 10000).toFixed(1)}万`

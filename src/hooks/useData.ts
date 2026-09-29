@@ -312,3 +312,9 @@ export function useBlogFeed(limit = 5): {
     refresh,
   }
 }
+
+/**
+ * 组合 Hook 的返回类型：供跨组件传递（如 App -> Modal）时复用，避免重复推导。
+ */
+export type BilibiliDataState = ReturnType<typeof useBilibiliData>
+export type BlogFeedState = ReturnType<typeof useBlogFeed>
