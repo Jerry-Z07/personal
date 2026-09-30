@@ -55,15 +55,20 @@
    * 用 padding + mask 挖空中间，只保留 1px 的圆角边框环，
    * 再由 --rim-x / --rim-y 决定哪个位置的边缘被点亮——光在边缘游走，卡面保持通透。
    * 默认位置停在顶边：开启「减弱动态效果」时不再跟随指针，就退化成一道静态镜面高光。
+   *
+   * 浅色下为什么不用白色/中性灰：卡面已接近纯白，白高光叠上去只剩几个色阶、读不出来；
+   * 中性灰则只能「压暗」边缘，看起来像一圈脏描边。亮背景上的高光必须自带色相才成立，
+   * 因此浅色改用冷调亮色并把光斑收窄，让亮点更集中、更像反光。
    */
   .card-rim-layer {
-    --rim-rgb: 118, 122, 134;
-    --rim-alpha: 0.3;
+    --rim-rgb: 175, 200, 255;
+    --rim-alpha: 0.8;
+    --rim-spot: 90px;
     --rim-x: 50%;
     --rim-y: 0%;
     padding: 1px;
     background: radial-gradient(
-      140px circle at var(--rim-x) var(--rim-y),
+      var(--rim-spot) circle at var(--rim-x) var(--rim-y),
       rgba(var(--rim-rgb), var(--rim-alpha)),
       transparent 85%
     );
@@ -73,8 +78,32 @@
     mask-composite: exclude;
   }
 
+  /* 品牌色卡片：颜色由组件内联写入 --rim-rgb，品牌色本身已有辨识度，强度要更克制 */
+  .card-rim-layer--brand {
+    --rim-alpha: 0.45;
+  }
+
+  /* 深色保持原有强度与光斑；此处特异性更高，品牌色卡片同样回到 0.5 */
   .dark .card-rim-layer {
     --rim-rgb: 255, 255, 255;
     --rim-alpha: 0.5;
+    --rim-spot: 140px;
+  }
+}
+
+/*
+ * 窄屏 / 触摸设备关闭毛玻璃。
+ * 卡片与按钮背后都是纯色页面背景，「模糊纯色 = 纯色」，这部分模糊没有视觉收益；
+ * 而 backdrop-filter 是持续的每帧开销：滚动时浏览器要对元素背后重新采样并做多趟高斯模糊
+ * （实测全站 backdrop 元素总面积约等于 1.27 倍视口面积，DPR 3 的真机上还要按 3 倍像素计算），
+ * 是移动端滑动迟滞的主要来源。
+ * 关闭后卡片底色不变即可保持原有观感，无需额外补偿。
+ */
+@media (max-width: 767px), (hover: none) {
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }

@@ -476,7 +476,9 @@ export default function App() {
                       href={project.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="group/project flex items-center gap-4 p-3 rounded-xl transition-colors hover:bg-white/10 dark:hover:bg-white/5"
+                      // 浅色下原先的 hover:bg-white/10 是在白卡上再叠白，等于没有反馈；
+                      // 改为极淡的暗色叠加，与深色模式的 white/5 强度对齐。
+                      className="group/project flex items-center gap-4 p-3 rounded-xl transition-colors hover:bg-black/5 dark:hover:bg-white/5"
                     >
                       <div className={`${iconContainerClassName} flex shrink-0 items-center justify-center overflow-hidden`}>
                         {project.icon && (project.icon.startsWith('http://') || project.icon.startsWith('https://')) ? (
@@ -549,7 +551,7 @@ export default function App() {
                     <Link
                       key={tool.name}
                       to={tool.url}
-                      className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-colors hover:bg-white/10 dark:hover:bg-white/5"
+                      className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-colors hover:bg-black/5 dark:hover:bg-white/5"
                     >
                       <div className={`w-10 h-10 rounded-full ${tool.color} flex items-center justify-center`}>
                         <i className={`${tool.icon} text-xl`} aria-hidden="true" />

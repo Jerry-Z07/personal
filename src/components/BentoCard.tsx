@@ -223,6 +223,8 @@ export default function BentoCard({
         style={rimColor ? ({ '--rim-rgb': rimColor } as CSSProperties) : undefined}
         className={cn(
           'card-rim-layer pointer-events-none absolute inset-0 rounded-3xl',
+          // 品牌色卡片：颜色由内联 --rim-rgb 提供，高光强度改由该变体控制
+          rimColor && 'card-rim-layer--brand',
           'transition-opacity duration-200 ease-out',
           isHovering ? 'opacity-100' : 'opacity-0',
         )}
