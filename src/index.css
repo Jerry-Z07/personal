@@ -98,12 +98,29 @@
  * （实测全站 backdrop 元素总面积约等于 1.27 倍视口面积，DPR 3 的真机上还要按 3 倍像素计算），
  * 是移动端滑动迟滞的主要来源。
  * 关闭后卡片底色不变即可保持原有观感，无需额外补偿。
+ *
+ * 这里用属性选择器而不是逐个列具名类：具名类白名单漏掉了任意值写法
+ * （如弹层遮罩的 backdrop-blur-[1px] / sm:backdrop-blur-[2px]），
+ * 那是一个覆盖全视口、且在抽屉整个开合与滚动期间持续生效的 backdrop-filter。
+ * 改为按前缀匹配后，新增任何 backdrop-blur 工具类都会自动被覆盖。
  */
 @media (max-width: 767px), (hover: none) {
-  .backdrop-blur-sm,
-  .backdrop-blur-md,
-  .backdrop-blur-xl {
+  [class*="backdrop-blur-"] {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+}
+
+/*
+ * 无悬停能力的输入设备（触屏）不渲染卡片边缘高光层。
+ * 该层只在 hover 时才有意义：BentoCard 的指针处理对 pointerType === 'touch' 直接返回，
+ * 所以触屏上 isHovering 永远为 false，这一层永远是全透明。
+ * 但它是「整卡尺寸 + radial-gradient + mask」的遮罩层，opacity: 0 并不会让它退出渲染树，
+ * 首页 6 张卡就是 6 个白扛的遮罩层。整层关掉对触屏没有任何视觉影响。
+ * 注意这里只判断输入能力、不判断宽度：窄窗口 + 鼠标仍应保留高光。
+ */
+@media (hover: none) {
+  .card-rim-layer {
+    display: none;
   }
 }

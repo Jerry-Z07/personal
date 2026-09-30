@@ -108,11 +108,6 @@ export default function Modal({ selectedId, setSelectedId, bilibiliData, blogFee
     setSelectedId(null)
   }, [setSelectedId])
 
-  // 手动切换抽屉吸附点，便于单手快速展开/收起。
-  const toggleSheetSnap = useCallback((): void => {
-    setIsSheetExpanded((prev) => !prev)
-  }, [])
-
   // 根据拖拽位移与速度决定关闭或吸附到最近的 snap point。
   const handleSheetDragEnd = useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo): void => {
@@ -453,24 +448,14 @@ export default function Modal({ selectedId, setSelectedId, bilibiliData, blogFee
                       <i className={`${modalData.icon} ${modalData.iconColor}`} />
                       {modalData.title}
                     </h2>
-                    <div className="flex items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={toggleSheetSnap}
-                        className="p-2 hover:bg-gray-100 rounded-full dark:hover:bg-white/10 transition-colors"
-                        aria-label={isSheetExpanded ? '收起抽屉' : '展开抽屉'}
-                      >
-                        <i className={`text-xl ${isSheetExpanded ? 'ri-arrow-down-s-line' : 'ri-arrow-up-s-line'}`} />
-                      </button>
-                      <button
-                        ref={closeButtonRef}
-                        onClick={closeModal}
-                        className="p-2 hover:bg-gray-100 rounded-full dark:hover:bg-white/10 transition-colors"
-                        aria-label="关闭弹层"
-                      >
-                        <i className="ri-close-line text-xl" />
-                      </button>
-                    </div>
+                    <button
+                      ref={closeButtonRef}
+                      onClick={closeModal}
+                      className="p-2 hover:bg-gray-100 rounded-full dark:hover:bg-white/10 transition-colors"
+                      aria-label="关闭弹层"
+                    >
+                      <i className="ri-close-line text-xl" />
+                    </button>
                   </div>
                 </div>
 
