@@ -211,6 +211,32 @@ export async function fetchDailyPoemText(): Promise<string> {
 }
 
 /**
+ * 将 RSS 摘要中的 HTML 片段转换为纯文本。
+ * WordPress 等源站的 description 为 CDATA 包裹的 HTML：正文段落之后，源站还会追加一段
+ * 「<a>文章标题</a>最先出现在<a>站点名</a>。」的版权段，其中的标题与卡片标题重复，
+ * 因此剥离标签的同时整段移除该版权段，只保留正文（顺带完成 HTML 实体解码）。
+ * 说明：DOMParser 生成的文档不会执行脚本、也不会发起资源请求，仅用于取回纯文本。
+ */
+function stripHtmlToText(raw: string, parser: DOMParser): string {
+  if (!raw) {
+    return ''
+  }
+
+  const doc = parser.parseFromString(raw, 'text/html')
+
+  // 版权段以「最先出现在」标识，且固定为独立段落，整段删除即可一并去掉其中重复的文章标题。
+  doc.querySelectorAll('p').forEach((paragraph) => {
+    if (paragraph.textContent?.includes('最先出现在')) {
+      paragraph.remove()
+    }
+  })
+
+  const text = doc.body?.textContent || ''
+  // 压缩换行与连续空白，避免摘要中出现大段空档。
+  return text.replace(/\s+/g, ' ').trim()
+}
+
+/**
  * 获取博客 RSS 并解析为文章列表。
  */
 export async function fetchBlogFeed(): Promise<BlogPost[]> {
@@ -234,7 +260,8 @@ export async function fetchBlogFeed(): Promise<BlogPost[]> {
     let items: BlogPost[] = itemNodes.map((node) => {
       const title = node.getElementsByTagName('title')[0]?.textContent?.trim() || ''
       const link = node.getElementsByTagName('link')[0]?.textContent?.trim() || ''
-      const description = node.getElementsByTagName('description')[0]?.textContent?.trim() || ''
+      const rawDescription = node.getElementsByTagName('description')[0]?.textContent || ''
+      const description = stripHtmlToText(rawDescription, parser)
       return { title, link, description }
     })
 
@@ -244,10 +271,11 @@ export async function fetchBlogFeed(): Promise<BlogPost[]> {
         const title = node.getElementsByTagName('title')[0]?.textContent?.trim() || ''
         const linkElement = node.getElementsByTagName('link')[0]
         const link = linkElement?.getAttribute('href')?.trim() || ''
-        const description =
-          node.getElementsByTagName('summary')[0]?.textContent?.trim() ||
-          node.getElementsByTagName('content')[0]?.textContent?.trim() ||
+        const rawDescription =
+          node.getElementsByTagName('summary')[0]?.textContent ||
+          node.getElementsByTagName('content')[0]?.textContent ||
           ''
+        const description = stripHtmlToText(rawDescription, parser)
 
         return { title, link, description }
       })

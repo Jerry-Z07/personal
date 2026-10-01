@@ -46,20 +46,22 @@ function BlogItem({ post }: BlogItemProps) {
     >
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="flex items-start justify-between gap-4 relative z-10">
-        <div className="flex-1">
+        {/* min-w-0：flex 子项默认 min-width 为内容尺寸，摘要中的长串（如 URL）会把右侧图标挤出卡片 */}
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 text-orange-500 mb-1">
             <i className="ri-article-line" />
           </div>
+          {/* wrap-anywhere：长串无断点时可任意位置断行，并参与 min-content 计算，避免窄屏横向溢出 */}
           <a
             href={post.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-base font-semibold text-gray-900 dark:text-white hover:text-orange-600"
+            className="text-base font-semibold text-gray-900 dark:text-white hover:text-orange-600 wrap-anywhere"
             onClick={(event) => event.stopPropagation()}
           >
             {post.title || '未命名文章'}
           </a>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2 wrap-anywhere">
             {post.description || '暂无摘要'}
           </p>
         </div>
